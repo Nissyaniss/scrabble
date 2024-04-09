@@ -1,19 +1,24 @@
 package fr.gameiuter.scrabble.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Rack {
     private List<Tile> tiles;
 
+    public Rack(){
+        this.tiles = new ArrayList<>();
+    }
+
     public void clear() {
-        // TODO
+        tiles.clear();
     }
 
     public void add(Tile tile) {
-        // TODO
+        tiles.add(tile);
     }
 
     public void remove(Tile tile) {
-        // TODO
+        tiles.remove(tile);
     }
 }
