@@ -8,4 +8,11 @@ public enum Square {
     // TRIPLE_LETTER,
     // DOUBLE_WORD,
     // TRIPLE_WORD;
+
+    public String symbol() {
+        return switch (this) {
+            case NORMAL -> " ";
+            case START -> "*";
+        };
+    }
 }
