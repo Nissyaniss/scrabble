@@ -21,4 +21,19 @@ public class Rack {
     public void remove(Tile tile) {
         tiles.remove(tile);
     }
+    public String display(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("┌───┬───┬───┬───┬───┬───┬───┐\n");
+
+        for (int i = 0; i < 7; i++){
+            builder.append("│ ");
+            builder.append(tiles.get(i));
+            builder.append(" ");
+        }
+
+        builder.append("│\n");
+        builder.append("└───┴───┴───┴───┴───┴───┴───┘");
+
+        return builder.toString();
+    }
 }
