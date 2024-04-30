@@ -14,7 +14,7 @@ public class ScrabbleApplicationConsole {
 
         Board board = new Board();
         Rack rack = new Rack();
-        System.out.print(board.display());
+        System.out.println(board.display());
         System.out.println(rack.display());
 
     }

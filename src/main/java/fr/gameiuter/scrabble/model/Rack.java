@@ -23,7 +23,7 @@ public class Rack {
     }
     public String display(){
         StringBuilder builder = new StringBuilder();
-        builder.append("\n┌───┬───┬───┬───┬───┬───┬───┐\n");
+        builder.append("┌───┬───┬───┬───┬───┬───┬───┐\n");
 
         for (int i = 0; i < 7; i++){
             builder.append("│ ");
