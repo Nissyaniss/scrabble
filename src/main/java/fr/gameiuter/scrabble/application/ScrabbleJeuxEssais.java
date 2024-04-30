@@ -12,8 +12,7 @@ public class ScrabbleJeuxEssais {
 
         for (int i = 0; i < 7; i++) {
             rack.add(pouch.draw());
+            System.out.println(rack.display());
         }
-
-        System.out.println(rack.display());
     }
 }
