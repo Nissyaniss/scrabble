@@ -59,7 +59,9 @@ public class Pouch {
         if (size == 0)
             return null;
 
-        return pool.get(this.random.nextInt(size));
+        Tile result = pool.get(this.random.nextInt(size));
+        pool.remove(result);
+        return result;
     }
 
     public void putBack(Tile tile) {
