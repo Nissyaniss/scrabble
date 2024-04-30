@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rack {
-    private List<Tile> tiles;
+    private final List<Tile> tiles;
 
     public Rack(){
         this.tiles = new ArrayList<>();
@@ -27,10 +27,10 @@ public class Rack {
 
         for (int i = 0; i < 7; i++){
             builder.append("│ ");
-            if (tiles.get(i) == null) {
-                builder.append(tiles.get(i));
-            } else {
+            if (tiles.size() < i + 1) {
                 builder.append(" ");
+            } else {
+                builder.append(tiles.get(i));
             }
 
             builder.append(" ");
