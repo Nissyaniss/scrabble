@@ -27,7 +27,12 @@ public class Rack {
 
         for (int i = 0; i < 7; i++){
             builder.append("│ ");
-            builder.append(tiles.get(i));
+            if (tiles.get(i) == null) {
+                builder.append(tiles.get(i));
+            } else {
+                builder.append(" ");
+            }
+
             builder.append(" ");
         }
 
