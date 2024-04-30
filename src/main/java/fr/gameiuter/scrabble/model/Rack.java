@@ -5,9 +5,11 @@ import java.util.List;
 
 public class Rack {
     private final List<Tile> tiles;
+    private final Pouch pouch;
 
-    public Rack(){
+    public Rack(Pouch pouch){
         this.tiles = new ArrayList<>();
+        this.pouch = pouch;
     }
 
     public void clear() {
@@ -40,5 +42,15 @@ public class Rack {
         builder.append("└───┴───┴───┴───┴───┴───┴───┘");
 
         return builder.toString();
+    }
+
+    public void swap(Tile letter) {
+        this.tiles.remove(letter);
+        this.tiles.add(pouch.draw());
+        this.pouch.putBack(letter);
+    }
+
+    public List<Tile> getList() {
+        return this.tiles;
     }
 }
