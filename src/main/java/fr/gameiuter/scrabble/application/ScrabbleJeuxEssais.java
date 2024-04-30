@@ -2,6 +2,7 @@ package fr.gameiuter.scrabble.application;
 
 import fr.gameiuter.scrabble.model.Pouch;
 import fr.gameiuter.scrabble.model.Rack;
+import fr.gameiuter.scrabble.model.Tile;
 
 public class ScrabbleJeuxEssais {
     public static void main(String[] args) {
@@ -9,10 +10,18 @@ public class ScrabbleJeuxEssais {
         Rack rack = new Rack();
 
         System.out.println(rack.display());
+        System.out.println(pouch);
 
         for (int i = 0; i < 7; i++) {
             rack.add(pouch.draw());
             System.out.println(rack.display());
+            System.out.println(pouch);
         }
+
+        Tile tile;
+        do {
+            tile = pouch.draw();
+            System.out.println(tile);
+        } while (tile != null);
     }
 }

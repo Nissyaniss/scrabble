@@ -2,9 +2,6 @@ package fr.gameiuter.scrabble.application;
 
 import fr.gameiuter.scrabble.model.Board;
 import fr.gameiuter.scrabble.model.Rack;
-import fr.gameiuter.scrabble.model.Tile;
-
-import javax.xml.transform.stream.StreamSource;
 
 public class ScrabbleApplicationConsole {
     public static void main(String[] args) {

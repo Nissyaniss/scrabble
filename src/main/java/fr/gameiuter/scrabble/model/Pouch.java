@@ -67,4 +67,9 @@ public class Pouch {
     public void putBack(Tile tile) {
         pool.add(tile);
     }
+
+    @Override
+    public String toString() {
+        return this.pool.toString();
+    }
 }
