@@ -3,8 +3,8 @@ package fr.gameiuter.scrabble.model;
 import java.util.List;
 
 public class Board {
-    private static Integer SIZE = 15;
-    private static Integer MIDDLE = 7;
+    private static final Integer SIZE = 15;
+    private static final Integer MIDDLE = 7;
 
     private final Square[][] squares;
     private List<Tile> placedTiles;
