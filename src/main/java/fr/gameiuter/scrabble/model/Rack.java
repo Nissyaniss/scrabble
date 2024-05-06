@@ -17,12 +17,15 @@ public class Rack {
     }
 
     public void add(Tile tile) {
-        tiles.add(tile);
+        if (this.tiles.size() != 7) {
+            tiles.add(tile);
+        }
     }
 
     public void remove(Tile tile) {
         tiles.remove(tile);
     }
+    
     public String display(){
         StringBuilder builder = new StringBuilder();
         builder.append("┌───┬───┬───┬───┬───┬───┬───┐\n");
