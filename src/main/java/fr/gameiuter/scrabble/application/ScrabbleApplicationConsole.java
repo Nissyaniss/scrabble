@@ -2,7 +2,6 @@ package fr.gameiuter.scrabble.application;
 
 import fr.gameiuter.scrabble.gui.Console;
 import fr.gameiuter.scrabble.model.Board;
-import fr.gameiuter.scrabble.model.Pouch;
 import fr.gameiuter.scrabble.model.Rack;
 
 public class ScrabbleApplicationConsole {
@@ -15,8 +14,7 @@ public class ScrabbleApplicationConsole {
         Console.message(Console.SEPARATOR);
 
         Board board = new Board();
-        Pouch pouch = new Pouch();
-        Rack rack = new Rack(pouch);
+        Rack rack = new Rack();
         Console.message(board.display());
         Console.message(rack.display());
 

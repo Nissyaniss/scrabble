@@ -1,33 +1,33 @@
 package fr.gameiuter.scrabble.application;
 
-import fr.gameiuter.scrabble.model.Pouch;
-import fr.gameiuter.scrabble.model.Rack;
+import fr.gameiuter.scrabble.controller.GameController;
+import fr.gameiuter.scrabble.model.Player;
 import fr.gameiuter.scrabble.model.Tile;
 
 import java.util.List;
 
 public class ScrabbleJeuxEssais {
     public static void main(String[] args) {
-        Pouch pouch = new Pouch();
-        Rack rack = new Rack(pouch);
+        GameController controller = new GameController();
+        Player player = new Player("test");
 
-        System.out.println(rack.display());
-        System.out.println(pouch);
+        System.out.println(player.rackDisplay());
+        System.out.println(controller);
 
         for (int i = 0; i < 7; i++) {
-            rack.add(pouch.draw());
-            System.out.println(rack.display());
-            System.out.println(pouch);
+            player.getRack().add(controller.getPouch().draw());
+            System.out.println(player.rackDisplay());
+            System.out.println(controller);
         }
 
-        List<Tile> list = rack.getList();
-        rack.swap(list.get(6));
-        System.out.println(rack.display());
-        System.out.println(pouch);
+        List<Tile> list = player.getRack().getList();
+        controller.swap(player, new Tile[]{list.get(6), list.get(1)});
+        System.out.println(player.rackDisplay());
+        System.out.println(controller);
 
         Tile tile;
         do {
-            tile = pouch.draw();
+            tile = controller.getPouch().draw();
             System.out.println(tile);
         } while (tile != null);
     }
