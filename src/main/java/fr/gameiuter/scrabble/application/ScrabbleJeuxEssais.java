@@ -1,6 +1,7 @@
 package fr.gameiuter.scrabble.application;
 
 import fr.gameiuter.scrabble.controller.GameController;
+import fr.gameiuter.scrabble.model.Board;
 import fr.gameiuter.scrabble.model.Player;
 import fr.gameiuter.scrabble.model.Tile;
 
@@ -24,6 +25,10 @@ public class ScrabbleJeuxEssais {
         controller.swap(player, new Tile[]{list.get(6), list.get(1)});
         System.out.println(player.rackDisplay());
         System.out.println(controller);
+
+        Board board = new Board();
+        board.placeTile(controller.getPouch().draw(), 7, 7);
+        System.out.println(board.display());
 
         Tile tile;
         do {
