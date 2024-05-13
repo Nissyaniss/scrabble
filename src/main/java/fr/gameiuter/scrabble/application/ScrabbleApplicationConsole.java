@@ -1,19 +1,20 @@
 package fr.gameiuter.scrabble.application;
 
+import fr.gameiuter.scrabble.controller.GameController;
 import fr.gameiuter.scrabble.gui.Console;
-import fr.gameiuter.scrabble.model.Player;
 import fr.gameiuter.scrabble.model.Board;
-import fr.gameiuter.scrabble.model.Direction;
+import fr.gameiuter.scrabble.model.Player;
 import fr.gameiuter.scrabble.model.Rack;
 import fr.gameiuter.scrabble.model.Tile;
+
 import java.util.Scanner;
 
 
 public class ScrabbleApplicationConsole {
-    private Player player;
+    private GameController controller;
 
     private ScrabbleApplicationConsole(Player player) {
-        this.player = player;
+        this.controller = new GameController(player);
     }
 
     public static void main(String[] args) {
@@ -30,6 +31,7 @@ public class ScrabbleApplicationConsole {
     }
 
     private void start() {
+        this.controller.start();
         boolean stop = false;
 
         while (!stop) {
@@ -57,17 +59,8 @@ public class ScrabbleApplicationConsole {
     }
 
     private void placeWord() {
-        
         Board board = new Board();
-        Rack rack = new Rack();
-
-        rack.add(Tile.M);
-        rack.add(Tile.A);
-        rack.add(Tile.I);
-        rack.add(Tile.S);
-        rack.add(Tile.O);
-        rack.add(Tile.N);
-        rack.add(Tile.BLANK);
+        Rack rack = controller.player().getRack();
 
         Console.message(board.display());
         Console.message(rack.display());
@@ -80,10 +73,9 @@ public class ScrabbleApplicationConsole {
         Console.message("2. Y : Verticalement");
         int choix = scanner.nextInt();
 
-        int y,x,max = 0;
+        int y, x, max = 0;
 
-        if (choix == 1)
-        {
+        if (choix == 1) {
             Console.message("Choisisez la colonne de votre mots :");
             y = scanner.nextInt();
             Console.message("Choisisez la case du debut du mots :");
@@ -91,11 +83,11 @@ public class ScrabbleApplicationConsole {
             Console.message("Choisisez la case de la fin du mots :");
             max = scanner.nextInt() - x;
 
-            for (int i = 0; i<max; i++){
+            for (int i = 0; i < max; i++) {
 
                 int xMots = x + i;
 
-                Console.message("X : " +  xMots);
+                Console.message("X : " + xMots);
                 Console.message("Y : " + y);
                 Console.message(("-------------"));
                 Console.message("Rentrer l'index de la lettre à deposer");
@@ -103,13 +95,11 @@ public class ScrabbleApplicationConsole {
                 Tile letter = rack.getTile(indexLetter);
                 Console.message(("-------------"));
 
-                board.placeTile(letter, xMots,y);
+                board.placeTile(letter, xMots, y);
                 rack.remove(letter);
                 Console.message(rack.display());
             }
-        }
-        else
-        {
+        } else {
             Console.message("Choisisez la ligne de votre mots : ");
             x = scanner.nextInt();
             Console.message("Choisisez la case du debut du mots :");
@@ -117,7 +107,7 @@ public class ScrabbleApplicationConsole {
             Console.message("Choisisez la case du debut du mots :");
             max = scanner.nextInt() - y;
 
-            for (int i = 0; i<max; i++){
+            for (int i = 0; i < max; i++) {
 
                 int yMots = y + i;
 
@@ -129,7 +119,7 @@ public class ScrabbleApplicationConsole {
                 Tile letter = rack.getTile(indexLetter);
                 Console.message(("-------------"));
 
-                board.placeTile(letter,x,yMots);
+                board.placeTile(letter, x, yMots);
                 rack.remove(letter);
                 Console.message(rack.display());
             }
@@ -138,10 +128,8 @@ public class ScrabbleApplicationConsole {
         Console.message(board.display());
         Console.message(rack.display());
     }
-
-
-
+    
     private void swapLetters() {
-    }
 
+    }
 }

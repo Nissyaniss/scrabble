@@ -9,8 +9,8 @@ import java.util.List;
 
 public class ScrabbleJeuxEssais {
     public static void main(String[] args) {
-        GameController controller = new GameController();
         Player player = new Player("test");
+        GameController controller = new GameController(player);
 
         System.out.println(player.rackDisplay());
         System.out.println(controller);

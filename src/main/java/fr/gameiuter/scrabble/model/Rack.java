@@ -10,6 +10,10 @@ public class Rack {
         this.tiles = new ArrayList<>();
     }
 
+    public int numberOfTiles() {
+        return this.tiles.size();
+    }
+
     public void clear() {
         tiles.clear();
     }

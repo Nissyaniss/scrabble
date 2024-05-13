@@ -4,9 +4,21 @@ import fr.gameiuter.scrabble.model.*;
 
 public class GameController {
     private final Pouch pouch;
+    private final Player player;
 
-    public GameController() {
+    public GameController(Player player) {
         this.pouch = new Pouch();
+        this.player = player;
+    }
+
+    public void start() {
+        this.draw(this.player);
+    }
+
+    public void draw(Player player) {
+        while (player.getRack().numberOfTiles() < 7) {
+            player.getRack().add(pouch.draw());
+        }
     }
 
     public void swap(Player player, Tile[] tiles) {
@@ -14,13 +26,15 @@ public class GameController {
             player.getRack().remove(tile);
             this.pouch.putBack(tile);
         }
-        for (int i = 0; i < tiles.length; i++) {
-            player.getRack().add(this.pouch.draw());
-        }
+        this.draw(player);
     }
 
     public Pouch getPouch() {
         return this.pouch;
+    }
+
+    public Player player() {
+        return this.player;
     }
 
     @Override
@@ -59,13 +73,13 @@ public class GameController {
             isAllowed = false;
             for (int i = 0; i < word.length(); i++) {
                 if ((y + 1 <= Board.SIZE && placedTiles[y + 1][i] != null)
-                    || (y - 1 >= 0 && placedTiles[y - 1][i] != null)){
+                        || (y - 1 >= 0 && placedTiles[y - 1][i] != null)) {
                     isAllowed = true;
                     break;
                 }
             }
             if ((x <= Board.SIZE && placedTiles[y][x + word.length() - 1] != null)
-                    || (x > 0 && placedTiles[y][x - 1] != null)){
+                    || (x > 0 && placedTiles[y][x - 1] != null)) {
                 isAllowed = true;
             }
         } else if (isAllowed) {
