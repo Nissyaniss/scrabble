@@ -88,7 +88,20 @@ public class ScrabbleApplicationConsole {
                 Tile letter = rack.getTile(indexLetter);
                 Console.message(Console.SEPARATOR);
 
-                board.placeTile(letter, xMots, y);
+                if (letter.isJoker()) {
+                    String result;
+                    while (true) {
+                        result = Console.input("Le jeton choisie est un joker, quelle lettre devrait il être ? : ");
+                        result = result.toLowerCase();
+                        if (result.length() == 1 && Character.isAlphabetic(result.charAt(0))) {
+                            letter.setLetter(result.charAt(0));
+                            break;
+                        } else {
+                            Console.message("Ce que vous avez rentré n'est pas une lettre.");
+                        }
+                    }
+                }
+                board.placeTile(letter, xMots,y);
                 rack.remove(letter);
                 Console.message(rack.display());
             }
