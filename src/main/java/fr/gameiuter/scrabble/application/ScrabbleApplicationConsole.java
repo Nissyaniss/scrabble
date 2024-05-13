@@ -23,8 +23,9 @@ public class ScrabbleApplicationConsole {
     }
 
     private void start() {
-        mainloop:
-        while (true) {
+        boolean stop = false;
+
+        while (!stop) {
             Console.message("Que souhaitez-vous faire ?");
             Console.message("  1. Placer un mot");
             Console.message("  2. Échanger des lettres");
@@ -39,7 +40,8 @@ public class ScrabbleApplicationConsole {
                     this.swapLetters();
                     break;
                 case 3:
-                    break mainloop;
+                    stop = true;
+                    break;
                 default:
                     // unreachable
                     break;
