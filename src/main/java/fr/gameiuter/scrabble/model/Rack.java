@@ -33,7 +33,7 @@ public class Rack {
             if (tiles.size() < i + 1) {
                 builder.append(" ");
             } else {
-                builder.append(tiles.get(i));
+                builder.append(tiles.get(i).letter());
             }
 
             builder.append(" ");
