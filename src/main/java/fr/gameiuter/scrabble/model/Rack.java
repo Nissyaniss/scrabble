@@ -45,6 +45,13 @@ public class Rack {
         return builder.toString();
     }
 
+    public Tile getTile(int index) {
+
+        Tile tile = tiles.get(index);
+        return tile;
+
+    }
+
     public List<Tile> getList() {
         return this.tiles;
     }
