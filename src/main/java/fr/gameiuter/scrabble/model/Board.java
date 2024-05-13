@@ -3,11 +3,11 @@ package fr.gameiuter.scrabble.model;
 import java.util.List;
 
 public class Board {
-    private static final Integer SIZE = 15;
-    private static final Integer MIDDLE = 7;
+    public static final Integer SIZE = 15;
+    public static final Integer MIDDLE = 7;
 
     private final Square[][] squares;
-    private List<Tile> placedTiles;
+    private Tile[][] placedTiles;
 
     public Board() {
         this.squares = new Square[SIZE][SIZE];
