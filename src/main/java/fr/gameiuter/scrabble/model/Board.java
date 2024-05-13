@@ -1,7 +1,5 @@
 package fr.gameiuter.scrabble.model;
 
-import java.util.List;
-
 public class Board {
     public static final Integer SIZE = 15;
     public static final Integer MIDDLE = 7;
@@ -19,8 +17,8 @@ public class Board {
         this.squares[MIDDLE][MIDDLE] = Square.START;
     }
 
-    public void placeTile(Tile tile) {
-        // TODO
+    public void placeTile(Tile tile, int x, int y) {
+        placedTiles[y][x] = tile;
     }
 
     public String display() {
