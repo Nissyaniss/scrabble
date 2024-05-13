@@ -2,6 +2,8 @@ package fr.gameiuter.scrabble.controller;
 
 import fr.gameiuter.scrabble.model.*;
 
+import java.util.Collection;
+
 public class GameController {
     private final Pouch pouch;
     private final Player player;
@@ -21,7 +23,7 @@ public class GameController {
         }
     }
 
-    public void swap(Player player, Tile[] tiles) {
+    public void swap(Player player, Collection<Tile> tiles) {
         for (Tile tile : tiles) {
             player.getRack().remove(tile);
             this.pouch.putBack(tile);

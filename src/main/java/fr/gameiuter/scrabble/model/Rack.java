@@ -50,10 +50,7 @@ public class Rack {
     }
 
     public Tile getTile(int index) {
-
-        Tile tile = tiles.get(index);
-        return tile;
-
+        return tiles.get(index);
     }
 
     public List<Tile> getList() {

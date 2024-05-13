@@ -7,6 +7,8 @@ import fr.gameiuter.scrabble.model.Player;
 import fr.gameiuter.scrabble.model.Rack;
 import fr.gameiuter.scrabble.model.Tile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -128,8 +130,29 @@ public class ScrabbleApplicationConsole {
         Console.message(board.display());
         Console.message(rack.display());
     }
-    
-    private void swapLetters() {
 
+    private void swapLetters() {
+        Player player = this.controller.player();
+        List<Integer> indexes = new ArrayList<>();
+        List<Tile> toExchange = new ArrayList<>();
+
+        while (player.getRack().numberOfTiles() > 0) {
+            Console.message("Voici vos lettres:");
+            if (!toExchange.isEmpty()) {
+                Console.message("Les lettres suivantes vont être échangées: " + String.join(", ", toExchange.stream().map(tile -> tile.letter().toString()).toList()));
+            }
+            Console.message(this.controller.player().rackDisplay());
+            int index = Console.inputIntegerBetween("Entrez l'indice de la lettre que vous souhaitez échanger (0 pour s'arreter): ", 0, 8);
+            if (index == 0) {
+                break;
+            } else if (indexes.contains(index)) { // checking the index because you can have the same letter multiple times
+                Console.message("Cette lettre va déjà être échangée");
+            } else {
+                indexes.add(index);
+                toExchange.add(player.getRack().getTile(index - 1));
+            }
+        }
+
+        controller.swap(player, toExchange);
     }
 }

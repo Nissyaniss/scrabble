@@ -45,7 +45,7 @@ public class Tile {
         this(letter, score, false);
     }
 
-    public char letter() {
+    public Character letter() {
         return this.letter;
     }
 

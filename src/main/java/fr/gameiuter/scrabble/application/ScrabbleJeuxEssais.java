@@ -22,7 +22,7 @@ public class ScrabbleJeuxEssais {
         }
 
         List<Tile> list = player.getRack().getList();
-        controller.swap(player, new Tile[]{list.get(6), list.get(1)});
+        controller.swap(player, List.of(list.get(6), list.get(1)));
         System.out.println(player.rackDisplay());
         System.out.println(controller);
 
