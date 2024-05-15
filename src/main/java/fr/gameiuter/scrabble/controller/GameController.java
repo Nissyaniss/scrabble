@@ -1,14 +1,19 @@
 package fr.gameiuter.scrabble.controller;
 
-import fr.gameiuter.scrabble.model.*;
+import fr.gameiuter.scrabble.model.Board;
+import fr.gameiuter.scrabble.model.Player;
+import fr.gameiuter.scrabble.model.Pouch;
+import fr.gameiuter.scrabble.model.Tile;
 
 import java.util.Collection;
 
 public class GameController {
+    private final Board board;
     private final Pouch pouch;
     private final Player player;
 
     public GameController(Player player) {
+        this.board = new Board();
         this.pouch = new Pouch();
         this.player = player;
     }
