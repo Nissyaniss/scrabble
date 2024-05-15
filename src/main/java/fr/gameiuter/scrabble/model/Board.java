@@ -77,4 +77,56 @@ public class Board {
 
         return builder.toString();
     }
+
+    public Boolean checkPlacement(Integer wordLength, Integer x, Integer y, Direction direction) {
+        // First Move
+
+        if (placedTiles[Board.MIDDLE][Board.MIDDLE] == null) {
+            if (direction.equals(Direction.HORIZONTAL)) {
+                for (int i = x; i <= x + wordLength; i++) {
+                    if (squares[y][i].equals(Square.START)) {
+                        return true;
+                    }
+                }
+            } else {
+                for (int i = y; i <= y + wordLength; i++) {
+                    if (squares[i][x].equals(Square.START)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        //Normal Moves
+
+        boolean isAllowed = false;
+
+        if (direction.equals(Direction.HORIZONTAL)) {
+            for (int i = x; i <= x + wordLength; i++) {
+                if ((y + 1 <= Board.SIZE && placedTiles[y + 1][i] != null) // On top & On Bottom
+                        || (y - 1 >= 0 && placedTiles[y - 1][i] != null)) {
+                    isAllowed = true;
+                    break;
+                }
+            }
+            if ((x + wordLength + 1 <= Board.SIZE && placedTiles[y][x + wordLength + 1] != null) // Sides
+                    || (x > 0 && placedTiles[y][x - 1] != null)){
+                isAllowed = true;
+            }
+        } else {
+            for (int i = y; i <= y + wordLength; i++) {
+                if ((x + 1 <= Board.SIZE && placedTiles[i][x + 1] != null)
+                        || (x - 1 >= 0 && placedTiles[i][x - 1] != null)) {
+                    isAllowed = true;
+                    break;
+                }
+            }
+            if ((y + wordLength + 1 <= Board.SIZE && placedTiles[y + wordLength + 1][x] != null)
+                    || (y > 0 && placedTiles[y - 1][x] != null)) {
+                isAllowed = true;
+            }
+        }
+
+        return isAllowed;
+    }
 }

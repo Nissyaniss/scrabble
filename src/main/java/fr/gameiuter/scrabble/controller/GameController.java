@@ -51,59 +51,7 @@ public class GameController {
                 '}';
     }
 
-    public Boolean checkPlacement(Integer wordLength, Integer x, Integer y, Direction direction, Tile[][] placedTiles, Square[][] squares) {
-        boolean isAllowed = false;
-
-        // First Move
-
-        if (placedTiles[Board.MIDDLE][Board.MIDDLE] == null) {
-            if (direction.equals(Direction.HORIZONTAL)) {
-                for (int i = 0; i < wordLength; i++) {
-                    if (squares[Board.MIDDLE][i].equals(Square.START)) {
-                        isAllowed = true;
-                        break;
-                    }
-                }
-            } else {
-                for (int i = 0; i < wordLength; i++) {
-                    if (squares[i][Board.MIDDLE].equals(Square.START)) {
-                        isAllowed = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        //Normal Moves
-
-        if (isAllowed && direction.equals(Direction.HORIZONTAL)) {
-            isAllowed = false;
-            for (int i = 0; i < wordLength; i++) {
-                if ((y + 1 <= Board.SIZE && placedTiles[y + 1][i] != null)
-                        || (y - 1 >= 0 && placedTiles[y - 1][i] != null)) {
-                    isAllowed = true;
-                    break;
-                }
-            }
-            if ((x <= Board.SIZE && placedTiles[y][x + wordLength - 1] != null)
-                    || (x > 0 && placedTiles[y][x - 1] != null)){
-                isAllowed = true;
-            }
-        } else if (isAllowed) {
-            isAllowed = false;
-            for (int i = 0; i < wordLength; i++) {
-                if ((x + 1 <= Board.SIZE && placedTiles[i][x + 1] != null)
-                        || (x - 1 >= 0 && placedTiles[i][x - 1] != null)) {
-                    isAllowed = true;
-                    break;
-                }
-            }
-            if ((x <= Board.SIZE && placedTiles[y][x + wordLength - 1] != null)
-                    || (x > 0 && placedTiles[y][x - 1] != null)) {
-                isAllowed = true;
-            }
-        }
-
-        return isAllowed;
+    public Board getBoard() {
+        return this.board;
     }
 }
