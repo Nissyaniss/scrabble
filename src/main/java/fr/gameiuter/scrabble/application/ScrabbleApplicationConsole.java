@@ -9,7 +9,6 @@ import fr.gameiuter.scrabble.model.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class ScrabbleApplicationConsole {
@@ -67,59 +66,47 @@ public class ScrabbleApplicationConsole {
         Console.message(board.display());
         Console.message(rack.display());
 
-        Console.message("Tile : " + rack.getTile(4).letter());
+        Console.message("Quelle est la direction de votre mot:");
+        Console.message("1. Horizontal");
+        Console.message("2. Vertical");
+        int choix = Console.inputIntegerBetween("", 1, 2);
 
-        Scanner scanner = new Scanner(System.in);
-        Console.message("Quel est la direction de votre mots :");
-        Console.message("1. X : Horizontalement");
-        Console.message("2. Y : Verticalement");
-        int choix = scanner.nextInt();
-
-        int y, x, max = 0;
-
+        int y, x, end, max = 0;
         if (choix == 1) {
-            Console.message("Choisisez la colonne de votre mots :");
-            y = scanner.nextInt();
-            Console.message("Choisisez la case du debut du mots :");
-            x = scanner.nextInt();
-            Console.message("Choisisez la case de la fin du mots :");
-            max = scanner.nextInt() - x;
+            y = Console.inputIntegerBetween("Choisissez la ligne de votre mot: ", 1, Board.SIZE) - 1;
+            x = Console.inputIntegerBetween("Choisissez la colonne de début du mot: ", 1, Board.SIZE) - 1;
+            end = Console.inputIntegerBetween("Choisissez la colonne de fin du mot: ", 1, Board.SIZE) - 1;
+            max = end - x;
 
             for (int i = 0; i < max; i++) {
-
                 int xMots = x + i;
 
                 Console.message("X : " + xMots);
                 Console.message("Y : " + y);
-                Console.message(("-------------"));
-                Console.message("Rentrer l'index de la lettre à deposer");
-                int indexLetter = scanner.nextInt();
+                Console.message(Console.SEPARATOR);
+                int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
                 Tile letter = rack.getTile(indexLetter);
-                Console.message(("-------------"));
+                Console.message(Console.SEPARATOR);
 
                 board.placeTile(letter, xMots, y);
                 rack.remove(letter);
                 Console.message(rack.display());
             }
         } else {
-            Console.message("Choisisez la ligne de votre mots : ");
-            x = scanner.nextInt();
-            Console.message("Choisisez la case du debut du mots :");
-            y = scanner.nextInt();
-            Console.message("Choisisez la case du debut du mots :");
-            max = scanner.nextInt() - y;
+            y = Console.inputIntegerBetween("Choisissez la colonne de votre mot: ", 1, Board.SIZE) - 1;
+            x = Console.inputIntegerBetween("Choisissez la ligne de début du mot: ", 1, Board.SIZE) - 1;
+            end = Console.inputIntegerBetween("Choisissez la ligne de fin du mot: ", 1, Board.SIZE) - 1;
+            max = end - y;
 
             for (int i = 0; i < max; i++) {
-
                 int yMots = y + i;
 
                 Console.message("X : " + x);
                 Console.message("Y : " + yMots);
-                Console.message(("-------------"));
-                Console.message("Rentrer l'index de la lettre à deposer");
-                int indexLetter = scanner.nextInt();
+                Console.message(Console.SEPARATOR);
+                int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
                 Tile letter = rack.getTile(indexLetter);
-                Console.message(("-------------"));
+                Console.message(Console.SEPARATOR);
 
                 board.placeTile(letter, x, yMots);
                 rack.remove(letter);
