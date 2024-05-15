@@ -2,12 +2,10 @@ package fr.gameiuter.scrabble.application;
 
 import fr.gameiuter.scrabble.controller.GameController;
 import fr.gameiuter.scrabble.gui.Console;
-import fr.gameiuter.scrabble.model.Board;
-import fr.gameiuter.scrabble.model.Player;
-import fr.gameiuter.scrabble.model.Rack;
-import fr.gameiuter.scrabble.model.Tile;
+import fr.gameiuter.scrabble.model.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -60,8 +58,11 @@ public class ScrabbleApplicationConsole {
     }
 
     private void placeWord() {
-        Board board = new Board();
+        Board board = controller.getBoard();
         Rack rack = controller.player().getRack();
+        HashMap<Coords, Tile> word = new HashMap<>();
+        Direction direction;
+        Tile letter = null;
 
         Console.message(board.display());
         Console.message(rack.display());
@@ -71,62 +72,107 @@ public class ScrabbleApplicationConsole {
         Console.message("2. Vertical");
         int choix = Console.inputIntegerBetween("", 1, 2);
 
-        int y, x, end, max = 0;
+        int x, y, end, max = 0;
         if (choix == 1) {
-            y = Console.inputIntegerBetween("Choisissez la ligne de votre mot: ", 1, Board.SIZE) - 1;
-            x = Console.inputIntegerBetween("Choisissez la colonne de début du mot: ", 1, Board.SIZE) - 1;
-            end = Console.inputIntegerBetween("Choisissez la colonne de fin du mot: ", 1, Board.SIZE) - 1;
-            max = end - x;
+            direction = Direction.HORIZONTAL;
 
-            for (int i = 0; i < max; i++) {
-                int xMots = x + i;
+            while (true) {
+                x = Console.inputIntegerBetween("Choisissez la ligne de votre mot: ", 1, Board.SIZE) - 1;
+                y = Console.inputIntegerBetween("Choisissez la colonne de début du mot: ", 1, Board.SIZE) - 1;
+                end = Console.inputIntegerBetween("Choisissez la colonne de fin du mot: ", 1, Board.SIZE) - 1;
+                max = end - y;
+                if (max == 0) {
+                    Console.message("La taille ne peut être de 0");
+                }
+                for (int i = 0; i <= max; i++) {
+                    int xMots = y + i;
 
-                Console.message("X : " + xMots);
-                Console.message("Y : " + y);
-                Console.message(Console.SEPARATOR);
-                int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
-                Tile letter = rack.getTile(indexLetter);
-                Console.message(Console.SEPARATOR);
-
-                if (letter.isJoker()) {
-                    String result;
-                    while (true) {
-                        result = Console.input("Le jeton choisie est un joker, quelle lettre devrait il être ? : ");
-                        result = result.toLowerCase();
-                        if (result.length() == 1 && Character.isAlphabetic(result.charAt(0))) {
-                            letter.setLetter(result.charAt(0));
-                            break;
-                        } else {
-                            Console.message("Ce que vous avez rentré n'est pas une lettre.");
+                    Console.message("X : " + xMots);
+                    Console.message("Y : " + x);
+                    Console.message(Console.SEPARATOR);
+                    int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
+                    letter = rack.getTile(indexLetter);
+                    Console.message(Console.SEPARATOR);
+                    if (letter.isJoker()) {
+                        String result;
+                        while (true) {
+                            result = Console.input("Le jeton choisie est un joker, quelle lettre devrait il être ? : ");
+                            result = result.toLowerCase();
+                            if (result.length() == 1 && Character.isAlphabetic(result.charAt(0))) {
+                                letter.setLetter(result.charAt(0));
+                                break;
+                            } else {
+                                Console.message("Ce que vous avez rentré n'est pas une lettre.");
+                            }
                         }
                     }
+                    word.put(new Coords(xMots, x), letter);
+                    rack.remove(letter);
+                    Console.message(rack.display());
                 }
-                board.placeTile(letter, xMots,y);
-                rack.remove(letter);
-                Console.message(rack.display());
+                if (board.checkPlacement(max, y, x, direction)) {
+                    break;
+                } else {
+                    for (Coords coord : word.keySet()) {
+                        rack.add(word.get(coord));
+                    }
+                    Console.message(board.display());
+                    word.clear();
+                }
             }
         } else {
-            y = Console.inputIntegerBetween("Choisissez la colonne de votre mot: ", 1, Board.SIZE) - 1;
-            x = Console.inputIntegerBetween("Choisissez la ligne de début du mot: ", 1, Board.SIZE) - 1;
-            end = Console.inputIntegerBetween("Choisissez la ligne de fin du mot: ", 1, Board.SIZE) - 1;
-            max = end - y;
+            direction = Direction.VERTICAL;
 
-            for (int i = 0; i < max; i++) {
-                int yMots = y + i;
+            while (true) {
+                x = Console.inputIntegerBetween("Choisissez la colonne de votre mot: ", 1, Board.SIZE) - 1;
+                y = Console.inputIntegerBetween("Choisissez la ligne de début du mot: ", 1, Board.SIZE) - 1;
+                end = Console.inputIntegerBetween("Choisissez la ligne de fin du mot: ", 1, Board.SIZE) - 1;
+                max = end - y;
+                if (max == 0) {
+                    Console.message("La taille ne peut être de 0");
+                }
+                for (int i = 0; i <= max; i++) {
+                    int yMots = y + i;
 
-                Console.message("X : " + x);
-                Console.message("Y : " + yMots);
-                Console.message(Console.SEPARATOR);
-                int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
-                Tile letter = rack.getTile(indexLetter);
-                Console.message(Console.SEPARATOR);
+                    Console.message("X : " + x);
+                    Console.message("Y : " + yMots);
+                    Console.message(Console.SEPARATOR);
+                    int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
+                    letter = rack.getTile(indexLetter);
+                    Console.message(Console.SEPARATOR);
 
-                board.placeTile(letter, x, yMots);
-                rack.remove(letter);
-                Console.message(rack.display());
+                    if (letter.isJoker()) {
+                        String result;
+                        while (true) {
+                            result = Console.input("Le jeton choisie est un joker, quelle lettre devrait il être ? : ");
+                            result = result.toLowerCase();
+                            if (result.length() == 1 && Character.isAlphabetic(result.charAt(0))) {
+                                letter.setLetter(result.charAt(0));
+                                break;
+                            } else {
+                                Console.message("Ce que vous avez rentré n'est pas une lettre.");
+                            }
+                        }
+                    }
+                    word.put(new Coords(x, yMots), letter);
+                    rack.remove(letter);
+                    Console.message(rack.display());
+                }
+                if (board.checkPlacement(max, x, y, direction)) {
+                    break;
+                } else {
+                    for (Coords coord : word.keySet()) {
+                        rack.add(word.get(coord));
+                    }
+                    Console.message(board.display());
+                    word.clear();
+                }
             }
         }
 
+        for (Coords coord : word.keySet()) {
+            board.placeTile(word.get(coord), coord.getX(), coord.getY());
+        }
         Console.message(board.display());
         Console.message(rack.display());
     }
