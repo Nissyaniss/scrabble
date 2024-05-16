@@ -177,6 +177,11 @@ public class ScrabbleApplicationConsole {
     }
 
     private void swapLetters() {
+        if (!this.controller.canSwap()) {
+            Console.message("Action impossible, il n'y a pas assez de lettres dans le sac");
+            return;
+        }
+
         Player player = this.controller.player();
         List<Integer> indexes = new ArrayList<>();
         List<Tile> toExchange = new ArrayList<>();

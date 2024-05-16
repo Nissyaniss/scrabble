@@ -68,6 +68,10 @@ public class Pouch {
         pool.add(tile);
     }
 
+    public int remainingTiles() {
+        return this.pool.size();
+    }
+
     @Override
     public String toString() {
         return this.pool.toString();

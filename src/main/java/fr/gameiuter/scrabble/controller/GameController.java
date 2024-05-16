@@ -28,6 +28,10 @@ public class GameController {
         }
     }
 
+    public boolean canSwap() {
+        return this.pouch.remainingTiles() >= 7;
+    }
+
     public void swap(Player player, Collection<Tile> tiles) {
         for (Tile tile : tiles) {
             player.getRack().remove(tile);
