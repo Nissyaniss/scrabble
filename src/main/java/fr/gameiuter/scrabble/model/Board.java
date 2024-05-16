@@ -1,5 +1,7 @@
 package fr.gameiuter.scrabble.model;
 
+import java.util.HashMap;
+
 public class Board {
     public static final Integer SIZE = 15;
     public static final Integer MIDDLE = 7;
@@ -110,7 +112,7 @@ public class Board {
                 }
             }
             if ((x + wordLength + 1 <= Board.SIZE && placedTiles[y][x + wordLength + 1] != null) // Sides
-                    || (x > 0 && placedTiles[y][x - 1] != null)){
+                    || (x > 0 && placedTiles[y][x - 1] != null)) {
                 isAllowed = true;
             }
         } else {
@@ -128,5 +130,78 @@ public class Board {
         }
 
         return isAllowed;
+    }
+    
+    public Integer computeScore(HashMap<Coords, Tile> placedTiles, int x, int y, Direction direction) {
+        int score = 0;
+
+        Direction perpendicular = direction == Direction.HORIZONTAL ? Direction.VERTICAL : Direction.HORIZONTAL;
+
+        score += this.computeWordScore(placedTiles, x, y, direction);
+        for (Coords coord : placedTiles.keySet()) {
+            score += this.computeWordScore(placedTiles, coord.getX(), coord.getY(), perpendicular);
+        }
+
+        return score;
+    }
+
+    private Integer computeWordScore(HashMap<Coords, Tile> placedTiles, int x, int y, Direction direction) {
+        int tilesInWord = 0;
+        int wordMultiplier = 1;
+        int score = 0;
+
+        if (direction == Direction.HORIZONTAL) {
+            int startX = x;
+            while (startX > 0 && getAnyTile(placedTiles, startX - 1, y) != null) startX--;
+
+            x = startX;
+            while (x < SIZE && getAnyTile(placedTiles, x, y) != null) {
+                Tile tile;
+                int tileMultiplier = 1;
+                if (this.placedTiles[y][x] != null) {
+                    tile = this.placedTiles[y][x];
+                } else {
+                    tile = placedTiles.get(new Coords(x, y));
+                    tileMultiplier = this.squares[y][x].letterMultiplier();
+                    wordMultiplier *= this.squares[y][x].wordMultiplier();
+                }
+                score += tile.score() * tileMultiplier;
+                System.out.println(tile.score() * tileMultiplier);
+                x++;
+                tilesInWord++;
+            }
+        } else {
+            int startY = y;
+            while (startY > 0 && getAnyTile(placedTiles, x, startY - 1) != null) startY--;
+
+            y = startY;
+            while (y < SIZE && getAnyTile(placedTiles, x, y) != null) {
+                Tile tile;
+                int tileMultiplier = 1;
+                if (this.placedTiles[y][x] != null) {
+                    tile = this.placedTiles[y][x];
+                } else {
+                    tile = placedTiles.get(new Coords(x, y));
+                    tileMultiplier = this.squares[y][x].letterMultiplier();
+                    wordMultiplier *= this.squares[y][x].wordMultiplier();
+                }
+                score += tile.score() * tileMultiplier;
+                y++;
+                tilesInWord++;
+            }
+        }
+
+        if (tilesInWord > 1)
+            return score * wordMultiplier;
+        else
+            return 0;
+    }
+
+    private Tile getAnyTile(HashMap<Coords, Tile> placedTiles, int x, int y) {
+        if (this.placedTiles[y][x] != null) {
+            return this.placedTiles[y][x];
+        } else {
+            return placedTiles.get(new Coords(x, y));
+        }
     }
 }
