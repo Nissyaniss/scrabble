@@ -86,9 +86,6 @@ public class ScrabbleApplicationConsole {
                 x = Console.inputIntegerBetween("Choisissez la colonne de début du mot: ", 1, Board.SIZE) - 1;
                 end = Console.inputIntegerBetween("Choisissez la colonne de fin du mot: ", x, Integer.min(x + rack.numberOfTiles(), Board.SIZE)) - 1;
                 length = end - x;
-                if (length == 0) {
-                    length = 1;
-                }
                 for (int i = x; i <= end; i++) {
                     Console.message("X : " + i);
                     Console.message("Y : " + y);
@@ -131,9 +128,6 @@ public class ScrabbleApplicationConsole {
                 y = Console.inputIntegerBetween("Choisissez la ligne de début du mot: ", 1, Board.SIZE) - 1;
                 end = Console.inputIntegerBetween("Choisissez la ligne de fin du mot: ", x, Integer.min(x + rack.numberOfTiles(), Board.SIZE)) - 1;
                 length = end - y;
-                if (length == 0) {
-                    Console.message("La taille ne peut être de 0");
-                }
                 for (int i = y; i <= end; i++) {
                     Console.message("X : " + x);
                     Console.message("Y : " + i);
