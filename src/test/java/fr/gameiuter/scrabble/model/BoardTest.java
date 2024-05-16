@@ -33,7 +33,7 @@ public class BoardTest {
             word.put(new Coords(7, 7), Tile.T);
 
             // 3 + 1 + 1 = 5
-            assertEquals(5, board.computeScore(word, 5, 7, Direction.HORIZONTAL));
+            assertEquals(5, board.computeScore(word, Direction.HORIZONTAL));
         }
 
         @Test
@@ -42,7 +42,7 @@ public class BoardTest {
             word.put(new Coords(6, 10), Tile.Z);
 
             // (1 + 10) + (3 + 1 + 1 + 1 + 10) = 27
-            assertEquals(27, board.computeScore(word, 5, 10, Direction.HORIZONTAL));
+            assertEquals(27, board.computeScore(word, Direction.HORIZONTAL));
         }
 
         @Test
@@ -51,7 +51,7 @@ public class BoardTest {
             word.put(new Coords(2, 6), Tile.Z);
 
             // 1 + (10 * 2) = 21
-            assertEquals(21, board.computeScore(word, 2, 5, Direction.VERTICAL));
+            assertEquals(21, board.computeScore(word, Direction.VERTICAL));
         }
 
         @Test
@@ -60,7 +60,7 @@ public class BoardTest {
             word.put(new Coords(1, 2), Tile.Z);
 
             // (1 + 10) * 2 = 22
-            assertEquals(22, board.computeScore(word, 1, 1, Direction.VERTICAL));
+            assertEquals(22, board.computeScore(word, Direction.VERTICAL));
         }
 
         @Test
@@ -69,7 +69,7 @@ public class BoardTest {
             word.put(new Coords(0, 2), Tile.Z);
 
             // 1 + 10 = 11
-            assertEquals(11, board.computeScore(word, 0, 1, Direction.VERTICAL));
+            assertEquals(11, board.computeScore(word, Direction.VERTICAL));
         }
 
         @Test
@@ -78,7 +78,7 @@ public class BoardTest {
             word.put(new Coords(Board.SIZE - 1, 2), Tile.Z);
 
             // 1 + 10 = 11
-            assertEquals(11, board.computeScore(word, Board.SIZE - 1, 1, Direction.VERTICAL));
+            assertEquals(11, board.computeScore(word, Direction.VERTICAL));
         }
 
         @Test
@@ -100,7 +100,7 @@ public class BoardTest {
             word.put(new Coords(14, 3), Tile.O); // 1 * 2 = 2
 
             // 50 * 4 = 200
-            assertEquals(200, board.computeScore(word, 0, 3, Direction.HORIZONTAL));
+            assertEquals(200, board.computeScore(word, Direction.HORIZONTAL));
         }
     }
 

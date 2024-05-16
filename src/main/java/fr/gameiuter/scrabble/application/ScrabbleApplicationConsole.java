@@ -165,7 +165,7 @@ public class ScrabbleApplicationConsole {
             }
         }
 
-        int score = board.computeScore(word, x, y, direction);
+        int score = board.computeScore(word, direction);
         this.controller.player().incrementScore(score);
 
         for (Map.Entry<Coords, Tile> entry : word.entrySet()) {

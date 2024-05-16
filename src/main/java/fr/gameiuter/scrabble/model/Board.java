@@ -132,12 +132,16 @@ public class Board {
         return isAllowed;
     }
 
-    public Integer computeScore(Map<Coords, Tile> placedTiles, int x, int y, Direction direction) {
+    public Integer computeScore(Map<Coords, Tile> placedTiles, Direction direction) {
         int score = 0;
 
         Direction perpendicular = direction == Direction.HORIZONTAL ? Direction.VERTICAL : Direction.HORIZONTAL;
 
-        score += this.computeWordScore(placedTiles, x, y, direction);
+        // the placed tiles all are on the same the line, and are all connected (possibly by tiles that are already on the board)
+        // its means we can use any tile of the word and computeWordScore will find the first one
+        Coords tileCoords = placedTiles.keySet().iterator().next();
+        score += this.computeWordScore(placedTiles, tileCoords.getX(), tileCoords.getY(), direction);
+
         for (Coords coords : placedTiles.keySet())
             score += this.computeWordScore(placedTiles, coords.getX(), coords.getY(), perpendicular);
 
