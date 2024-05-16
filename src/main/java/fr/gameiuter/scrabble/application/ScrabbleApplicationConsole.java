@@ -35,6 +35,7 @@ public class ScrabbleApplicationConsole {
         boolean stop = false;
 
         while (!stop) {
+            Console.message("Votre score est de " + this.controller.player().score() + " points");
             Console.message("Que souhaitez-vous faire ?");
             Console.message("  1. Placer un mot");
             Console.message("  2. Échanger des lettres");
@@ -117,7 +118,7 @@ public class ScrabbleApplicationConsole {
                 if (board.checkPlacement(max, x, y, direction)) {
                     break;
                 } else {
-                    for (Map.Entry<Coords,Tile> entry : word.entrySet()) {
+                    for (Map.Entry<Coords, Tile> entry : word.entrySet()) {
                         rack.add(entry.getValue());
                     }
                     Console.message(board.display());
@@ -165,7 +166,7 @@ public class ScrabbleApplicationConsole {
                 if (Boolean.TRUE.equals(board.checkPlacement(max, x, y, direction))) {
                     break;
                 } else {
-                    for (Map.Entry<Coords,Tile> entry : word.entrySet()) {
+                    for (Map.Entry<Coords, Tile> entry : word.entrySet()) {
                         rack.add(entry.getValue());
                     }
                     Console.message(board.display());
@@ -174,11 +175,15 @@ public class ScrabbleApplicationConsole {
             }
         }
 
+        int score = board.computeScore(word, x, y, direction);
+        this.controller.player().incrementScore(score);
+
         for (Map.Entry<Coords, Tile> entry : word.entrySet()) {
             board.placeTile(entry.getValue(), entry.getKey().getX(), entry.getKey().getY());
         }
         Console.message(board.display());
         Console.message(rack.display());
+        Console.message("Cette action vous rajoute " + score + " points");
     }
 
     private void swapLetters() {
@@ -192,7 +197,7 @@ public class ScrabbleApplicationConsole {
                 Console.message("Les lettres suivantes vont être échangées: " + String.join(", ", toExchange.stream().map(tile -> tile.letter().toString()).toList()));
             }
             Console.message(this.controller.player().rackDisplay());
-            int index = Console.inputIntegerBetween("Entrez l'indice de la lettre que vous souhaitez échanger (0 pour s'arreter): ", 0, 8);
+            int index = Console.inputIntegerBetween("Entrez l'indice de la lettre que vous souhaitez échanger (0 pour s'arrêter): ", 0, 8);
             if (index == 0) {
                 break;
             } else if (indexes.contains(index)) { // checking the index because you can have the same letter multiple times
