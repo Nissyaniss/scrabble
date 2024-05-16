@@ -77,22 +77,20 @@ public class ScrabbleApplicationConsole {
         int x;
         int y;
         int end;
-        int max;
+        int length;
         if (choix == 1) {
             direction = Direction.HORIZONTAL;
 
             while (true) {
                 y = Console.inputIntegerBetween("Choisissez la ligne de votre mot: ", 1, Board.SIZE) - 1;
                 x = Console.inputIntegerBetween("Choisissez la colonne de début du mot: ", 1, Board.SIZE) - 1;
-                end = Console.inputIntegerBetween("Choisissez la colonne de fin du mot: ", 1, Board.SIZE) - 1;
-                max = end - y;
-                if (max == 0) {
-                    Console.message("La taille ne peut être de 0");
+                end = Console.inputIntegerBetween("Choisissez la colonne de fin du mot: ", x, Integer.min(x + rack.numberOfTiles(), Board.SIZE)) - 1;
+                length = end - x;
+                if (length == 0) {
+                    length = 1;
                 }
-                for (int i = 0; i <= max; i++) {
-                    int xMots = x + i;
-
-                    Console.message("X : " + xMots);
+                for (int i = x; i <= end; i++) {
+                    Console.message("X : " + i);
                     Console.message("Y : " + y);
                     Console.message(Console.SEPARATOR);
                     int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
@@ -111,11 +109,11 @@ public class ScrabbleApplicationConsole {
                             }
                         }
                     }
-                    word.put(new Coords(xMots, y), letter);
+                    word.put(new Coords(i, y), letter);
                     rack.remove(letter);
                     Console.message(rack.display());
                 }
-                if (board.checkPlacement(max, x, y, direction)) {
+                if (board.checkPlacement(length, x, y, direction)) {
                     break;
                 } else {
                     for (Map.Entry<Coords, Tile> entry : word.entrySet()) {
@@ -131,16 +129,14 @@ public class ScrabbleApplicationConsole {
             while (true) {
                 x = Console.inputIntegerBetween("Choisissez la colonne de votre mot: ", 1, Board.SIZE) - 1;
                 y = Console.inputIntegerBetween("Choisissez la ligne de début du mot: ", 1, Board.SIZE) - 1;
-                end = Console.inputIntegerBetween("Choisissez la ligne de fin du mot: ", 1, Board.SIZE) - 1;
-                max = end - y;
-                if (max == 0) {
+                end = Console.inputIntegerBetween("Choisissez la ligne de fin du mot: ", x, Integer.min(x + rack.numberOfTiles(), Board.SIZE)) - 1;
+                length = end - y;
+                if (length == 0) {
                     Console.message("La taille ne peut être de 0");
                 }
-                for (int i = 0; i <= max; i++) {
-                    int yMots = y + i;
-
+                for (int i = y; i <= end; i++) {
                     Console.message("X : " + x);
-                    Console.message("Y : " + yMots);
+                    Console.message("Y : " + i);
                     Console.message(Console.SEPARATOR);
                     int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
                     letter = rack.getTile(indexLetter);
@@ -159,11 +155,11 @@ public class ScrabbleApplicationConsole {
                             }
                         }
                     }
-                    word.put(new Coords(x, yMots), letter);
+                    word.put(new Coords(x, i), letter);
                     rack.remove(letter);
                     Console.message(rack.display());
                 }
-                if (Boolean.TRUE.equals(board.checkPlacement(max, x, y, direction))) {
+                if (Boolean.TRUE.equals(board.checkPlacement(length, x, y, direction))) {
                     break;
                 } else {
                     for (Map.Entry<Coords, Tile> entry : word.entrySet()) {
