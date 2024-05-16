@@ -68,6 +68,10 @@ public class Pouch {
         pool.add(tile);
     }
 
+    public boolean isEmpty() {
+        return this.pool.isEmpty();
+    }
+
     public int remainingTiles() {
         return this.pool.size();
     }

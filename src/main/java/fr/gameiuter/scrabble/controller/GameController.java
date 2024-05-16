@@ -23,7 +23,7 @@ public class GameController {
     }
 
     public void draw(Player player) {
-        while (player.getRack().numberOfTiles() < 7) {
+        while (player.getRack().numberOfTiles() < 7 && !pouch.isEmpty()) {
             player.getRack().add(pouch.draw());
         }
     }
