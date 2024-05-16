@@ -29,7 +29,6 @@ public class Tile {
     public static final Tile X = new Tile('x', 10);
     public static final Tile Y = new Tile('y', 10);
     public static final Tile Z = new Tile('z', 10);
-    public static final Tile BLANK = new Tile('*', 0, true);
 
     private final int score;
     private final boolean isJoker;
@@ -43,6 +42,10 @@ public class Tile {
 
     private Tile(char letter, Integer score) {
         this(letter, score, false);
+    }
+
+    public static Tile blank() {
+        return new Tile('*', 0, true);
     }
 
     public Character letter() {

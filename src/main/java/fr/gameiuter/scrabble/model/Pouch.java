@@ -42,7 +42,8 @@ public class Pouch {
             this.pool.add(Tile.F);
             this.pool.add(Tile.H);
             this.pool.add(Tile.V);
-            this.pool.add(Tile.BLANK);
+            // we need a new instance for each joker, because they're gonna be mutated
+            this.pool.add(Tile.blank());
         }
         this.pool.add(Tile.J);
         this.pool.add(Tile.Q);
