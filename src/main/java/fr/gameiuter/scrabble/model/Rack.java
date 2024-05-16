@@ -14,10 +14,6 @@ public class Rack {
         return this.tiles.size();
     }
 
-    public void clear() {
-        tiles.clear();
-    }
-
     public void add(Tile tile) {
         if (this.tiles.size() != 7) {
             tiles.add(tile);

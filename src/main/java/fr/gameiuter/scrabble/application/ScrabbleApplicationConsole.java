@@ -7,10 +7,11 @@ import fr.gameiuter.scrabble.model.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ScrabbleApplicationConsole {
-    private GameController controller;
+    private final GameController controller;
 
     private ScrabbleApplicationConsole(Player player) {
         this.controller = new GameController(player);
@@ -62,7 +63,7 @@ public class ScrabbleApplicationConsole {
         Rack rack = controller.player().getRack();
         HashMap<Coords, Tile> word = new HashMap<>();
         Direction direction;
-        Tile letter = null;
+        Tile letter;
 
         Console.message(board.display());
         Console.message(rack.display());
@@ -72,23 +73,26 @@ public class ScrabbleApplicationConsole {
         Console.message("2. Vertical");
         int choix = Console.inputIntegerBetween("", 1, 2);
 
-        int x, y, end, max = 0;
+        int x;
+        int y;
+        int end;
+        int max;
         if (choix == 1) {
             direction = Direction.HORIZONTAL;
 
             while (true) {
-                x = Console.inputIntegerBetween("Choisissez la ligne de votre mot: ", 1, Board.SIZE) - 1;
-                y = Console.inputIntegerBetween("Choisissez la colonne de début du mot: ", 1, Board.SIZE) - 1;
+                y = Console.inputIntegerBetween("Choisissez la ligne de votre mot: ", 1, Board.SIZE) - 1;
+                x = Console.inputIntegerBetween("Choisissez la colonne de début du mot: ", 1, Board.SIZE) - 1;
                 end = Console.inputIntegerBetween("Choisissez la colonne de fin du mot: ", 1, Board.SIZE) - 1;
                 max = end - y;
                 if (max == 0) {
                     Console.message("La taille ne peut être de 0");
                 }
                 for (int i = 0; i <= max; i++) {
-                    int xMots = y + i;
+                    int xMots = x + i;
 
                     Console.message("X : " + xMots);
-                    Console.message("Y : " + x);
+                    Console.message("Y : " + y);
                     Console.message(Console.SEPARATOR);
                     int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
                     letter = rack.getTile(indexLetter);
@@ -106,15 +110,15 @@ public class ScrabbleApplicationConsole {
                             }
                         }
                     }
-                    word.put(new Coords(xMots, x), letter);
+                    word.put(new Coords(xMots, y), letter);
                     rack.remove(letter);
                     Console.message(rack.display());
                 }
-                if (board.checkPlacement(max, y, x, direction)) {
+                if (board.checkPlacement(max, x, y, direction)) {
                     break;
                 } else {
-                    for (Coords coord : word.keySet()) {
-                        rack.add(word.get(coord));
+                    for (Map.Entry<Coords,Tile> entry : word.entrySet()) {
+                        rack.add(entry.getValue());
                     }
                     Console.message(board.display());
                     word.clear();
@@ -158,11 +162,11 @@ public class ScrabbleApplicationConsole {
                     rack.remove(letter);
                     Console.message(rack.display());
                 }
-                if (board.checkPlacement(max, x, y, direction)) {
+                if (Boolean.TRUE.equals(board.checkPlacement(max, x, y, direction))) {
                     break;
                 } else {
-                    for (Coords coord : word.keySet()) {
-                        rack.add(word.get(coord));
+                    for (Map.Entry<Coords,Tile> entry : word.entrySet()) {
+                        rack.add(entry.getValue());
                     }
                     Console.message(board.display());
                     word.clear();
@@ -170,8 +174,8 @@ public class ScrabbleApplicationConsole {
             }
         }
 
-        for (Coords coord : word.keySet()) {
-            board.placeTile(word.get(coord), coord.getX(), coord.getY());
+        for (Map.Entry<Coords, Tile> entry : word.entrySet()) {
+            board.placeTile(entry.getValue(), entry.getKey().getX(), entry.getKey().getY());
         }
         Console.message(board.display());
         Console.message(rack.display());

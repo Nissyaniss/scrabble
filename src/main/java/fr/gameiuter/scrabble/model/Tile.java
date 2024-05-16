@@ -67,6 +67,11 @@ public class Tile {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(score, isJoker, letter);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
