@@ -20,6 +20,11 @@ public class BoardTest {
             board.placeTile(Tile.A, 6, 7);
             board.placeTile(Tile.T, 6, 8);
             board.placeTile(Tile.S, 6, 9);
+
+            board.placeTile(Tile.T, 11, 11);
+            board.placeTile(Tile.E, 12, 11);
+            board.placeTile(Tile.S, 13, 11);
+            board.placeTile(Tile.T, 14, 11);
         }
 
         @BeforeEach
@@ -61,6 +66,16 @@ public class BoardTest {
 
             // (1 + 10) * 2 = 22
             assertEquals(22, board.computeScore(word, Direction.VERTICAL));
+        }
+
+        @Test
+        void ignoreAlreadyUsedMultiplier() {
+            // this would extend 'test'
+            word.put(new Coords(10, 11), Tile.T);
+            word.put(new Coords(10, 12), Tile.Z);
+
+            // (1 + 10) + (1 + 1 + 1 + 1 + 1) = 16
+            assertEquals(16, board.computeScore(word, Direction.VERTICAL));
         }
 
         @Test
