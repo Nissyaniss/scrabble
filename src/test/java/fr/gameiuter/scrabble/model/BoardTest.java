@@ -129,32 +129,91 @@ public class BoardTest {
             board = new Board();
         }
 
+        // Basic tests
+
         @Test
-        void testFirstMoveIsPossible() {
+        void testPlaceSamePlace() {
+            board.placeTile(Tile.B, 7, 7);
+
+            assertFalse(board.checkPlacement(0, 7, 7, Direction.HORIZONTAL));
+        }
+
+        // Basic tests HORIZONTAL
+
+        @Test
+        void testFirstMoveIsPossibleHorizontal() {
             assertTrue(board.checkPlacement(5, 6, 7, Direction.HORIZONTAL));
         }
 
         @Test
-        void testFirstMoveIsNotPossible() {
+        void testFirstMoveIsNotPossibleHorizontal() {
             assertFalse(board.checkPlacement(0, 6, 7, Direction.HORIZONTAL));
         }
 
         @Test
-        void testNormalMoveIsPossible() {
+        void testNormalMoveIsPossibleHorizontal() {
             board.placeTile(Tile.A, 7, 7);
 
             assertTrue(board.checkPlacement(4, 2, 7, Direction.HORIZONTAL));
         }
 
         @Test
-        void testNormalMoveIsNotPossible() {
+        void testNormalMoveIsNotPossibleHorizontal() {
             board.placeTile(Tile.B, 7, 7);
 
             assertFalse(board.checkPlacement(5, 2, 1, Direction.HORIZONTAL));
         }
 
-        //VERTICAL
-        //more words
-        //check vertical+horizontal
+        // Basic tests VERTICAL
+
+        @Test
+        void testFirstMoveIsPossibleVertical() {
+            assertTrue(board.checkPlacement(5, 7, 6, Direction.VERTICAL));
+        }
+
+        @Test
+        void testFirstMoveIsNotPossibleVertical() {
+            assertFalse(board.checkPlacement(0, 6, 7, Direction.VERTICAL));
+        }
+
+        @Test
+        void testNormalMoveIsPossibleVertical() {
+            board.placeTile(Tile.A, 7, 7);
+
+            assertTrue(board.checkPlacement(4, 7, 2, Direction.VERTICAL));
+        }
+
+        @Test
+        void testNormalMoveIsNotPossibleVertical() {
+            board.placeTile(Tile.B, 7, 7);
+
+            assertFalse(board.checkPlacement(5, 2, 1, Direction.VERTICAL));
+        }
+
+        // Normal moves with more words
+
+        @Test
+        void testCrossWords() {
+            for (int i = 0; i < 15; i++) {
+                board.placeTile(Tile.A, i, 7);
+            }
+
+            assertTrue(board.checkPlacement(5, 7, 6, Direction.VERTICAL));
+        }
+
+        @Test
+        void testMultipleCrossWords() {
+            for (int i = 0; i < 15; i++) {
+                board.placeTile(Tile.A, i, 7);
+            }
+
+            assertTrue(board.checkPlacement(6, 7, 2, Direction.VERTICAL));
+
+            for (int i = 2; i < 9; i++) {
+                board.placeTile(Tile.A, 7, i);
+            }
+
+            assertTrue(board.checkPlacement(8, 4, 4, Direction.HORIZONTAL));
+        }
     }
 }

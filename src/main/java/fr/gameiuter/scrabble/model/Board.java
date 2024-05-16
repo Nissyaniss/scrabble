@@ -106,7 +106,7 @@ public class Board {
         if (direction.equals(Direction.HORIZONTAL)) {
             for (int i = x; i <= x + wordLength; i++) {
                 if ((x + wordLength >= Board.SIZE && y + 1 <= Board.SIZE && placedTiles[y + 1][i] != null) // On top & On Bottom
-                        || (x + wordLength <= 0 && y - 1 >= 0 && placedTiles[y - 1][i] != null)) {
+                        || (x + wordLength <= Board.SIZE && y - 1 >= 0 && placedTiles[y - 1][i] != null)) {
                     isAllowed = true;
                     break;
                 }
@@ -117,13 +117,13 @@ public class Board {
             }
         } else {
             for (int i = y; i <= y + wordLength; i++) {
-                if ((y + wordLength <= Board.SIZE && x + 1 <= Board.SIZE && placedTiles[i][x + 1] != null)
+                if ((y + wordLength <= Board.SIZE && x + 1 <= Board.SIZE && placedTiles[i][x + 1] != null) // Sides
                         || (y + wordLength <= Board.SIZE && x - 1 >= 0 && placedTiles[i][x - 1] != null)) {
                     isAllowed = true;
                     break;
                 }
             }
-            if ((y + wordLength + 1 <= Board.SIZE && placedTiles[y + wordLength + 1][x] != null)
+            if ((y + wordLength + 1 <= Board.SIZE && placedTiles[y + wordLength + 1][x] != null) // On top & On Bottom
                     || (y - 1 >= 0 && placedTiles[y - 1][x] != null)) {
                 isAllowed = true;
             }
