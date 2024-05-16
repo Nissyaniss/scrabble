@@ -117,6 +117,18 @@ public class BoardTest {
             // 50 * 4 = 200
             assertEquals(200, board.computeScore(word, Direction.HORIZONTAL));
         }
+
+        @Test
+        void checkJokers() {
+            word.put(new Coords(0, 3), Tile.A); // 1 * 2 = 2
+            word.put(new Coords(1, 3), Tile.B); // 3
+            word.put(new Coords(2, 3), Tile.C); // 3
+            word.put(new Coords(3, 3), Tile.D); // 2
+            word.put(new Coords(4, 3), new Tile('A', 0, true)); // 0
+
+            // 10 * 2 = 20
+            assertEquals(20, board.computeScore(word, Direction.HORIZONTAL));
+        }
     }
 
     @DisplayName("Tests for the checks of placement")

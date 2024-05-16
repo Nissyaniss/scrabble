@@ -34,7 +34,7 @@ public class Tile {
     private final boolean isJoker;
     private char letter;
 
-    private Tile(char letter, Integer score, boolean isJoker) {
+    Tile(char letter, Integer score, boolean isJoker) {
         this.letter = letter;
         this.score = score;
         this.isJoker = isJoker;
