@@ -129,7 +129,7 @@ public class BoardTest {
             board = new Board();
         }
 
-        // Basic tests
+        // Basic test
 
         @Test
         void testPlaceSamePlace() {
