@@ -1,6 +1,7 @@
 package fr.gameiuter.scrabble.model;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class Board {
     public static final Integer SIZE = 15;
@@ -155,15 +156,15 @@ public class Board {
 
         if (direction == Direction.HORIZONTAL) {
             int startX = x;
-            while (getAnyTile(placedTiles, startX - 1, y) != null) startX--;
+            while (getAnyTile(placedTiles, startX - 1, y).isEmpty()) startX--;
             x = startX;
         } else {
             int startY = y;
-            while (getAnyTile(placedTiles, x, startY - 1) != null) startY--;
+            while (getAnyTile(placedTiles, x, startY - 1).isEmpty()) startY--;
             y = startY;
         }
 
-        while (getAnyTile(placedTiles, x, y) != null) {
+        while (getAnyTile(placedTiles, x, y).isEmpty()) {
             Tile tile;
             int tileMultiplier = 1;
             if (this.placedTiles[y][x] != null) {
@@ -187,13 +188,13 @@ public class Board {
             return 0;
     }
 
-    private Tile getAnyTile(Map<Coords, Tile> additionalTiles, int x, int y) {
+    private Optional<Tile> getAnyTile(Map<Coords, Tile> additionalTiles, int x, int y) {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE)
-            return null;
+            return Optional.empty();
 
         if (this.placedTiles[y][x] != null)
-            return this.placedTiles[y][x];
+            return Optional.of(this.placedTiles[y][x]);
         else
-            return additionalTiles.get(new Coords(x, y));
+            return Optional.ofNullable(additionalTiles.get(new Coords(x, y)));
     }
 }

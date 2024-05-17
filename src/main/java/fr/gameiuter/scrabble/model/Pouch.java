@@ -2,6 +2,7 @@ package fr.gameiuter.scrabble.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class Pouch {
@@ -54,15 +55,15 @@ public class Pouch {
         this.pool.add(Tile.Z);
     }
 
-    public Tile draw() {
+    public Optional<Tile> draw() {
         int size = pool.size();
 
         if (size == 0)
-            return null;
+            return Optional.empty();
 
         Tile result = pool.get(this.random.nextInt(size));
         pool.remove(result);
-        return result;
+        return Optional.of(result);
     }
 
     public void putBack(Tile tile) {

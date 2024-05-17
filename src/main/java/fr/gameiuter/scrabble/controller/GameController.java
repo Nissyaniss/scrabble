@@ -6,6 +6,7 @@ import fr.gameiuter.scrabble.model.Pouch;
 import fr.gameiuter.scrabble.model.Tile;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public class GameController {
     private final Board board;
@@ -23,8 +24,11 @@ public class GameController {
     }
 
     public void draw(Player player) {
-        while (player.getRack().numberOfTiles() < 7 && !pouch.isEmpty()) {
-            player.getRack().add(pouch.draw());
+        while (player.getRack().numberOfTiles() < 7) {
+            Optional<Tile> tile = pouch.draw();
+            if (tile.isEmpty())
+                break;
+            player.getRack().add(tile.get());
         }
     }
 
