@@ -117,7 +117,7 @@ public class ScrabbleApplicationConsole {
                 if (letter.isJoker()) {
                     String result;
                     while (true) {
-                        result = Console.input("Le jeton choisie est un joker, quelle lettre devrait il être ? : ");
+                        result = Console.input("Le jeton choisi est un joker, quelle lettre devrait-il être ? ");
                         result = result.toLowerCase();
                         if (result.length() == 1 && Character.isAlphabetic(result.charAt(0))) {
                             letter.setLetter(result.charAt(0));
