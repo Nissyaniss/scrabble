@@ -45,6 +45,10 @@ public class Board {
         this.squares[SIZE - 1 - x][SIZE - 1 - y] = square;
     }
 
+    public boolean hasTileAt(int x, int y) {
+        return this.placedTiles[y][x] != null;
+    }
+
     public void placeTile(Tile tile, int x, int y) {
         placedTiles[y][x] = tile;
     }

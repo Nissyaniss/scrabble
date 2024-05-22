@@ -103,11 +103,11 @@ public class ScrabbleApplicationConsole {
             end = Console.inputIntegerBetween("Choisissez la " + direct2 + " de fin du mot: ", 1, Board.SIZE) - 1;
             length = end - valeur2;
 
-            if (length == 0) {
-                length = 1;
-            }
 
             for (int i = valeur2; i <= end; i++) {
+                if (choix == 1 ? board.hasTileAt(i, valeur1) : board.hasTileAt(valeur1, i))
+                    continue;
+
                 Console.message(Console.SEPARATOR);
                 Console.message(str2 + i);
                 Console.message(str1 + valeur1);
