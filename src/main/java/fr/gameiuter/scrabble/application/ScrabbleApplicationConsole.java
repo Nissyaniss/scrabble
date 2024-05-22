@@ -69,33 +69,42 @@ public class ScrabbleApplicationConsole {
         Console.message(board.display());
         Console.message(rack.display());
 
-        Console.message("Quelle est la direction de votre mot:");
-        Console.message("1. Horizontal");
-        Console.message("2. Vertical");
-        int choix = Console.inputIntegerBetween("", 1, 2);
-
-        int end;
-        int length;
-        int valeur1;
-        int valeur2;
-        String direct1;
-        String direct2;
-
-        if (choix == 1) {
-            direction = Direction.HORIZONTAL;
-            direct1 = "ligne";
-            direct2 = "colonne";
-        } else {
-            direction = Direction.VERTICAL;
-            direct1 = "colonne";
-            direct2 = "ligne";
-        }
-
         while (true) {
-            valeur1 = Console.inputIntegerBetween("Choisissez la " + direct1 + " de votre mot: ", 1, Board.SIZE) - 1;
-            valeur2 = Console.inputIntegerBetween("Choisissez la " + direct2 + " de début du mot: ", 1, Board.SIZE) - 1;
-            end = Console.inputIntegerBetween("Choisissez la " + direct2 + " de fin du mot: ", valeur2 + 1, Integer.min(valeur2 + 1 + rack.numberOfTiles(), Board.SIZE)) - 1;
-            length = end - valeur2;
+            int choix;
+            int end;
+            int length;
+            int valeur1;
+            int valeur2;
+            String direct1;
+            String direct2;
+
+            while (true) {
+                Console.message("Quelle est la direction de votre mot:");
+                Console.message("1. Horizontal");
+                Console.message("2. Vertical");
+                choix = Console.inputIntegerBetween("", 1, 2);
+
+                if (choix == 1) {
+                    direction = Direction.HORIZONTAL;
+                    direct1 = "ligne";
+                    direct2 = "colonne";
+                } else {
+                    direction = Direction.VERTICAL;
+                    direct1 = "colonne";
+                    direct2 = "ligne";
+                }
+
+                valeur1 = Console.inputIntegerBetween("Choisissez la " + direct1 + " de votre mot: ", 1, Board.SIZE) - 1;
+                valeur2 = Console.inputIntegerBetween("Choisissez la " + direct2 + " de début du mot: ", 1, Board.SIZE) - 1;
+                end = Console.inputIntegerBetween("Choisissez la " + direct2 + " de fin du mot: ", valeur2 + 1, Integer.min(valeur2 + 1 + rack.numberOfTiles(), Board.SIZE)) - 1;
+                length = end - valeur2;
+
+                if (choix == 1 ? board.checkPlacement(length, valeur2, valeur1, direction) : board.checkPlacement(length, valeur1, valeur2, direction)) {
+                    break;
+                } else {
+                    Console.message("Vous ne pouvez pas placer de mot à cet endroit");
+                }
+            }
 
             for (int i = valeur2; i <= end; i++) {
                 if (choix == 1 ? board.hasTileAt(i, valeur1) : board.hasTileAt(valeur1, i))
@@ -123,16 +132,13 @@ public class ScrabbleApplicationConsole {
                 rack.remove(letter);
                 Console.message(rack.display());
             }
-            if (choix == 1 ? board.checkPlacement(length, valeur2, valeur1, direction) : board.checkPlacement(length, valeur1, valeur2, direction)) {
+
+            if (word.isEmpty())
+                Console.message("Il y a déjà un mot à cet endroit");
+            else
                 break;
-            } else {
-                for (Map.Entry<Coords, Tile> entry : word.entrySet()) {
-                    rack.add(entry.getValue());
-                }
-                Console.message(board.display());
-                word.clear();
-            }
         }
+
 
         int score = board.computeScore(word, direction);
         this.controller.player().incrementScore(score);
