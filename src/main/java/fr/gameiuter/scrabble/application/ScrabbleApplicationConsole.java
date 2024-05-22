@@ -104,8 +104,9 @@ public class ScrabbleApplicationConsole {
             length = end - valeur2;
 
             if (length == 0) {
-                Console.message("La taille ne peut être de 0");
+                length = 1;
             }
+
             for (int i = valeur2; i <= end; i++) {
                 Console.message(Console.SEPARATOR);
                 Console.message(str2 + i);
@@ -130,7 +131,7 @@ public class ScrabbleApplicationConsole {
                 rack.remove(letter);
                 Console.message(rack.display());
             }
-            if (board.checkPlacement(length, valeur1, valeur2, direction)) {
+            if (choix == 1 ? board.checkPlacement(length, valeur2, valeur1, direction) : board.checkPlacement(length, valeur1, valeur2, direction)) {
                 break;
             } else {
                 for (Map.Entry<Coords, Tile> entry : word.entrySet()) {
@@ -150,6 +151,8 @@ public class ScrabbleApplicationConsole {
         Console.message(board.display());
         Console.message(rack.display());
         Console.message("Cette action vous rajoute " + score + " points");
+
+        this.controller.draw(controller.player());
     }
 
     private void swapLetters() {

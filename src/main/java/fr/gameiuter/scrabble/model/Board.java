@@ -156,15 +156,15 @@ public class Board {
 
         if (direction == Direction.HORIZONTAL) {
             int startX = x;
-            while (getAnyTile(placedTiles, startX - 1, y).isEmpty()) startX--;
+            while (getAnyTile(placedTiles, startX - 1, y).isPresent()) startX--;
             x = startX;
         } else {
             int startY = y;
-            while (getAnyTile(placedTiles, x, startY - 1).isEmpty()) startY--;
+            while (getAnyTile(placedTiles, x, startY - 1).isPresent()) startY--;
             y = startY;
         }
 
-        while (getAnyTile(placedTiles, x, y).isEmpty()) {
+        while (getAnyTile(placedTiles, x, y).isPresent()) {
             Tile tile;
             int tileMultiplier = 1;
             if (this.placedTiles[y][x] != null) {
