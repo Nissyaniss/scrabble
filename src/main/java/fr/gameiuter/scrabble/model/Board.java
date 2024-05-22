@@ -66,8 +66,9 @@ public class Board {
                 }
                 builder.append(" ");
             }
-            builder.append("│\n");
+            builder.append("│ " + (y+1) + "\n");
             builder.append("├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤\n");
+
         }
 
         for (int x = 0; x < SIZE; x++) {
@@ -79,8 +80,9 @@ public class Board {
             }
             builder.append(" ");
         }
-        builder.append("│\n");
-        builder.append("└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘");
+        builder.append("│ 15\n");
+        builder.append("└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘\n");
+        builder.append("  1   2   3   4   5   6   7   8   9   10  11  12  13  14  15");
 
         return builder.toString();
     }

@@ -40,7 +40,8 @@ public class Rack {
         }
 
         builder.append("│\n");
-        builder.append("└───┴───┴───┴───┴───┴───┴───┘");
+        builder.append("└───┴───┴───┴───┴───┴───┴───┘\n");
+        builder.append("  1   2   3   4   5   6   7");
 
         return builder.toString();
     }
