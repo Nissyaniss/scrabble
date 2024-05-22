@@ -100,7 +100,7 @@ public class ScrabbleApplicationConsole {
         while (true) {
             valeur1 = Console.inputIntegerBetween("Choisissez la " + direct1 + " de votre mot: ", 1, Board.SIZE) - 1;
             valeur2 = Console.inputIntegerBetween("Choisissez la " + direct2 + " de début du mot: ", 1, Board.SIZE) - 1;
-            end = Console.inputIntegerBetween("Choisissez la " + direct2 + " de fin du mot: ", 1, Board.SIZE) - 1;
+            end = Console.inputIntegerBetween("Choisissez la " + direct2 + " de fin du mot: ", valeur2 + 1, Integer.min(valeur2 + 1 + rack.numberOfTiles(), Board.SIZE)) - 1;
             length = end - valeur2;
 
 
