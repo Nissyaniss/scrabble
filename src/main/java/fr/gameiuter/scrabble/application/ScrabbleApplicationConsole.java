@@ -105,9 +105,9 @@ public class ScrabbleApplicationConsole {
         }
         while (true) {
 
-            valeur1 = Console.inputIntegerBetween("Choisissez la "+ direct1 +" de votre mot: ", 1, Board.SIZE) - 1;
-            valeur2 = Console.inputIntegerBetween("Choisissez la "+ direct2 +" de début du mot: ", 1, Board.SIZE) - 1;
-            end = Console.inputIntegerBetween("Choisissez la "+ direct2 +" de fin du mot: ", 1, Board.SIZE) - 1;
+            valeur1 = Console.inputIntegerBetween("Choisissez la " + direct1 + " de votre mot: ", 1, Board.SIZE) - 1;
+            valeur2 = Console.inputIntegerBetween("Choisissez la " + direct2 + " de début du mot: ", 1, Board.SIZE) - 1;
+            end = Console.inputIntegerBetween("Choisissez la " + direct2 + " de fin du mot: ", 1, Board.SIZE) - 1;
             length = end - valeur2;
 
             if (length == 0) {
@@ -142,15 +142,17 @@ public class ScrabbleApplicationConsole {
             if (board.checkPlacement(length, valeur1, valeur2, direction)) {
                 break;
             } else {
-                for (Map.Entry<Coords,Tile> entry : word.entrySet()) {
+                for (Map.Entry<Coords, Tile> entry : word.entrySet()) {
                     rack.add(entry.getValue());
                 }
                 Console.message(board.display());
                 word.clear();
             }
         }
-        for (Coords coord : word.keySet()) {
-            board.placeTile(word.get(coord), coord.getX(), coord.getY());
+
+        int score = board.computeScore(word, direction);
+        this.controller.player().incrementScore(score);
+        
         for (Map.Entry<Coords, Tile> entry : word.entrySet()) {
             board.placeTile(entry.getValue(), entry.getKey().getX(), entry.getKey().getY());
         }
