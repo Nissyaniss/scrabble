@@ -80,21 +80,15 @@ public class ScrabbleApplicationConsole {
         int valeur2;
         String direct1;
         String direct2;
-        String str1;
-        String str2;
 
         if (choix == 1) {
             direction = Direction.HORIZONTAL;
             direct1 = "ligne";
             direct2 = "colonne";
-            str1 = "Y : ";
-            str2 = "X : ";
         } else {
             direction = Direction.VERTICAL;
             direct1 = "colonne";
             direct2 = "ligne";
-            str1 = "X : ";
-            str2 = "Y : ";
         }
 
         while (true) {
@@ -103,14 +97,12 @@ public class ScrabbleApplicationConsole {
             end = Console.inputIntegerBetween("Choisissez la " + direct2 + " de fin du mot: ", valeur2 + 1, Integer.min(valeur2 + 1 + rack.numberOfTiles(), Board.SIZE)) - 1;
             length = end - valeur2;
 
-
             for (int i = valeur2; i <= end; i++) {
                 if (choix == 1 ? board.hasTileAt(i, valeur1) : board.hasTileAt(valeur1, i))
                     continue;
 
                 Console.message(Console.SEPARATOR);
-                Console.message(str2 + i);
-                Console.message(str1 + valeur1);
+                Console.message("Cette lettre sera placée à la " + direct2 + " " + (i + 1) + " et à la " + direct1 + " " + (valeur1 + 1));
                 int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
                 letter = rack.getTile(indexLetter);
                 Console.message(Console.SEPARATOR);
