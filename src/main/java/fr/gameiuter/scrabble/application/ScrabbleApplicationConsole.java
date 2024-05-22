@@ -74,8 +74,6 @@ public class ScrabbleApplicationConsole {
         Console.message("2. Vertical");
         int choix = Console.inputIntegerBetween("", 1, 2);
 
-        int x = 0;
-        int y = 0;
         int end;
         int length;
         int valeur1;
@@ -84,27 +82,22 @@ public class ScrabbleApplicationConsole {
         String direct2;
         String str1;
         String str2;
+
         if (choix == 1) {
             direction = Direction.HORIZONTAL;
-            direct1 = "Ligne";
-            direct2 = "Colone";
-            valeur1 = y;
-            valeur2 = x;
+            direct1 = "ligne";
+            direct2 = "colonne";
             str1 = "Y : ";
             str2 = "X : ";
-
         } else {
             direction = Direction.VERTICAL;
-            direct1 = "Colone";
-            direct2 = "Ligne";
-            valeur1 = x;
-            valeur2 = y;
+            direct1 = "colonne";
+            direct2 = "ligne";
             str1 = "X : ";
             str2 = "Y : ";
-
         }
-        while (true) {
 
+        while (true) {
             valeur1 = Console.inputIntegerBetween("Choisissez la " + direct1 + " de votre mot: ", 1, Board.SIZE) - 1;
             valeur2 = Console.inputIntegerBetween("Choisissez la " + direct2 + " de début du mot: ", 1, Board.SIZE) - 1;
             end = Console.inputIntegerBetween("Choisissez la " + direct2 + " de fin du mot: ", 1, Board.SIZE) - 1;
@@ -114,8 +107,6 @@ public class ScrabbleApplicationConsole {
                 Console.message("La taille ne peut être de 0");
             }
             for (int i = valeur2; i <= end; i++) {
-
-
                 Console.message(Console.SEPARATOR);
                 Console.message(str2 + i);
                 Console.message(str1 + valeur1);
@@ -152,7 +143,7 @@ public class ScrabbleApplicationConsole {
 
         int score = board.computeScore(word, direction);
         this.controller.player().incrementScore(score);
-        
+
         for (Map.Entry<Coords, Tile> entry : word.entrySet()) {
             board.placeTile(entry.getValue(), entry.getKey().getX(), entry.getKey().getY());
         }

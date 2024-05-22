@@ -81,7 +81,7 @@ public class Board {
         return builder.toString();
     }
 
-    public Boolean checkPlacement(Integer wordLength, Integer x, Integer y, Direction direction) {
+    public boolean checkPlacement(Integer wordLength, Integer x, Integer y, Direction direction) {
         // First Move
 
         if (placedTiles[Board.MIDDLE][Board.MIDDLE] == null) {
