@@ -19,30 +19,33 @@ public class Board {
             }
         }
         this.squares[MIDDLE][MIDDLE] = Square.START;
-        this.setSquareSymmetrical(0, 0, Square.TRIPLE_WORD);
-        this.setSquareSymmetrical(MIDDLE, 0, Square.TRIPLE_WORD);
-        this.setSquareSymmetrical(3, 0, Square.DOUBLE_LETTER);
-        this.setSquareSymmetrical(1, 1, Square.DOUBLE_WORD);
-        this.setSquareSymmetrical(2, 2, Square.DOUBLE_WORD);
-        this.setSquareSymmetrical(3, 3, Square.DOUBLE_WORD);
-        this.setSquareSymmetrical(4, 4, Square.DOUBLE_WORD);
-        this.setSquareSymmetrical(5, 5, Square.TRIPLE_LETTER);
-        this.setSquareSymmetrical(6, 6, Square.DOUBLE_LETTER);
-        this.setSquareSymmetrical(5, 1, Square.TRIPLE_LETTER);
-        this.setSquareSymmetrical(6, 2, Square.DOUBLE_LETTER);
-        this.setSquareSymmetrical(7, 3, Square.DOUBLE_LETTER);
+        this.setSquareWithDiagonalSymmetry(0, 0, Square.TRIPLE_WORD);
+        this.setSquareWithDiagonalSymmetry(MIDDLE, 0, Square.TRIPLE_WORD);
+        this.setSquareWithDiagonalSymmetry(3, 0, Square.DOUBLE_LETTER);
+        this.setSquareWithDiagonalSymmetry(1, 1, Square.DOUBLE_WORD);
+        this.setSquareWithDiagonalSymmetry(2, 2, Square.DOUBLE_WORD);
+        this.setSquareWithDiagonalSymmetry(3, 3, Square.DOUBLE_WORD);
+        this.setSquareWithDiagonalSymmetry(4, 4, Square.DOUBLE_WORD);
+        this.setSquareWithDiagonalSymmetry(5, 5, Square.TRIPLE_LETTER);
+        this.setSquareWithDiagonalSymmetry(6, 6, Square.DOUBLE_LETTER);
+        this.setSquareWithDiagonalSymmetry(5, 1, Square.TRIPLE_LETTER);
+        this.setSquareWithDiagonalSymmetry(6, 2, Square.DOUBLE_LETTER);
+        this.setSquareWithDiagonalSymmetry(7, 3, Square.DOUBLE_LETTER);
     }
 
-    private void setSquareSymmetrical(int x, int y, Square square) {
+    private void setSquareWithDiagonalSymmetry(int x, int y, Square square) {
+        this.setSquareWithHorizontalSymmetry(x, y, square);
+        this.setSquareWithHorizontalSymmetry(y, x, square);
+    }
+
+    private void setSquareWithHorizontalSymmetry(int x, int y, Square square) {
+        this.setSquareWithVerticalSymmetry(x, y, square);
+        this.setSquareWithVerticalSymmetry(SIZE - 1 - x, y, square);
+    }
+
+    private void setSquareWithVerticalSymmetry(int x, int y, Square square) {
         this.squares[y][x] = square;
         this.squares[SIZE - 1 - y][x] = square;
-        this.squares[y][SIZE - 1 - x] = square;
-        this.squares[SIZE - 1 - y][SIZE - 1 - x] = square;
-
-        this.squares[x][y] = square;
-        this.squares[x][SIZE - 1 - y] = square;
-        this.squares[SIZE - 1 - x][y] = square;
-        this.squares[SIZE - 1 - x][SIZE - 1 - y] = square;
     }
 
     public boolean hasTileAt(int x, int y) {
