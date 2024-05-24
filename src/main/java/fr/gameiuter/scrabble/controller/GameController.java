@@ -24,9 +24,9 @@ public class GameController {
     }
 
     public void draw(Player player) {
-        while (player.getRack().numberOfTiles() < 7 && !pouch.isEmpty()) {
+        while (player.rack().numberOfTiles() < 7 && !pouch.isEmpty()) {
             Optional<Tile> tile = pouch.draw();
-            player.getRack().add(tile.get());
+            player.rack().add(tile.get());
         }
     }
 
@@ -36,7 +36,7 @@ public class GameController {
 
     public void swap(Player player, Collection<Tile> tiles) {
         for (Tile tile : tiles) {
-            player.getRack().remove(tile);
+            player.rack().remove(tile);
             this.pouch.putBack(tile);
         }
         this.draw(player);
@@ -57,7 +57,7 @@ public class GameController {
                 '}';
     }
 
-    public Board getBoard() {
+    public Board board() {
         return this.board;
     }
 }

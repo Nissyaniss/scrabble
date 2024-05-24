@@ -15,7 +15,7 @@ public class Player {
         return this.rack.display();
     }
 
-    public Rack getRack() {
+    public Rack rack() {
         return this.rack;
     }
 

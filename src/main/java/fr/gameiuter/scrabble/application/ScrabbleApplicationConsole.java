@@ -25,7 +25,6 @@ public class ScrabbleApplicationConsole {
         Console.message("--     et mdeguil                                    --");
         Console.message(Console.SEPARATOR);
 
-
         Player player = new Player(Console.input("Entrez votre pseudo: "));
         new ScrabbleApplicationConsole(player).start();
     }
@@ -57,8 +56,8 @@ public class ScrabbleApplicationConsole {
     }
 
     private void placeWord() {
-        Board board = controller.getBoard();
-        Rack rack = controller.player().getRack();
+        Board board = controller.board();
+        Rack rack = controller.player().rack();
         HashMap<Position, Tile> word = new HashMap<>();
         Direction direction;
         Tile letter;
@@ -110,7 +109,7 @@ public class ScrabbleApplicationConsole {
                 Console.message(Console.SEPARATOR);
                 Console.message("Cette lettre sera placée à la " + direct2 + " " + (i + 1) + " et à la " + direct1 + " " + (valeur1 + 1));
                 int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
-                letter = rack.getTile(indexLetter);
+                letter = rack.tile(indexLetter);
                 Console.message(Console.SEPARATOR);
                 if (letter.isJoker()) {
                     String result;
@@ -160,7 +159,7 @@ public class ScrabbleApplicationConsole {
         List<Integer> indexes = new ArrayList<>();
         List<Tile> toExchange = new ArrayList<>();
 
-        while (player.getRack().numberOfTiles() > 0) {
+        while (player.rack().numberOfTiles() > 0) {
             Console.message("Voici vos lettres:");
             if (!toExchange.isEmpty()) {
                 Console.message("Les lettres suivantes vont être échangées: " + String.join(", ", toExchange.stream().map(tile -> tile.letter().toString()).toList()));
@@ -173,7 +172,7 @@ public class ScrabbleApplicationConsole {
                 Console.message("Cette lettre va déjà être échangée");
             } else {
                 indexes.add(index);
-                toExchange.add(player.getRack().getTile(index - 1));
+                toExchange.add(player.rack().tile(index - 1));
             }
         }
 
