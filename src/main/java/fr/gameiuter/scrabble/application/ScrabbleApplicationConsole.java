@@ -52,9 +52,6 @@ public class ScrabbleApplicationConsole {
                 case 3:
                     stop = true;
                     break;
-                default:
-                    // unreachable
-                    break;
             }
         }
     }
