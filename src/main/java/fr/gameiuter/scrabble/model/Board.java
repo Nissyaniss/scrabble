@@ -8,11 +8,11 @@ public class Board {
     public static final Integer MIDDLE = SIZE / 2;
 
     private final Square[][] squares;
-    private final Tile[][] placedTiles;
+    private final Tile[][] tiles;
 
     public Board() {
         this.squares = new Square[SIZE][SIZE];
-        this.placedTiles = new Tile[SIZE][SIZE];
+        this.tiles = new Tile[SIZE][SIZE];
         for (int y = 0; y < SIZE; y++) {
             for (int x = 0; x < SIZE; x++) {
                 this.squares[y][x] = Square.NORMAL;
@@ -49,51 +49,25 @@ public class Board {
     }
 
     public boolean hasTileAt(int x, int y) {
-        return this.placedTiles[y][x] != null;
+        return this.tiles[y][x] != null;
     }
 
     public void placeTile(Tile tile, int x, int y) {
-        placedTiles[y][x] = tile;
+        tiles[y][x] = tile;
     }
 
-    public String display() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐\n");
-        for (int y = 0; y < SIZE - 1; y++) {
-            for (int x = 0; x < SIZE; x++) {
-                builder.append("│ ");
-                if (this.placedTiles[y][x] != null) {
-                    builder.append(this.placedTiles[y][x].letter());
-                } else {
-                    builder.append(this.squares[y][x].symbol());
-                }
-                builder.append(" ");
-            }
-            builder.append("│ " + (y + 1) + "\n");
-            builder.append("├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤\n");
+    public Tile[][] tiles() {
+        return tiles;
+    }
 
-        }
-
-        for (int x = 0; x < SIZE; x++) {
-            builder.append("│ ");
-            if (this.placedTiles[SIZE - 1][x] != null) {
-                builder.append(this.placedTiles[SIZE - 1][x].letter());
-            } else {
-                builder.append(this.squares[SIZE - 1][x].symbol());
-            }
-            builder.append(" ");
-        }
-        builder.append("│ 15\n");
-        builder.append("└───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘\n");
-        builder.append("  1   2   3   4   5   6   7   8   9   10  11  12  13  14  15");
-
-        return builder.toString();
+    public Square[][] squares() {
+        return squares;
     }
 
     public boolean checkPlacement(Integer wordLength, Integer x, Integer y, Direction direction) {
         // First Move
 
-        if (placedTiles[Board.MIDDLE][Board.MIDDLE] == null) {
+        if (tiles[Board.MIDDLE][Board.MIDDLE] == null) {
             if (direction.equals(Direction.HORIZONTAL)) {
                 for (int i = x; i <= x + wordLength; i++) {
                     if (squares[y][i].equals(Square.START)) {
@@ -115,26 +89,26 @@ public class Board {
 
         if (direction.equals(Direction.HORIZONTAL)) {
             for (int i = x; i <= x + wordLength; i++) {
-                if (((x + wordLength >= Board.SIZE && y + 1 <= Board.SIZE && placedTiles[y + 1][i] != null) // On top & On Bottom
-                        || (x + wordLength <= Board.SIZE && y - 1 >= 0 && placedTiles[y - 1][i] != null)) || (placedTiles[y][i] != null)) {
+                if (((x + wordLength >= Board.SIZE && y + 1 <= Board.SIZE && tiles[y + 1][i] != null) // On top & On Bottom
+                        || (x + wordLength <= Board.SIZE && y - 1 >= 0 && tiles[y - 1][i] != null)) || (tiles[y][i] != null)) {
                     isAllowed = true;
                     break;
                 }
             }
-            if ((x + wordLength + 1 <= Board.SIZE && placedTiles[y][x + wordLength + 1] != null) // Sides
-                    || (x - 1 >= 0 && placedTiles[y][x - 1] != null)) {
+            if ((x + wordLength + 1 <= Board.SIZE && tiles[y][x + wordLength + 1] != null) // Sides
+                    || (x - 1 >= 0 && tiles[y][x - 1] != null)) {
                 isAllowed = true;
             }
         } else {
             for (int i = y; i <= y + wordLength; i++) {
-                if (((y + wordLength <= Board.SIZE && x + 1 <= Board.SIZE && placedTiles[i][x + 1] != null) // Sides
-                        || (y + wordLength <= Board.SIZE && x - 1 >= 0 && placedTiles[i][x - 1] != null) || (placedTiles[i][y] != null))) {
+                if (((y + wordLength <= Board.SIZE && x + 1 <= Board.SIZE && tiles[i][x + 1] != null) // Sides
+                        || (y + wordLength <= Board.SIZE && x - 1 >= 0 && tiles[i][x - 1] != null) || (tiles[i][y] != null))) {
                     isAllowed = true;
                     break;
                 }
             }
-            if ((y + wordLength + 1 <= Board.SIZE && placedTiles[y + wordLength + 1][x] != null) // On top & On Bottom
-                    || (y - 1 >= 0 && placedTiles[y - 1][x] != null)) {
+            if ((y + wordLength + 1 <= Board.SIZE && tiles[y + wordLength + 1][x] != null) // On top & On Bottom
+                    || (y - 1 >= 0 && tiles[y - 1][x] != null)) {
                 isAllowed = true;
             }
         }
@@ -176,8 +150,8 @@ public class Board {
         while (getAnyTile(placedTiles, x, y).isPresent()) {
             Tile tile;
             int tileMultiplier = 1;
-            if (this.placedTiles[y][x] != null) {
-                tile = this.placedTiles[y][x];
+            if (this.tiles[y][x] != null) {
+                tile = this.tiles[y][x];
             } else {
                 tile = placedTiles.get(new Position(x, y));
                 tileMultiplier = this.squares[y][x].letterMultiplier();
@@ -201,8 +175,8 @@ public class Board {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE)
             return Optional.empty();
 
-        if (this.placedTiles[y][x] != null)
-            return Optional.of(this.placedTiles[y][x]);
+        if (this.tiles[y][x] != null)
+            return Optional.of(this.tiles[y][x]);
         else
             return Optional.ofNullable(additionalTiles.get(new Position(x, y)));
     }

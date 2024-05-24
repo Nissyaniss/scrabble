@@ -26,27 +26,7 @@ public class Rack {
         tiles.remove(tile);
     }
 
-    public String display() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("┌───┬───┬───┬───┬───┬───┬───┐\n");
 
-        for (int i = 0; i < SIZE; i++) {
-            builder.append("│ ");
-            if (tiles.size() < i + 1) {
-                builder.append(" ");
-            } else {
-                builder.append(tiles.get(i).letter());
-            }
-
-            builder.append(" ");
-        }
-
-        builder.append("│\n");
-        builder.append("└───┴───┴───┴───┴───┴───┴───┘\n");
-        builder.append("  1   2   3   4   5   6   7");
-
-        return builder.toString();
-    }
 
     public Tile tile(int index) {
         return tiles.get(index);

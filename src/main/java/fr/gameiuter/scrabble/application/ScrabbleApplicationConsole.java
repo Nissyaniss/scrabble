@@ -62,8 +62,8 @@ public class ScrabbleApplicationConsole {
         Direction direction;
         Tile letter;
 
-        Console.message(board.display());
-        Console.message(rack.display());
+        Console.displayBoard(board);
+        Console.displayRack(rack);
 
         while (true) {
             int choix;
@@ -126,7 +126,7 @@ public class ScrabbleApplicationConsole {
                 }
                 word.put(choix == 1 ? new Position(i, valeur1) : new Position(valeur1, i), letter);
                 rack.remove(letter);
-                Console.message(rack.display());
+                Console.displayRack(rack);
             }
 
             if (word.isEmpty())
@@ -142,8 +142,8 @@ public class ScrabbleApplicationConsole {
         for (Map.Entry<Position, Tile> entry : word.entrySet()) {
             board.placeTile(entry.getValue(), entry.getKey().x(), entry.getKey().y());
         }
-        Console.message(board.display());
-        Console.message(rack.display());
+        Console.displayBoard(board);
+        Console.displayRack(rack);
         Console.message("Cette action vous rajoute " + score + " points");
 
         this.controller.draw(controller.player());
@@ -164,7 +164,7 @@ public class ScrabbleApplicationConsole {
             if (!toExchange.isEmpty()) {
                 Console.message("Les lettres suivantes vont être échangées: " + String.join(", ", toExchange.stream().map(tile -> tile.letter().toString()).toList()));
             }
-            Console.message(this.controller.player().rackDisplay());
+            Console.displayRack(player.rack());
             int index = Console.inputIntegerBetween("Entrez l'indice de la lettre que vous souhaitez échanger (0 pour s'arrêter): ", 0, 8);
             if (index == 0) {
                 break;

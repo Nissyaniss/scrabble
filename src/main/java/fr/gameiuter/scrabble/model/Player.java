@@ -11,10 +11,6 @@ public class Player {
         this.score = 0;
     }
 
-    public String rackDisplay() {
-        return this.rack.display();
-    }
-
     public Rack rack() {
         return this.rack;
     }
