@@ -65,55 +65,51 @@ public class Board {
     }
 
     public boolean checkPlacement(Integer wordLength, Integer x, Integer y, Direction direction) {
-        // First Move
 
         if (tiles[Board.MIDDLE][Board.MIDDLE] == null) {
-            if (direction.equals(Direction.HORIZONTAL)) {
-                for (int i = x; i <= x + wordLength; i++) {
-                    if (squares[y][i].equals(Square.START)) {
-                        return true;
-                    }
-                }
-            } else {
-                for (int i = y; i <= y + wordLength; i++) {
-                    if (squares[i][x].equals(Square.START)) {
-                        return true;
-                    }
-                }
-            }
+            return checkFirstMove(wordLength, x, y, direction);
         }
 
-        //Normal Moves
+        return checkNormalMoves(wordLength, x, y, direction);
+    }
 
-        boolean isAllowed = false;
-
+    private boolean checkNormalMoves(Integer wordLength, Integer x, Integer y, Direction direction) {
         if (direction.equals(Direction.HORIZONTAL)) {
             for (int i = x; i <= x + wordLength; i++) {
                 if (((x + wordLength >= Board.SIZE && y + 1 <= Board.SIZE && tiles[y + 1][i] != null) // On top & On Bottom
                         || (x + wordLength <= Board.SIZE && y - 1 >= 0 && tiles[y - 1][i] != null)) || (tiles[y][i] != null)) {
-                    isAllowed = true;
-                    break;
+                    return true;
                 }
             }
-            if ((x + wordLength + 1 <= Board.SIZE && tiles[y][x + wordLength + 1] != null) // Sides
-                    || (x - 1 >= 0 && tiles[y][x - 1] != null)) {
-                isAllowed = true;
-            }
+            return (x + wordLength + 1 <= Board.SIZE && tiles[y][x + wordLength + 1] != null) // Sides
+                    || (x - 1 >= 0 && tiles[y][x - 1] != null);
         } else {
             for (int i = y; i <= y + wordLength; i++) {
                 if (((y + wordLength <= Board.SIZE && x + 1 <= Board.SIZE && tiles[i][x + 1] != null) // Sides
                         || (y + wordLength <= Board.SIZE && x - 1 >= 0 && tiles[i][x - 1] != null) || (tiles[i][y] != null))) {
-                    isAllowed = true;
-                    break;
+                    return true;
                 }
             }
-            if ((y + wordLength + 1 <= Board.SIZE && tiles[y + wordLength + 1][x] != null) // On top & On Bottom
-                    || (y - 1 >= 0 && tiles[y - 1][x] != null)) {
-                isAllowed = true;
+            return (y + wordLength + 1 <= Board.SIZE && tiles[y + wordLength + 1][x] != null) // On top & On Bottom
+                    || (y - 1 >= 0 && tiles[y - 1][x] != null);
+        }
+    }
+
+    private boolean checkFirstMove(Integer wordLength, Integer x, Integer y, Direction direction) {
+        if (direction.equals(Direction.HORIZONTAL)) {
+            for (int i = x; i <= x + wordLength; i++) {
+                if (squares[y][i].equals(Square.START)) {
+                    return true;
+                }
+            }
+        } else {
+            for (int i = y; i <= y + wordLength; i++) {
+                if (squares[i][x].equals(Square.START)) {
+                    return true;
+                }
             }
         }
-
-        return isAllowed;
+        return false;
     }
 
     public Integer computeScore(Map<Position, Tile> placedTiles, Direction direction) {
