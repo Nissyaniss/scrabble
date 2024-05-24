@@ -5,9 +5,6 @@ import java.util.Scanner;
 public class Console {
     public static final String SEPARATOR = "-------------------------------------------------------";
 
-    private Console() {
-    }
-
     public static void message(String text) {
         System.out.println(text);
     }

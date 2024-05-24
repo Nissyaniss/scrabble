@@ -24,10 +24,8 @@ public class GameController {
     }
 
     public void draw(Player player) {
-        while (player.getRack().numberOfTiles() < 7) {
+        while (player.getRack().numberOfTiles() < 7 && !pouch.isEmpty()) {
             Optional<Tile> tile = pouch.draw();
-            if (tile.isEmpty())
-                break;
             player.getRack().add(tile.get());
         }
     }

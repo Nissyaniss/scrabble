@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rack {
+    public static final Integer SIZE = 7;
+
     private final List<Tile> tiles;
 
     public Rack() {
@@ -15,7 +17,7 @@ public class Rack {
     }
 
     public void add(Tile tile) {
-        if (this.tiles.size() != 7) {
+        if (this.tiles.size() != SIZE) {
             tiles.add(tile);
         }
     }
@@ -28,7 +30,7 @@ public class Rack {
         StringBuilder builder = new StringBuilder();
         builder.append("┌───┬───┬───┬───┬───┬───┬───┐\n");
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < SIZE; i++) {
             builder.append("│ ");
             if (tiles.size() < i + 1) {
                 builder.append(" ");
@@ -50,7 +52,7 @@ public class Rack {
         return tiles.get(index);
     }
 
-    public List<Tile> getList() {
+    public List<Tile> tiles() {
         return this.tiles;
     }
 }

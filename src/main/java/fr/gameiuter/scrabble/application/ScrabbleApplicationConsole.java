@@ -62,7 +62,7 @@ public class ScrabbleApplicationConsole {
     private void placeWord() {
         Board board = controller.getBoard();
         Rack rack = controller.player().getRack();
-        HashMap<Coords, Tile> word = new HashMap<>();
+        HashMap<Position, Tile> word = new HashMap<>();
         Direction direction;
         Tile letter;
 
@@ -128,7 +128,7 @@ public class ScrabbleApplicationConsole {
                         }
                     }
                 }
-                word.put(choix == 1 ? new Coords(i, valeur1) : new Coords(valeur1, i), letter);
+                word.put(choix == 1 ? new Position(i, valeur1) : new Position(valeur1, i), letter);
                 rack.remove(letter);
                 Console.message(rack.display());
             }
@@ -143,8 +143,8 @@ public class ScrabbleApplicationConsole {
         int score = board.computeScore(word, direction);
         this.controller.player().incrementScore(score);
 
-        for (Map.Entry<Coords, Tile> entry : word.entrySet()) {
-            board.placeTile(entry.getValue(), entry.getKey().getX(), entry.getKey().getY());
+        for (Map.Entry<Position, Tile> entry : word.entrySet()) {
+            board.placeTile(entry.getValue(), entry.getKey().x(), entry.getKey().y());
         }
         Console.message(board.display());
         Console.message(rack.display());

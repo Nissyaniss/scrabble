@@ -7,79 +7,79 @@ import java.util.Random;
 
 public class Pouch {
     private final Random random = new Random();
-    private final List<Tile> pool;
+    private final List<Tile> tiles;
 
     public Pouch() {
-        this.pool = new ArrayList<>();
+        this.tiles = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
-            this.pool.add(Tile.E);
+            this.tiles.add(Tile.E);
         }
         for (int i = 0; i < 9; i++) {
-            this.pool.add(Tile.A);
+            this.tiles.add(Tile.A);
         }
         for (int i = 0; i < 8; i++) {
-            this.pool.add(Tile.I);
+            this.tiles.add(Tile.I);
         }
         for (int i = 0; i < 6; i++) {
-            this.pool.add(Tile.N);
-            this.pool.add(Tile.O);
-            this.pool.add(Tile.R);
-            this.pool.add(Tile.S);
-            this.pool.add(Tile.T);
-            this.pool.add(Tile.U);
+            this.tiles.add(Tile.N);
+            this.tiles.add(Tile.O);
+            this.tiles.add(Tile.R);
+            this.tiles.add(Tile.S);
+            this.tiles.add(Tile.T);
+            this.tiles.add(Tile.U);
         }
         for (int i = 0; i < 5; i++) {
-            this.pool.add(Tile.L);
+            this.tiles.add(Tile.L);
         }
         for (int i = 0; i < 3; i++) {
-            this.pool.add(Tile.D);
-            this.pool.add(Tile.M);
+            this.tiles.add(Tile.D);
+            this.tiles.add(Tile.M);
         }
         for (int i = 0; i < 2; i++) {
-            this.pool.add(Tile.G);
-            this.pool.add(Tile.B);
-            this.pool.add(Tile.C);
-            this.pool.add(Tile.P);
-            this.pool.add(Tile.F);
-            this.pool.add(Tile.H);
-            this.pool.add(Tile.V);
+            this.tiles.add(Tile.G);
+            this.tiles.add(Tile.B);
+            this.tiles.add(Tile.C);
+            this.tiles.add(Tile.P);
+            this.tiles.add(Tile.F);
+            this.tiles.add(Tile.H);
+            this.tiles.add(Tile.V);
             // we need a new instance for each joker, because they're gonna be mutated
-            this.pool.add(Tile.blank());
+            this.tiles.add(Tile.blank());
         }
-        this.pool.add(Tile.J);
-        this.pool.add(Tile.Q);
-        this.pool.add(Tile.K);
-        this.pool.add(Tile.W);
-        this.pool.add(Tile.X);
-        this.pool.add(Tile.Y);
-        this.pool.add(Tile.Z);
+        this.tiles.add(Tile.J);
+        this.tiles.add(Tile.Q);
+        this.tiles.add(Tile.K);
+        this.tiles.add(Tile.W);
+        this.tiles.add(Tile.X);
+        this.tiles.add(Tile.Y);
+        this.tiles.add(Tile.Z);
     }
 
     public Optional<Tile> draw() {
-        int size = pool.size();
+        int size = tiles.size();
 
         if (size == 0)
             return Optional.empty();
 
-        Tile result = pool.get(this.random.nextInt(size));
-        pool.remove(result);
+        Tile result = tiles.get(this.random.nextInt(size));
+        tiles.remove(result);
         return Optional.of(result);
     }
 
     public void putBack(Tile tile) {
-        pool.add(tile);
+        tiles.add(tile);
     }
 
     public boolean isEmpty() {
-        return this.pool.isEmpty();
+        return this.tiles.isEmpty();
     }
 
     public int remainingTiles() {
-        return this.pool.size();
+        return this.tiles.size();
     }
 
     @Override
     public String toString() {
-        return this.pool.toString();
+        return this.tiles.toString();
     }
 }

@@ -11,7 +11,7 @@ public class BoardTest {
     @Nested
     class ScoreTest {
         private static Board board;
-        private HashMap<Coords, Tile> word;
+        private HashMap<Position, Tile> word;
 
         @BeforeAll
         static void initAll() {
@@ -34,8 +34,8 @@ public class BoardTest {
 
         @Test
         void basicCrossingWord() {
-            word.put(new Coords(5, 7), Tile.B);
-            word.put(new Coords(7, 7), Tile.T);
+            word.put(new Position(5, 7), Tile.B);
+            word.put(new Position(7, 7), Tile.T);
 
             // 3 + 1 + 1 = 5
             assertEquals(5, board.computeScore(word, Direction.HORIZONTAL));
@@ -43,8 +43,8 @@ public class BoardTest {
 
         @Test
         void basicAddingWord() {
-            word.put(new Coords(5, 10), Tile.T);
-            word.put(new Coords(6, 10), Tile.Z);
+            word.put(new Position(5, 10), Tile.T);
+            word.put(new Position(6, 10), Tile.Z);
 
             // (1 + 10) + (3 + 1 + 1 + 1 + 10) = 27
             assertEquals(27, board.computeScore(word, Direction.HORIZONTAL));
@@ -52,8 +52,8 @@ public class BoardTest {
 
         @Test
         void withLetterMultiplier() {
-            word.put(new Coords(2, 5), Tile.T);
-            word.put(new Coords(2, 6), Tile.Z);
+            word.put(new Position(2, 5), Tile.T);
+            word.put(new Position(2, 6), Tile.Z);
 
             // 1 + (10 * 2) = 21
             assertEquals(21, board.computeScore(word, Direction.VERTICAL));
@@ -61,8 +61,8 @@ public class BoardTest {
 
         @Test
         void withWordMultiplier() {
-            word.put(new Coords(1, 1), Tile.T);
-            word.put(new Coords(1, 2), Tile.Z);
+            word.put(new Position(1, 1), Tile.T);
+            word.put(new Position(1, 2), Tile.Z);
 
             // (1 + 10) * 2 = 22
             assertEquals(22, board.computeScore(word, Direction.VERTICAL));
@@ -71,8 +71,8 @@ public class BoardTest {
         @Test
         void ignoreAlreadyUsedMultiplier() {
             // this would extend 'test'
-            word.put(new Coords(10, 11), Tile.T);
-            word.put(new Coords(10, 12), Tile.Z);
+            word.put(new Position(10, 11), Tile.T);
+            word.put(new Position(10, 12), Tile.Z);
 
             // (1 + 10) + (1 + 1 + 1 + 1 + 1) = 16
             assertEquals(16, board.computeScore(word, Direction.VERTICAL));
@@ -80,8 +80,8 @@ public class BoardTest {
 
         @Test
         void verticalAtZero() {
-            word.put(new Coords(0, 1), Tile.T);
-            word.put(new Coords(0, 2), Tile.Z);
+            word.put(new Position(0, 1), Tile.T);
+            word.put(new Position(0, 2), Tile.Z);
 
             // 1 + 10 = 11
             assertEquals(11, board.computeScore(word, Direction.VERTICAL));
@@ -89,8 +89,8 @@ public class BoardTest {
 
         @Test
         void verticalAtMax() {
-            word.put(new Coords(Board.SIZE - 1, 1), Tile.T);
-            word.put(new Coords(Board.SIZE - 1, 2), Tile.Z);
+            word.put(new Position(Board.SIZE - 1, 1), Tile.T);
+            word.put(new Position(Board.SIZE - 1, 2), Tile.Z);
 
             // 1 + 10 = 11
             assertEquals(11, board.computeScore(word, Direction.VERTICAL));
@@ -98,21 +98,21 @@ public class BoardTest {
 
         @Test
         void horizontalAtBoundaries() {
-            word.put(new Coords(0, 3), Tile.A); // 1 * 2 = 2
-            word.put(new Coords(1, 3), Tile.B); // 3
-            word.put(new Coords(2, 3), Tile.C); // 3
-            word.put(new Coords(3, 3), Tile.D); // 2
-            word.put(new Coords(4, 3), Tile.E); // 1
-            word.put(new Coords(5, 3), Tile.F); // 4
-            word.put(new Coords(6, 3), Tile.G); // 2
-            word.put(new Coords(7, 3), Tile.H); // 4 * 2 = 8
-            word.put(new Coords(8, 3), Tile.I); // 1
-            word.put(new Coords(9, 3), Tile.J); // 8
-            word.put(new Coords(10, 3), Tile.K); // 10
-            word.put(new Coords(11, 3), Tile.L); // 1
-            word.put(new Coords(12, 3), Tile.M); // 2
-            word.put(new Coords(13, 3), Tile.N); // 1
-            word.put(new Coords(14, 3), Tile.O); // 1 * 2 = 2
+            word.put(new Position(0, 3), Tile.A); // 1 * 2 = 2
+            word.put(new Position(1, 3), Tile.B); // 3
+            word.put(new Position(2, 3), Tile.C); // 3
+            word.put(new Position(3, 3), Tile.D); // 2
+            word.put(new Position(4, 3), Tile.E); // 1
+            word.put(new Position(5, 3), Tile.F); // 4
+            word.put(new Position(6, 3), Tile.G); // 2
+            word.put(new Position(7, 3), Tile.H); // 4 * 2 = 8
+            word.put(new Position(8, 3), Tile.I); // 1
+            word.put(new Position(9, 3), Tile.J); // 8
+            word.put(new Position(10, 3), Tile.K); // 10
+            word.put(new Position(11, 3), Tile.L); // 1
+            word.put(new Position(12, 3), Tile.M); // 2
+            word.put(new Position(13, 3), Tile.N); // 1
+            word.put(new Position(14, 3), Tile.O); // 1 * 2 = 2
 
             // 50 * 4 = 200
             assertEquals(200, board.computeScore(word, Direction.HORIZONTAL));
@@ -120,11 +120,11 @@ public class BoardTest {
 
         @Test
         void checkJokers() {
-            word.put(new Coords(0, 3), Tile.A); // 1 * 2 = 2
-            word.put(new Coords(1, 3), Tile.B); // 3
-            word.put(new Coords(2, 3), Tile.C); // 3
-            word.put(new Coords(3, 3), Tile.D); // 2
-            word.put(new Coords(4, 3), new Tile('A', 0, true)); // 0
+            word.put(new Position(0, 3), Tile.A); // 1 * 2 = 2
+            word.put(new Position(1, 3), Tile.B); // 3
+            word.put(new Position(2, 3), Tile.C); // 3
+            word.put(new Position(3, 3), Tile.D); // 2
+            word.put(new Position(4, 3), new Tile('A', 0, true)); // 0
 
             // 10 * 2 = 20
             assertEquals(20, board.computeScore(word, Direction.HORIZONTAL));

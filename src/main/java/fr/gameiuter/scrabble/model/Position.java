@@ -2,16 +2,16 @@ package fr.gameiuter.scrabble.model;
 
 import java.util.Objects;
 
-public class Coords {
+public class Position {
     private Integer x;
     private Integer y;
 
-    public Coords(Integer x, Integer y) {
+    public Position(Integer x, Integer y) {
         this.x = x;
         this.y = y;
     }
 
-    public Integer getX() {
+    public Integer x() {
         return x;
     }
 
@@ -19,7 +19,7 @@ public class Coords {
         this.x = x;
     }
 
-    public Integer getY() {
+    public Integer y() {
         return y;
     }
 
@@ -31,8 +31,8 @@ public class Coords {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Coords coords = (Coords) o;
-        return Objects.equals(x, coords.x) && Objects.equals(y, coords.y);
+        Position position = (Position) o;
+        return Objects.equals(x, position.x) && Objects.equals(y, position.y);
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public class Board {
     public static final Integer SIZE = 15;
-    public static final Integer MIDDLE = 7;
+    public static final Integer MIDDLE = SIZE / 2;
 
     private final Square[][] squares;
     private final Tile[][] placedTiles;
@@ -66,7 +66,7 @@ public class Board {
                 }
                 builder.append(" ");
             }
-            builder.append("│ " + (y+1) + "\n");
+            builder.append("│ " + (y + 1) + "\n");
             builder.append("├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤\n");
 
         }
@@ -139,23 +139,23 @@ public class Board {
         return isAllowed;
     }
 
-    public Integer computeScore(Map<Coords, Tile> placedTiles, Direction direction) {
+    public Integer computeScore(Map<Position, Tile> placedTiles, Direction direction) {
         int score = 0;
 
         Direction perpendicular = direction == Direction.HORIZONTAL ? Direction.VERTICAL : Direction.HORIZONTAL;
 
         // the placed tiles all are on the same the line, and are all connected (possibly by tiles that are already on the board)
         // its means we can use any tile of the word and computeWordScore will find the first one
-        Coords tileCoords = placedTiles.keySet().iterator().next();
-        score += this.computeWordScore(placedTiles, tileCoords.getX(), tileCoords.getY(), direction);
+        Position tilePosition = placedTiles.keySet().iterator().next();
+        score += this.computeWordScore(placedTiles, tilePosition.x(), tilePosition.y(), direction);
 
-        for (Coords coords : placedTiles.keySet())
-            score += this.computeWordScore(placedTiles, coords.getX(), coords.getY(), perpendicular);
+        for (Position position : placedTiles.keySet())
+            score += this.computeWordScore(placedTiles, position.x(), position.y(), perpendicular);
 
         return score;
     }
 
-    private Integer computeWordScore(Map<Coords, Tile> placedTiles, int x, int y, Direction direction) {
+    private Integer computeWordScore(Map<Position, Tile> placedTiles, int x, int y, Direction direction) {
         int tilesInWord = 0;
         int wordMultiplier = 1;
         int score = 0;
@@ -176,7 +176,7 @@ public class Board {
             if (this.placedTiles[y][x] != null) {
                 tile = this.placedTiles[y][x];
             } else {
-                tile = placedTiles.get(new Coords(x, y));
+                tile = placedTiles.get(new Position(x, y));
                 tileMultiplier = this.squares[y][x].letterMultiplier();
                 wordMultiplier *= this.squares[y][x].wordMultiplier();
             }
@@ -194,13 +194,13 @@ public class Board {
             return 0;
     }
 
-    private Optional<Tile> getAnyTile(Map<Coords, Tile> additionalTiles, int x, int y) {
+    private Optional<Tile> getAnyTile(Map<Position, Tile> additionalTiles, int x, int y) {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE)
             return Optional.empty();
 
         if (this.placedTiles[y][x] != null)
             return Optional.of(this.placedTiles[y][x]);
         else
-            return Optional.ofNullable(additionalTiles.get(new Coords(x, y)));
+            return Optional.ofNullable(additionalTiles.get(new Position(x, y)));
     }
 }
