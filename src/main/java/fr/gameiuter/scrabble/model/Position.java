@@ -3,8 +3,8 @@ package fr.gameiuter.scrabble.model;
 import java.util.Objects;
 
 public class Position {
-    private Integer x;
-    private Integer y;
+    private final Integer x;
+    private final Integer y;
 
     public Position(Integer x, Integer y) {
         this.x = x;
@@ -15,16 +15,8 @@ public class Position {
         return x;
     }
 
-    public void setX(Integer x) {
-        this.x = x;
-    }
-
     public Integer y() {
         return y;
-    }
-
-    public void setY(Integer y) {
-        this.y = y;
     }
 
     @Override
