@@ -69,8 +69,8 @@ public class ScrabbleApplicationConsole {
             int choix;
             int end;
             int length;
-            int valeur1;
-            int valeur2;
+            int ligneIfWordHorizontalElseColonne;
+            int colonneIfWordIVerticalElseLigne;
             String direct1;
             String direct2;
 
@@ -90,24 +90,24 @@ public class ScrabbleApplicationConsole {
                     direct2 = "ligne";
                 }
 
-                valeur1 = Console.inputIntegerBetween("Choisissez la " + direct1 + " de votre mot: ", 1, Board.SIZE) - 1;
-                valeur2 = Console.inputIntegerBetween("Choisissez la " + direct2 + " de début du mot: ", 1, Board.SIZE) - 1;
-                end = Console.inputIntegerBetween("Choisissez la " + direct2 + " de fin du mot: ", valeur2 + 1, Integer.min(valeur2 + 1 + rack.numberOfTiles(), Board.SIZE)) - 1;
-                length = end - valeur2;
+                ligneIfWordHorizontalElseColonne = Console.inputIntegerBetween("Choisissez la " + direct1 + " de votre mot: ", 1, Board.SIZE) - 1;
+                colonneIfWordIVerticalElseLigne = Console.inputIntegerBetween("Choisissez la " + direct2 + " de début du mot: ", 1, Board.SIZE) - 1;
+                end = Console.inputIntegerBetween("Choisissez la " + direct2 + " de fin du mot: ", colonneIfWordIVerticalElseLigne + 1, Integer.min(colonneIfWordIVerticalElseLigne + 1 + rack.numberOfTiles(), Board.SIZE)) - 1;
+                length = end - colonneIfWordIVerticalElseLigne;
 
-                if (choix == 1 ? board.checkPlacement(length, valeur2, valeur1, direction) : board.checkPlacement(length, valeur1, valeur2, direction)) {
+                if (choix == 1 ? board.checkPlacement(length, colonneIfWordIVerticalElseLigne, ligneIfWordHorizontalElseColonne, direction) : board.checkPlacement(length, ligneIfWordHorizontalElseColonne, colonneIfWordIVerticalElseLigne, direction)) {
                     break;
                 } else {
                     Console.message("Vous ne pouvez pas placer de mot à cet endroit");
                 }
             }
 
-            for (int i = valeur2; i <= end; i++) {
-                if (choix == 1 ? board.hasTileAt(i, valeur1) : board.hasTileAt(valeur1, i))
+            for (int i = colonneIfWordIVerticalElseLigne; i <= end; i++) {
+                if (choix == 1 ? board.hasTileAt(i, ligneIfWordHorizontalElseColonne) : board.hasTileAt(ligneIfWordHorizontalElseColonne, i))
                     continue;
 
                 Console.message(Console.SEPARATOR);
-                Console.message("Cette lettre sera placée à la " + direct2 + " " + (i + 1) + " et à la " + direct1 + " " + (valeur1 + 1));
+                Console.message("Cette lettre sera placée à la " + direct2 + " " + (i + 1) + " et à la " + direct1 + " " + (ligneIfWordHorizontalElseColonne + 1));
                 int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
                 tile = rack.tileAt(indexLetter);
                 Console.message(Console.SEPARATOR);
@@ -124,7 +124,7 @@ public class ScrabbleApplicationConsole {
                         }
                     }
                 }
-                word.put(choix == 1 ? new Position(i, valeur1) : new Position(valeur1, i), tile);
+                word.put(choix == 1 ? new Position(i, ligneIfWordHorizontalElseColonne) : new Position(ligneIfWordHorizontalElseColonne, i), tile);
                 rack.remove(tile);
                 Console.displayRack(rack);
             }
