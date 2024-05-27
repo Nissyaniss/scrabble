@@ -2,5 +2,9 @@ package fr.gameiuter.scrabble.model;
 
 public enum Direction {
     HORIZONTAL,
-    VERTICAL
+    VERTICAL;
+
+    public Direction perpendicular() {
+        return this == Direction.HORIZONTAL ? Direction.VERTICAL : Direction.HORIZONTAL;
+    }
 }

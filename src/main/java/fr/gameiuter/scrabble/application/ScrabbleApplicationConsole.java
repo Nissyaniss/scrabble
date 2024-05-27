@@ -124,7 +124,7 @@ public class ScrabbleApplicationConsole {
                         }
                     }
                 }
-                word.put(choix == 1 ? new Position(i, lineeIfWordHorizontalElseColumn) : new Position(lineeIfWordHorizontalElseColumn, i), tile);
+                word.put(choix == 1 ? new Position(i, lineeIfWordHorizontalElseColumn, direction) : new Position(lineeIfWordHorizontalElseColumn, i, direction), tile);
                 rack.remove(tile);
                 Console.displayRack(rack);
             }

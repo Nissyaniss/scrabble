@@ -3,12 +3,30 @@ package fr.gameiuter.scrabble.model;
 import java.util.Objects;
 
 public class Position {
-    private final Integer column;
-    private final Integer line;
+    private final Direction direction;
+    private Integer column;
+    private Integer line;
 
-    public Position(Integer column, Integer line) {
+    public Position(Integer column, Integer line, Direction direction) {
         this.column = column;
         this.line = line;
+        this.direction = direction;
+    }
+
+    public void decrement() {
+        if (this.direction.equals(Direction.HORIZONTAL)) {
+            this.column -= 1;
+        } else {
+            this.line -= 1;
+        }
+    }
+
+    public void increment() {
+        if (this.direction.equals(Direction.HORIZONTAL)) {
+            this.column += 1;
+        } else {
+            this.line += 1;
+        }
     }
 
     public Integer column() {

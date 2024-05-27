@@ -85,7 +85,7 @@ public class Board {
             }
         } else {
             for (int letterIndex = line; letterIndex <= line + wordLength; letterIndex++) {
-                if (this.tileHasNeighbors(column, letterIndex)) {
+                if (this.tileHasNeighbors(letterIndex, line)) {
                     return true;
                 }
             }
@@ -100,14 +100,14 @@ public class Board {
     }
 
     private boolean checkFirstMove(Integer wordLength, Integer column, Integer line, Direction direction) {
-        return ((direction.equals(Direction.HORIZONTAL) && (line.equals(Board.MIDDLE) && column <= Board.MIDDLE && column + wordLength >= Board.MIDDLE))
+        return ((direction.equals(Direction.HORIZONTAL) && line.equals(Board.MIDDLE) && column <= Board.MIDDLE && column + wordLength >= Board.MIDDLE)
                 || (direction.equals(Direction.VERTICAL) && column.equals(Board.MIDDLE) && line <= Board.MIDDLE && line + wordLength >= Board.MIDDLE));
     }
 
     public Integer computeScore(Map<Position, Tile> placedTiles, Direction direction) {
         int score = 0;
 
-        Direction perpendicular = direction == Direction.HORIZONTAL ? Direction.VERTICAL : Direction.HORIZONTAL;
+        Direction perpendicular = direction.perpendicular();
 
         // the placed tiles all are on the same the line, and are all connected (possibly by tiles that are already on the board)
         // its means we can use any tile of the word and computeWordScore will find the first one
@@ -138,10 +138,10 @@ public class Board {
         while (getAnyTile(placedTiles, column, line).isPresent()) {
             Tile tile;
             int tileMultiplier = 1;
-            if (this.tiles[line][column] != null) {
+            if (this.hasTileAt(column, line)) {
                 tile = this.tiles[line][column];
             } else {
-                tile = placedTiles.get(new Position(column, line));
+                tile = placedTiles.get(new Position(column, line, direction));
                 tileMultiplier = this.squares[line][column].letterMultiplier();
                 wordMultiplier *= this.squares[line][column].wordMultiplier();
             }
@@ -163,9 +163,9 @@ public class Board {
         if (column < 0 || column >= SIZE || line < 0 || line >= SIZE)
             return Optional.empty();
 
-        if (this.tiles[line][column] != null)
+        if (this.hasTileAt(column, line))
             return Optional.of(this.tiles[line][column]);
         else
-            return Optional.ofNullable(additionalTiles.get(new Position(column, line)));
+            return Optional.ofNullable(additionalTiles.get(new Position(column, line, Direction.HORIZONTAL)));
     }
 }
