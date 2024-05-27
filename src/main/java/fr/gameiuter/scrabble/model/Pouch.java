@@ -56,12 +56,10 @@ public class Pouch {
     }
 
     public Optional<Tile> draw() {
-        int size = tiles.size();
-
-        if (size == 0)
+        if (tiles.isEmpty())
             return Optional.empty();
 
-        Tile result = tiles.get(this.random.nextInt(size));
+        Tile result = tiles.get(this.random.nextInt(tiles.size()));
         tiles.remove(result);
         return Optional.of(result);
     }
@@ -78,8 +76,7 @@ public class Pouch {
         return this.tiles.size();
     }
 
-    @Override
-    public String toString() {
-        return this.tiles.toString();
+    public List<Tile> tiles() {
+        return tiles;
     }
 }
