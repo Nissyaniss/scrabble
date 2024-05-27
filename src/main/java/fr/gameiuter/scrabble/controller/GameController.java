@@ -41,11 +41,7 @@ public class GameController {
             this.pouch.putBack(tile);
         }
     }
-
-    public Pouch getPouch() {
-        return this.pouch;
-    }
-
+    
     public Player player() {
         return this.player;
     }
@@ -63,7 +59,7 @@ public class GameController {
 
     public Integer computeScore(Map<Position, Tile> placedTiles, Direction direction) {
         int score = 0;
-        Direction perpendicular = direction.perpendicular();
+        Direction perpendicular = direction.rotate();
 
         // the placed tiles all are on the same the line, and are all connected (possibly by tiles that are already on the board)
         // its means we can use any tile of the word and computeWordScore will find the first one
@@ -77,10 +73,12 @@ public class GameController {
     }
 
     private Integer computeWordScore(Map<Position, Tile> placedTiles, Position position, Direction direction) {
-        int tilesInWord = 0;
         int wordMultiplier = 1;
         int score = 0;
         Word word = this.board.getWordAt(position, direction, placedTiles);
+        if (word.letterCount() <= 1)
+            return 0;
+
         position = word.position();
 
         for (Tile tile : word.tiles()) {
@@ -90,13 +88,9 @@ public class GameController {
                 wordMultiplier *= this.board.getSquareAt(position).wordMultiplier();
             }
             score += tile.score() * tileMultiplier;
-            tilesInWord++;
             position = position.next(direction);
         }
 
-        if (tilesInWord > 1)
-            return score * wordMultiplier;
-        else
-            return 0;
+        return score * wordMultiplier;
     }
 }

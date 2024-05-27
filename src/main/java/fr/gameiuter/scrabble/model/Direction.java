@@ -4,7 +4,7 @@ public enum Direction {
     HORIZONTAL,
     VERTICAL;
 
-    public Direction perpendicular() {
+    public Direction rotate() {
         return this == Direction.HORIZONTAL ? Direction.VERTICAL : Direction.HORIZONTAL;
     }
 }

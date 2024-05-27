@@ -21,6 +21,10 @@ public class Word {
         return this.tiles;
     }
 
+    public int letterCount() {
+        return this.tiles.size();
+    }
+
     @Override
     public String toString() {
         return "Word{" +
