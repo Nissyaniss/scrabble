@@ -7,15 +7,15 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestPouch {
+class PouchTest {
     private static Pouch pouch;
     private static Pouch emptyPouch;
 
     @BeforeAll
     static void initAll() {
-        TestPouch.pouch = new Pouch();
-        TestPouch.emptyPouch = new Pouch();
-        TestPouch.emptyPouch.tiles().clear();
+        PouchTest.pouch = new Pouch();
+        PouchTest.emptyPouch = new Pouch();
+        PouchTest.emptyPouch.tiles().clear();
     }
 
     @Test
