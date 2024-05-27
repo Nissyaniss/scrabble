@@ -41,6 +41,10 @@ public class Position {
         return this.column < min || this.column >= max || this.line < min || this.line >= max;
     }
 
+    public Direction direction() {
+        return direction;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
