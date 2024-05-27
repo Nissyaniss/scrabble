@@ -67,16 +67,16 @@ public class Board {
         return squares;
     }
 
-    public boolean checkPlacement(Integer wordLength, Integer x, Integer y, Direction direction) {
+    public boolean checkPlacement(Integer wordLength, Integer column, Integer line, Direction direction) {
 
         if (this.hasTileAt(Board.MIDDLE, Board.MIDDLE)) {
-            return checkFirstMove(wordLength, x, y, direction);
+            return checkFirstMove(wordLength, column, line, direction);
         }
 
         return checkNormalMove(wordLength, column, line, direction);
     }
 
-    private boolean checkNormalMoves(Integer wordLength, Integer column, Integer line, Direction direction) {
+    private boolean checkNormalMove(Integer wordLength, Integer column, Integer line, Direction direction) {
         if (direction.equals(Direction.HORIZONTAL)) {
             for (int letterIndex = column; letterIndex <= column + wordLength; letterIndex++) {
                 if (this.tileHasNeighbors(column, letterIndex)) {
