@@ -69,7 +69,7 @@ public class Board {
 
     public boolean checkPlacement(Integer wordLength, Integer column, Integer line, Direction direction) {
 
-        if (this.hasTileAt(Board.MIDDLE, Board.MIDDLE)) {
+        if (!this.hasTileAt(Board.MIDDLE, Board.MIDDLE)) {
             return checkFirstMove(wordLength, column, line, direction);
         }
 
@@ -79,13 +79,13 @@ public class Board {
     private boolean checkNormalMove(Integer wordLength, Integer column, Integer line, Direction direction) {
         if (direction.equals(Direction.HORIZONTAL)) {
             for (int letterIndex = column; letterIndex <= column + wordLength; letterIndex++) {
-                if (this.tileHasNeighbors(column, letterIndex)) {
+                if (this.tileHasNeighbors(letterIndex, line)) {
                     return true;
                 }
             }
         } else {
             for (int letterIndex = line; letterIndex <= line + wordLength; letterIndex++) {
-                if (this.tileHasNeighbors(letterIndex, line)) {
+                if (this.tileHasNeighbors(column, letterIndex)) {
                     return true;
                 }
             }
@@ -96,7 +96,7 @@ public class Board {
 
     private boolean tileHasNeighbors(Integer column, Integer line) {
         return (this.hasTileAt(column + 1, line)) || (this.hasTileAt(column - 1, line))
-                || (this.hasTileAt(column, line + 1)) || (this.hasTileAt(column - 1, line - 1));
+                || (this.hasTileAt(column, line + 1)) || (this.hasTileAt(column, line - 1));
     }
 
     private boolean checkFirstMove(Integer wordLength, Integer column, Integer line, Direction direction) {
