@@ -140,7 +140,7 @@ public class ScrabbleApplicationConsole {
         this.controller.player().incrementScore(score);
 
         for (Map.Entry<Position, Tile> entry : word.entrySet()) {
-            board.placeTile(entry.getValue(), entry.getKey().x(), entry.getKey().y());
+            board.placeTile(entry.getValue(), entry.getKey().column(), entry.getKey().line());
         }
         Console.displayBoard(board);
         Console.displayRack(rack);

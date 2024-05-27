@@ -13,9 +13,9 @@ public class Board {
     public Board() {
         this.squares = new Square[SIZE][SIZE];
         this.tiles = new Tile[SIZE][SIZE];
-        for (int y = 0; y < SIZE; y++) {
-            for (int x = 0; x < SIZE; x++) {
-                this.squares[y][x] = Square.NORMAL;
+        for (int line = 0; line < SIZE; line++) {
+            for (int column = 0; column < SIZE; column++) {
+                this.squares[line][column] = Square.NORMAL;
             }
         }
         this.squares[MIDDLE][MIDDLE] = Square.START;
@@ -121,10 +121,10 @@ public class Board {
         // the placed tiles all are on the same the line, and are all connected (possibly by tiles that are already on the board)
         // its means we can use any tile of the word and computeWordScore will find the first one
         Position tilePosition = placedTiles.keySet().iterator().next();
-        score += this.computeWordScore(placedTiles, tilePosition.x(), tilePosition.y(), direction);
+        score += this.computeWordScore(placedTiles, tilePosition.column(), tilePosition.line(), direction);
 
         for (Position position : placedTiles.keySet())
-            score += this.computeWordScore(placedTiles, position.x(), position.y(), perpendicular);
+            score += this.computeWordScore(placedTiles, position.column(), position.line(), perpendicular);
 
         return score;
     }

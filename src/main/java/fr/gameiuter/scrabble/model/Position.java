@@ -3,20 +3,20 @@ package fr.gameiuter.scrabble.model;
 import java.util.Objects;
 
 public class Position {
-    private final Integer x;
-    private final Integer y;
+    private final Integer column;
+    private final Integer line;
 
-    public Position(Integer x, Integer y) {
-        this.x = x;
-        this.y = y;
+    public Position(Integer column, Integer line) {
+        this.column = column;
+        this.line = line;
     }
 
-    public Integer x() {
-        return x;
+    public Integer column() {
+        return column;
     }
 
-    public Integer y() {
-        return y;
+    public Integer line() {
+        return line;
     }
 
     @Override
@@ -24,11 +24,11 @@ public class Position {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Position position = (Position) o;
-        return Objects.equals(x, position.x) && Objects.equals(y, position.y);
+        return Objects.equals(column, position.column) && Objects.equals(line, position.line);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
+        return Objects.hash(column, line);
     }
 }

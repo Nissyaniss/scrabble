@@ -45,27 +45,27 @@ public class Console {
     public static void displayBoard(Board board) {
         StringBuilder builder = new StringBuilder();
         builder.append("┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐\n");
-        for (int y = 0; y < Board.SIZE - 1; y++) {
-            for (int x = 0; x < Board.SIZE; x++) {
+        for (int line = 0; line < Board.SIZE - 1; line++) {
+            for (int column = 0; column < Board.SIZE; column++) {
                 builder.append("│ ");
-                if (board.tiles()[y][x] != null) {
-                    builder.append(board.tiles()[y][x].letter());
+                if (board.tiles()[line][column] != null) {
+                    builder.append(board.tiles()[line][column].letter());
                 } else {
-                    builder.append(board.squares()[y][x].symbol());
+                    builder.append(board.squares()[line][column].symbol());
                 }
                 builder.append(" ");
             }
-            builder.append("│ " + (y + 1) + "\n");
+            builder.append("│ " + (line + 1) + "\n");
             builder.append("├───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┼───┤\n");
 
         }
 
-        for (int x = 0; x < Board.SIZE; x++) {
+        for (int column = 0; column < Board.SIZE; column++) {
             builder.append("│ ");
-            if (board.tiles()[Board.SIZE - 1][x] != null) {
-                builder.append(board.tiles()[Board.SIZE - 1][x].letter());
+            if (board.tiles()[Board.SIZE - 1][column] != null) {
+                builder.append(board.tiles()[Board.SIZE - 1][column].letter());
             } else {
-                builder.append(board.squares()[Board.SIZE - 1][x].symbol());
+                builder.append(board.squares()[Board.SIZE - 1][column].symbol());
             }
             builder.append(" ");
         }
