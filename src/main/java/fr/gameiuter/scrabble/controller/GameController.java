@@ -5,7 +5,9 @@ import fr.gameiuter.scrabble.model.Player;
 import fr.gameiuter.scrabble.model.Pouch;
 import fr.gameiuter.scrabble.model.Tile;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class GameController {
@@ -35,11 +37,15 @@ public class GameController {
     }
 
     public void swap(Player player, Collection<Tile> tiles) {
+        List<Tile> swappedTiles = new ArrayList<>();
         for (Tile tile : tiles) {
             player.rack().remove(tile);
-            this.pouch.putBack(tile);
+            swappedTiles.add(tile);
         }
         this.draw(player);
+        for (Tile tile : swappedTiles) {
+            this.pouch.putBack(tile);
+        }
     }
 
     public Pouch getPouch() {

@@ -16,22 +16,19 @@ public class Pouch {
                 this.tiles.add(new Tile(letter));
             }
         }
-
-        this.tiles.add(Tile.blank());
-        this.tiles.add(Tile.blank());
     }
 
     public Optional<Tile> draw() {
-        if (tiles.isEmpty())
+        if (this.tiles.isEmpty())
             return Optional.empty();
 
-        Tile result = tiles.get(this.random.nextInt(tiles.size()));
-        tiles.remove(result);
+        Tile result = this.tiles.get(this.random.nextInt(this.tiles.size()));
+        this.tiles.remove(result);
         return Optional.of(result);
     }
 
     public void putBack(Tile tile) {
-        tiles.add(tile);
+        this.tiles.add(tile);
     }
 
     public boolean isEmpty() {
@@ -43,6 +40,6 @@ public class Pouch {
     }
 
     public List<Tile> tiles() {
-        return tiles;
+        return this.tiles;
     }
 }

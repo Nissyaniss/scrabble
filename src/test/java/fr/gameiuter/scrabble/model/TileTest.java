@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TileTest {
     @Test
     void blankTileAttributesAreCorrect() {
-        Tile joker = Tile.blank();
+        Tile joker = new Tile(FrenchLetter.BLANK);
 
         assertEquals('*', joker.letter());
         assertEquals(0, joker.score());

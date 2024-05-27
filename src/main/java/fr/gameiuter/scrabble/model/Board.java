@@ -33,27 +33,29 @@ public class Board {
         this.setSquareWithDiagonalSymmetry(7, 3, Square.DOUBLE_LETTER);
     }
 
-    private void setSquareWithDiagonalSymmetry(int x, int y, Square square) {
-        this.setSquareWithHorizontalSymmetry(x, y, square);
-        this.setSquareWithHorizontalSymmetry(y, x, square);
+    private void setSquareWithDiagonalSymmetry(int column, int line, Square square) {
+        this.setSquareWithHorizontalSymmetry(column, line, square);
+        this.setSquareWithHorizontalSymmetry(line, column, square);
     }
 
-    private void setSquareWithHorizontalSymmetry(int x, int y, Square square) {
-        this.setSquareWithVerticalSymmetry(x, y, square);
-        this.setSquareWithVerticalSymmetry(SIZE - 1 - x, y, square);
+    private void setSquareWithHorizontalSymmetry(int column, int line, Square square) {
+        this.setSquareWithVerticalSymmetry(column, line, square);
+        this.setSquareWithVerticalSymmetry(SIZE - 1 - column, line, square);
     }
 
-    private void setSquareWithVerticalSymmetry(int x, int y, Square square) {
-        this.squares[y][x] = square;
-        this.squares[SIZE - 1 - y][x] = square;
+    private void setSquareWithVerticalSymmetry(int column, int line, Square square) {
+        this.squares[line][column] = square;
+        this.squares[SIZE - 1 - line][column] = square;
     }
 
-    public boolean hasTileAt(int x, int y) {
-        return this.tiles[y][x] != null;
+    public boolean hasTileAt(int column, int line) {
+        if (column < 0 || column >= SIZE || line < 0 || line >= SIZE)
+            return false;
+        return this.tiles[line][column] != Tile.NO;
     }
 
-    public void placeTile(Tile tile, int x, int y) {
-        tiles[y][x] = tile;
+    public void placeTile(Tile tile, int column, int line) {
+        tiles[line][column] = tile;
     }
 
     public Tile[][] tiles() {
@@ -64,16 +66,15 @@ public class Board {
         return squares;
     }
 
-    public boolean checkPlacement(Integer wordLength, Integer x, Integer y, Direction direction) {
-
+    public boolean checkPlacement(Integer wordLength, int column, int line, Direction direction) {
         if (tiles[Board.MIDDLE][Board.MIDDLE] == null) {
-            return checkFirstMove(wordLength, x, y, direction);
+            return checkFirstMove(wordLength, column, line, direction);
         }
 
-        return checkNormalMoves(wordLength, x, y, direction);
+        return checkNormalMove(wordLength, column, line, direction);
     }
 
-    private boolean checkNormalMoves(Integer wordLength, Integer x, Integer y, Direction direction) {
+    private boolean checkNormalMove(Integer wordLength, Integer x, Integer y, Direction direction) {
         if (direction.equals(Direction.HORIZONTAL)) {
             for (int i = x; i <= x + wordLength; i++) {
                 if (((x + wordLength >= Board.SIZE && y + 1 <= Board.SIZE && tiles[y + 1][i] != null) // On top & On Bottom
@@ -128,36 +129,36 @@ public class Board {
         return score;
     }
 
-    private Integer computeWordScore(Map<Position, Tile> placedTiles, int x, int y, Direction direction) {
+    private Integer computeWordScore(Map<Position, Tile> placedTiles, int column, int line, Direction direction) {
         int tilesInWord = 0;
         int wordMultiplier = 1;
         int score = 0;
 
         if (direction == Direction.HORIZONTAL) {
-            int startX = x;
-            while (getAnyTile(placedTiles, startX - 1, y).isPresent()) startX--;
-            x = startX;
+            int startColumn = column;
+            while (getAnyTile(placedTiles, startColumn - 1, line).isPresent()) startColumn--;
+            column = startColumn;
         } else {
-            int startY = y;
-            while (getAnyTile(placedTiles, x, startY - 1).isPresent()) startY--;
-            y = startY;
+            int startLine = line;
+            while (getAnyTile(placedTiles, column, startLine - 1).isPresent()) startLine--;
+            line = startLine;
         }
 
-        while (getAnyTile(placedTiles, x, y).isPresent()) {
+        while (getAnyTile(placedTiles, column, line).isPresent()) {
             Tile tile;
             int tileMultiplier = 1;
-            if (this.tiles[y][x] != null) {
-                tile = this.tiles[y][x];
+            if (this.tiles[line][column] != null) {
+                tile = this.tiles[line][column];
             } else {
-                tile = placedTiles.get(new Position(x, y));
-                tileMultiplier = this.squares[y][x].letterMultiplier();
-                wordMultiplier *= this.squares[y][x].wordMultiplier();
+                tile = placedTiles.get(new Position(column, line));
+                tileMultiplier = this.squares[line][column].letterMultiplier();
+                wordMultiplier *= this.squares[line][column].wordMultiplier();
             }
             score += tile.score() * tileMultiplier;
             if (direction == Direction.HORIZONTAL)
-                x++;
+                column++;
             else
-                y++;
+                line++;
             tilesInWord++;
         }
 
@@ -167,13 +168,13 @@ public class Board {
             return 0;
     }
 
-    private Optional<Tile> getAnyTile(Map<Position, Tile> additionalTiles, int x, int y) {
-        if (x < 0 || x >= SIZE || y < 0 || y >= SIZE)
+    private Optional<Tile> getAnyTile(Map<Position, Tile> additionalTiles, int column, int line) {
+        if (column < 0 || column >= SIZE || line < 0 || line >= SIZE)
             return Optional.empty();
 
-        if (this.tiles[y][x] != null)
-            return Optional.of(this.tiles[y][x]);
+        if (this.tiles[line][column] != null)
+            return Optional.of(this.tiles[line][column]);
         else
-            return Optional.ofNullable(additionalTiles.get(new Position(x, y)));
+            return Optional.ofNullable(additionalTiles.get(new Position(column, line)));
     }
 }

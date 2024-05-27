@@ -3,6 +3,8 @@ package fr.gameiuter.scrabble.model;
 import java.util.Objects;
 
 public class Tile {
+    public static Tile NO = null;
+
     private final char letter;
     private final int score;
 
@@ -14,10 +16,6 @@ public class Tile {
     public Tile(FrenchLetter letter) {
         this.letter = letter.letter();
         this.score = letter.score();
-    }
-
-    public static Tile blank() {
-        return new Tile('*', 0);
     }
 
     public Character letter() {
