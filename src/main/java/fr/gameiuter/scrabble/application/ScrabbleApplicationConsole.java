@@ -109,7 +109,7 @@ public class ScrabbleApplicationConsole {
                 Console.message(Console.SEPARATOR);
                 Console.message("Cette lettre sera placée à la " + direct2 + " " + (i + 1) + " et à la " + direct1 + " " + (valeur1 + 1));
                 int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
-                letter = rack.tile(indexLetter);
+                letter = rack.tileAt(indexLetter);
                 Console.message(Console.SEPARATOR);
                 if (letter.isJoker()) {
                     String result;
@@ -172,7 +172,7 @@ public class ScrabbleApplicationConsole {
                 Console.message("Cette lettre va déjà être échangée");
             } else {
                 indexes.add(index);
-                toExchange.add(player.rack().tile(index - 1));
+                toExchange.add(player.rack().tileAt(index - 1));
             }
         }
 

@@ -26,9 +26,7 @@ public class Rack {
         tiles.remove(tile);
     }
 
-
-
-    public Tile tile(int index) {
+    public Tile tileAt(int index) {
         return tiles.get(index);
     }
 
