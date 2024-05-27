@@ -6,6 +6,7 @@ import java.util.Optional;
 public class Board {
     public static final Integer SIZE = 15;
     public static final Integer MIDDLE = SIZE / 2;
+    public static final Integer LAST_LINE_OR_COLUMN = SIZE - 1;
 
     private final Square[][] squares;
     private final Tile[][] tiles;
@@ -40,12 +41,12 @@ public class Board {
 
     private void setSquareWithHorizontalSymmetry(int column, int line, Square square) {
         this.setSquareWithVerticalSymmetry(column, line, square);
-        this.setSquareWithVerticalSymmetry(SIZE - 1 - column, line, square);
+        this.setSquareWithVerticalSymmetry(LAST_LINE_OR_COLUMN - column, line, square);
     }
 
     private void setSquareWithVerticalSymmetry(int column, int line, Square square) {
         this.squares[line][column] = square;
-        this.squares[SIZE - 1 - line][column] = square;
+        this.squares[LAST_LINE_OR_COLUMN - line][column] = square;
     }
 
     public boolean hasTileAt(int column, int line) {

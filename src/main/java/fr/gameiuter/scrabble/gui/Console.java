@@ -45,7 +45,7 @@ public class Console {
     public static void displayBoard(Board board) {
         StringBuilder builder = new StringBuilder();
         builder.append("┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐\n");
-        for (int line = 0; line < Board.SIZE - 1; line++) {
+        for (int line = 0; line < Board.LAST_LINE_OR_COLUMN; line++) {
             for (int column = 0; column < Board.SIZE; column++) {
                 builder.append("│ ");
                 if (board.tiles()[line][column] != null) {
@@ -62,10 +62,10 @@ public class Console {
 
         for (int column = 0; column < Board.SIZE; column++) {
             builder.append("│ ");
-            if (board.tiles()[Board.SIZE - 1][column] != null) {
-                builder.append(board.tiles()[Board.SIZE - 1][column].letter());
+            if (board.tiles()[Board.LAST_LINE_OR_COLUMN][column] != null) {
+                builder.append(board.tiles()[Board.LAST_LINE_OR_COLUMN][column].letter());
             } else {
-                builder.append(board.squares()[Board.SIZE - 1][column].symbol());
+                builder.append(board.squares()[Board.LAST_LINE_OR_COLUMN][column].symbol());
             }
             builder.append(" ");
         }

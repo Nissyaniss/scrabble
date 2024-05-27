@@ -89,8 +89,8 @@ public class BoardTest {
 
         @Test
         void verticalAtMax() {
-            word.put(new Position(Board.SIZE - 1, 1), new Tile(FrenchLetter.T));
-            word.put(new Position(Board.SIZE - 1, 2), new Tile(FrenchLetter.Z));
+            word.put(new Position(Board.LAST_LINE_OR_COLUMN, 1), new Tile(FrenchLetter.T));
+            word.put(new Position(Board.LAST_LINE_OR_COLUMN, 2), new Tile(FrenchLetter.Z));
 
             // 1 + 10 = 11
             assertEquals(11, board.computeScore(word, Direction.VERTICAL));
