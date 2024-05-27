@@ -77,12 +77,12 @@ public class Board {
         return squares;
     }
 
-    public boolean checkPlacement(Integer wordLength, Integer column, Integer line, Direction direction) {
+    public boolean checkPlacement(Integer wordLength, Position position, Direction direction) {
         if (!this.hasTileAt(new Position(Board.MIDDLE, Board.MIDDLE))) {
-            return checkFirstMove(wordLength, new Position(column, line), direction);
+            return checkFirstMove(wordLength, position, direction);
         }
 
-        return checkNormalMove(wordLength, new Position(column, line), direction);
+        return checkNormalMove(wordLength, position, direction);
     }
 
     private boolean checkNormalMove(Integer wordLength, Position position, Direction direction) {

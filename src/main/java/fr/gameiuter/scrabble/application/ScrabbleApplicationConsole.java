@@ -95,7 +95,7 @@ public class ScrabbleApplicationConsole {
                 end = Console.inputIntegerBetween("Choisissez la " + direct2 + " de fin du mot: ", columnIfWordIVerticalElseLine + 1, Integer.min(columnIfWordIVerticalElseLine + 1 + rack.numberOfTiles(), Board.SIZE)) - 1;
                 length = end - columnIfWordIVerticalElseLine;
 
-                if (choix == 1 ? board.checkPlacement(length, columnIfWordIVerticalElseLine, lineeIfWordHorizontalElseColumn, direction) : board.checkPlacement(length, lineeIfWordHorizontalElseColumn, columnIfWordIVerticalElseLine, direction)) {
+                if (choix == 1 ? board.checkPlacement(length, new Position(columnIfWordIVerticalElseLine, lineeIfWordHorizontalElseColumn), direction) : board.checkPlacement(length, new Position(lineeIfWordHorizontalElseColumn, columnIfWordIVerticalElseLine), direction)) {
                     break;
                 } else {
                     Console.message("Vous ne pouvez pas placer de mot à cet endroit");
