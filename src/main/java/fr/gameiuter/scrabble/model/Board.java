@@ -103,7 +103,7 @@ public class Board {
 
     private boolean checkFirstMove(Integer wordLength, Position position, Direction direction) {
         return ((direction.equals(Direction.HORIZONTAL) && position.line().equals(Board.MIDDLE) && position.column() <= Board.MIDDLE && position.column() + wordLength >= Board.MIDDLE)
-                || (direction.equals(Direction.VERTICAL) && position.line().equals(Board.MIDDLE) && position.line() <= Board.MIDDLE && position.line() + wordLength >= Board.MIDDLE));
+                || (direction.equals(Direction.VERTICAL) && position.column().equals(Board.MIDDLE) && position.line() <= Board.MIDDLE && position.line() + wordLength >= Board.MIDDLE));
     }
 
     public Word getWordAt(Position position, Direction direction, Map<Position, Tile> additionalTiles) {
