@@ -60,7 +60,7 @@ public class ScrabbleApplicationConsole {
         Rack rack = controller.player().rack();
         HashMap<Position, Tile> word = new HashMap<>();
         Direction direction;
-        Tile letter;
+        Tile tile;
 
         Console.displayBoard(board);
         Console.displayRack(rack);
@@ -109,23 +109,23 @@ public class ScrabbleApplicationConsole {
                 Console.message(Console.SEPARATOR);
                 Console.message("Cette lettre sera placée à la " + direct2 + " " + (i + 1) + " et à la " + direct1 + " " + (valeur1 + 1));
                 int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
-                letter = rack.tileAt(indexLetter);
+                tile = rack.tileAt(indexLetter);
                 Console.message(Console.SEPARATOR);
-                if (letter.isJoker()) {
+                if (tile.isJoker()) {
                     String result;
                     while (true) {
                         result = Console.input("Le jeton choisi est un joker, quelle lettre devrait-il être ? ");
                         result = result.toLowerCase();
                         if (result.length() == 1 && Character.isAlphabetic(result.charAt(0))) {
-                            letter.setLetter(result.charAt(0));
+                            tile = new Tile(result.charAt(0), 0);
                             break;
                         } else {
                             Console.message("Ce que vous avez rentré n'est pas une lettre.");
                         }
                     }
                 }
-                word.put(choix == 1 ? new Position(i, valeur1) : new Position(valeur1, i), letter);
-                rack.remove(letter);
+                word.put(choix == 1 ? new Position(i, valeur1) : new Position(valeur1, i), tile);
+                rack.remove(tile);
                 Console.displayRack(rack);
             }
 

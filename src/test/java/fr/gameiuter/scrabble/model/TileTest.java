@@ -15,21 +15,12 @@ public class TileTest {
     }
 
     @Test
-    void blankTileLettreCanBeChanged() {
-        Tile joker = Tile.blank();
-
-        joker.setLetter('a');
-
-        assertEquals('a', joker.letter());
-    }
-
-    @Test
     void toStringRepresentation() {
-        assertEquals("Tile(letter=a, score=1, isJoker=false)", Tile.A.toString());
+        assertEquals("Tile(letter=a, score=1)", new Tile(FrenchLetter.A).toString());
     }
 
     @Test
     void differentTileIsNotEqual() {
-        assertNotEquals(Tile.A, Tile.B);
+        assertNotEquals(new Tile(FrenchLetter.A), new Tile(FrenchLetter.B));
     }
 }

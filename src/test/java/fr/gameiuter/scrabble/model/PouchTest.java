@@ -38,13 +38,13 @@ class PouchTest {
 
     @Test
     void testPutBack() {
-        Tile z = Tile.Z;
+        Tile z = new Tile(FrenchLetter.Z);
         int counter = 0;
 
         pouch.putBack(z);
 
         for (Tile tile : pouch.tiles()) {
-            if (tile == z) {
+            if (tile.equals(z)) {
                 counter++;
             }
         }
