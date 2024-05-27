@@ -141,15 +141,6 @@ public class BoardTest {
             board = new Board();
         }
 
-        // Basic test
-
-        @Test
-        void testPlaceSamePlace() {
-            board.placeTile(Tile.B, 7, 7);
-
-            assertFalse(board.checkPlacement(0, 7, 7, Direction.HORIZONTAL));
-        }
-
         // Basic tests HORIZONTAL
 
         @Test

@@ -16,9 +16,12 @@ public class Rack {
         return this.tiles.size();
     }
 
-    public void add(Tile tile) {
+    public boolean add(Tile tile) {
         if (this.tiles.size() != SIZE) {
             tiles.add(tile);
+            return true;
+        } else {
+            return false;
         }
     }
 
