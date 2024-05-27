@@ -13,7 +13,7 @@ public class Position {
         this.direction = direction;
     }
 
-    public void decrement() {
+    public void previous() {
         if (this.direction.equals(Direction.HORIZONTAL)) {
             this.column -= 1;
         } else {
@@ -21,7 +21,7 @@ public class Position {
         }
     }
 
-    public void increment() {
+    public void next() {
         if (this.direction.equals(Direction.HORIZONTAL)) {
             this.column += 1;
         } else {
@@ -35,6 +35,10 @@ public class Position {
 
     public Integer line() {
         return line;
+    }
+
+    public boolean containedWithinBounds(int min, int max) {
+        return this.column < min || this.column >= max || this.line < min || this.line >= max;
     }
 
     @Override
