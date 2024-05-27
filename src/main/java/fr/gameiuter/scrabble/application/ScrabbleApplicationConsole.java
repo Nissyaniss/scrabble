@@ -119,6 +119,7 @@ public class ScrabbleApplicationConsole {
                 int indexLetter = Console.inputIntegerBetween("Rentrez l'indice de la lettre à déposer: ", 1, rack.numberOfTiles()) - 1;
                 tile = rack.tileAt(indexLetter);
                 Console.message(Console.SEPARATOR);
+                rack.remove(tile);
                 if (tile.isJoker()) {
                     String result;
                     while (true) {
@@ -133,7 +134,6 @@ public class ScrabbleApplicationConsole {
                     }
                 }
                 word.put(position, tile);
-                rack.remove(tile);
                 Console.displayRack(rack);
 
                 position = position.next(direction);
