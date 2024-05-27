@@ -1,14 +1,8 @@
 package fr.gameiuter.scrabble.controller;
 
-import fr.gameiuter.scrabble.model.Board;
-import fr.gameiuter.scrabble.model.Player;
-import fr.gameiuter.scrabble.model.Pouch;
-import fr.gameiuter.scrabble.model.Tile;
+import fr.gameiuter.scrabble.model.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class GameController {
     private final Board board;
@@ -65,5 +59,44 @@ public class GameController {
 
     public Board board() {
         return this.board;
+    }
+
+    public Integer computeScore(Map<Position, Tile> placedTiles, Direction direction) {
+        int score = 0;
+        Direction perpendicular = direction.perpendicular();
+
+        // the placed tiles all are on the same the line, and are all connected (possibly by tiles that are already on the board)
+        // its means we can use any tile of the word and computeWordScore will find the first one
+        Position tilePosition = placedTiles.keySet().iterator().next();
+        score += this.computeWordScore(placedTiles, tilePosition, direction);
+
+        for (Position position : placedTiles.keySet())
+            score += this.computeWordScore(placedTiles, position, perpendicular);
+
+        return score;
+    }
+
+    private Integer computeWordScore(Map<Position, Tile> placedTiles, Position position, Direction direction) {
+        int tilesInWord = 0;
+        int wordMultiplier = 1;
+        int score = 0;
+        Word word = this.board.getWordAt(position, direction, placedTiles);
+        position = word.position();
+
+        for (Tile tile : word.tiles()) {
+            int tileMultiplier = 1;
+            if (!this.board.hasTileAt(position)) {
+                tileMultiplier = this.board.getSquareAt(position).letterMultiplier();
+                wordMultiplier *= this.board.getSquareAt(position).wordMultiplier();
+            }
+            score += tile.score() * tileMultiplier;
+            tilesInWord++;
+            position = position.next(direction);
+        }
+
+        if (tilesInWord > 1)
+            return score * wordMultiplier;
+        else
+            return 0;
     }
 }

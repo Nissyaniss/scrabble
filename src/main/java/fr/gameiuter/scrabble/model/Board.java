@@ -1,5 +1,7 @@
 package fr.gameiuter.scrabble.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -49,10 +51,18 @@ public class Board {
         this.squares[LAST_LINE_OR_COLUMN - line][column] = square;
     }
 
-    public boolean hasTileAt(int column, int line) {
-        if (column < 0 || column >= SIZE || line < 0 || line >= SIZE)
+    public Square getSquareAt(Position position) {
+        return this.squares[position.line()][position.column()];
+    }
+
+    public Tile getTileAt(Position position) {
+        return this.tiles[position.line()][position.column()];
+    }
+
+    public boolean hasTileAt(Position position) {
+        if (!position.containedWithinBounds(0, LAST_LINE_OR_COLUMN))
             return false;
-        return this.tiles[line][column] != Tile.NO;
+        return this.getTileAt(position) != Tile.NO;
     }
 
     public void placeTile(Tile tile, int column, int line) {
@@ -68,97 +78,54 @@ public class Board {
     }
 
     public boolean checkPlacement(Integer wordLength, Integer column, Integer line, Direction direction) {
-
-        if (!this.hasTileAt(Board.MIDDLE, Board.MIDDLE)) {
-            return checkFirstMove(wordLength, new Position(column, line, direction));
+        if (!this.hasTileAt(new Position(Board.MIDDLE, Board.MIDDLE))) {
+            return checkFirstMove(wordLength, new Position(column, line), direction);
         }
 
-        return checkNormalMove(wordLength, new Position(column, line, direction));
+        return checkNormalMove(wordLength, new Position(column, line), direction);
     }
 
-    private boolean checkNormalMove(Integer wordLength, Position position) {
+    private boolean checkNormalMove(Integer wordLength, Position position, Direction direction) {
         for (int i = 0; i <= wordLength; i++) {
             if (this.tileHasNeighbors(position)) {
                 return true;
             }
-            position.next();
+            position = position.next(direction);
         }
 
         return false;
     }
 
     private boolean tileHasNeighbors(Position position) {
-        return (this.hasTileAt(position.column() + 1, position.line()) || (this.hasTileAt(position.column() - 1, position.line()))
-                || (this.hasTileAt(position.column(), position.line() + 1)) || (this.hasTileAt(position.column(), position.line() - 1)));
+        return (this.hasTileAt(position.next(Direction.HORIZONTAL)) || (this.hasTileAt(position.previous(Direction.HORIZONTAL)))
+                || (this.hasTileAt(position.next(Direction.VERTICAL))) || (this.hasTileAt(position.previous(Direction.VERTICAL))));
     }
 
-    private boolean checkFirstMove(Integer wordLength, Position position) {
-        return ((position.direction().equals(Direction.HORIZONTAL) && position.line().equals(Board.MIDDLE) && position.column() <= Board.MIDDLE && position.column() + wordLength >= Board.MIDDLE)
-                || (position.direction().equals(Direction.VERTICAL) && position.line().equals(Board.MIDDLE) && position.line() <= Board.MIDDLE && position.line() + wordLength >= Board.MIDDLE));
+    private boolean checkFirstMove(Integer wordLength, Position position, Direction direction) {
+        return ((direction.equals(Direction.HORIZONTAL) && position.line().equals(Board.MIDDLE) && position.column() <= Board.MIDDLE && position.column() + wordLength >= Board.MIDDLE)
+                || (direction.equals(Direction.VERTICAL) && position.line().equals(Board.MIDDLE) && position.line() <= Board.MIDDLE && position.line() + wordLength >= Board.MIDDLE));
     }
 
-    public Integer computeScore(Map<Position, Tile> placedTiles, Direction direction) {
-        int score = 0;
+    public Word getWordAt(Position position, Direction direction, Map<Position, Tile> additionalTiles) {
+        // go back to start of the word if we're not at it yet
+        while (this.getTileAtWithAdditional(position.previous(direction), additionalTiles).isPresent())
+            position = position.previous(direction);
 
-        Direction perpendicular = direction.perpendicular();
+        Position startPosition = position;
 
-        // the placed tiles all are on the same the line, and are all connected (possibly by tiles that are already on the board)
-        // its means we can use any tile of the word and computeWordScore will find the first one
-        Position tilePosition = placedTiles.keySet().iterator().next();
-        score += this.computeWordScore(placedTiles, tilePosition.column(), tilePosition.line(), direction);
-
-        for (Position position : placedTiles.keySet())
-            score += this.computeWordScore(placedTiles, position.column(), position.line(), perpendicular);
-
-        return score;
-    }
-
-    private Integer computeWordScore(Map<Position, Tile> placedTiles, int column, int line, Direction direction) {
-        int tilesInWord = 0;
-        int wordMultiplier = 1;
-        int score = 0;
-
-        if (direction == Direction.HORIZONTAL) {
-            int startColumn = column;
-            while (getAnyTile(placedTiles, startColumn - 1, line).isPresent()) startColumn--;
-            column = startColumn;
-        } else {
-            int startLine = line;
-            while (getAnyTile(placedTiles, column, startLine - 1).isPresent()) startLine--;
-            line = startLine;
+        List<Tile> tiles = new ArrayList<>();
+        while (this.getTileAtWithAdditional(position, additionalTiles).isPresent()) {
+            tiles.add(this.getTileAtWithAdditional(position, additionalTiles).get());
+            position = position.next(direction);
         }
 
-        while (getAnyTile(placedTiles, column, line).isPresent()) {
-            Tile tile;
-            int tileMultiplier = 1;
-            if (this.hasTileAt(column, line)) {
-                tile = this.tiles[line][column];
-            } else {
-                tile = placedTiles.get(new Position(column, line, direction));
-                tileMultiplier = this.squares[line][column].letterMultiplier();
-                wordMultiplier *= this.squares[line][column].wordMultiplier();
-            }
-            score += tile.score() * tileMultiplier;
-            if (direction == Direction.HORIZONTAL)
-                column++;
-            else
-                line++;
-            tilesInWord++;
-        }
-
-        if (tilesInWord > 1)
-            return score * wordMultiplier;
-        else
-            return 0;
+        return new Word(startPosition, direction, tiles);
     }
 
-    private Optional<Tile> getAnyTile(Map<Position, Tile> additionalTiles, int column, int line) {
-        if (column < 0 || column >= SIZE || line < 0 || line >= SIZE)
-            return Optional.empty();
-
-        if (this.hasTileAt(column, line))
-            return Optional.of(this.tiles[line][column]);
+    public Optional<Tile> getTileAtWithAdditional(Position position, Map<Position, Tile> additionalTiles) {
+        if (this.hasTileAt(position))
+            return Optional.of(this.getTileAt(position));
         else
-            return Optional.ofNullable(additionalTiles.get(new Position(column, line, Direction.HORIZONTAL)));
+            return Optional.ofNullable(additionalTiles.get(position));
     }
 }

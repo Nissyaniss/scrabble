@@ -103,7 +103,8 @@ public class ScrabbleApplicationConsole {
             }
 
             for (int i = columnIfWordIVerticalElseLine; i <= end; i++) {
-                if (choix == 1 ? board.hasTileAt(i, lineeIfWordHorizontalElseColumn) : board.hasTileAt(lineeIfWordHorizontalElseColumn, i))
+                Position currentPosition = choix == 1 ? new Position(i, lineeIfWordHorizontalElseColumn) : new Position(lineeIfWordHorizontalElseColumn, i);
+                if (board.hasTileAt(currentPosition))
                     continue;
 
                 Console.message(Console.SEPARATOR);
@@ -124,7 +125,7 @@ public class ScrabbleApplicationConsole {
                         }
                     }
                 }
-                word.put(choix == 1 ? new Position(i, lineeIfWordHorizontalElseColumn, direction) : new Position(lineeIfWordHorizontalElseColumn, i, direction), tile);
+                word.put(currentPosition, tile);
                 rack.remove(tile);
                 Console.displayRack(rack);
             }
@@ -136,7 +137,7 @@ public class ScrabbleApplicationConsole {
         }
 
 
-        int score = board.computeScore(word, direction);
+        int score = this.controller.computeScore(word, direction);
         this.controller.player().incrementScore(score);
 
         for (Map.Entry<Position, Tile> entry : word.entrySet()) {

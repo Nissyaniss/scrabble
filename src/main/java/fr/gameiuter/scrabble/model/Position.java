@@ -3,29 +3,27 @@ package fr.gameiuter.scrabble.model;
 import java.util.Objects;
 
 public class Position {
-    private final Direction direction;
     private Integer column;
     private Integer line;
 
-    public Position(Integer column, Integer line, Direction direction) {
+    public Position(Integer column, Integer line) {
         this.column = column;
         this.line = line;
-        this.direction = direction;
     }
 
-    public void previous() {
-        if (this.direction.equals(Direction.HORIZONTAL)) {
-            this.column -= 1;
+    public Position previous(Direction direction) {
+        if (direction.equals(Direction.HORIZONTAL)) {
+            return new Position(this.column - 1, this.line);
         } else {
-            this.line -= 1;
+            return new Position(this.column, this.line - 1);
         }
     }
 
-    public void next() {
-        if (this.direction.equals(Direction.HORIZONTAL)) {
-            this.column += 1;
+    public Position next(Direction direction) {
+        if (direction.equals(Direction.HORIZONTAL)) {
+            return new Position(this.column + 1, this.line);
         } else {
-            this.line += 1;
+            return new Position(this.column, this.line + 1);
         }
     }
 
@@ -38,11 +36,7 @@ public class Position {
     }
 
     public boolean containedWithinBounds(int min, int max) {
-        return this.column < min || this.column >= max || this.line < min || this.line >= max;
-    }
-
-    public Direction direction() {
-        return direction;
+        return min <= this.column && this.column <= max && min <= this.line && this.line <= max;
     }
 
     @Override
@@ -56,5 +50,13 @@ public class Position {
     @Override
     public int hashCode() {
         return Objects.hash(column, line);
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "column=" + column +
+                ", line=" + line +
+                '}';
     }
 }
