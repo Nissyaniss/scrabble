@@ -3,9 +3,9 @@ package fr.gameiuter.scrabble.model;
 import java.util.List;
 
 public class Word {
-    private Position position;
-    private Direction direction;
-    private List<Tile> tiles;
+    private final Position position;
+    private final Direction direction;
+    private final List<Tile> tiles;
 
     public Word(Position position, Direction direction, List<Tile> tiles) {
         this.position = position;

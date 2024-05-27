@@ -91,4 +91,16 @@ class BoardTest {
 
         assertTrue(board.checkPlacement(8, new Position(4, 4), Direction.HORIZONTAL));
     }
+
+    // Tests for coverage
+
+    @Test
+    void testTilesGetter() {
+        assertTrue(board.tiles() != null);
+    }
+
+    @Test
+    void testSquaresGetter() {
+        assertTrue(board.squares() != null);
+    }
 }
