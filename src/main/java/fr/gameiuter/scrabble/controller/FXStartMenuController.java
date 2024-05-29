@@ -1,6 +1,7 @@
 package fr.gameiuter.scrabble.controller;
 
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -34,5 +35,11 @@ public class FXStartMenuController {
     protected void handleStart() throws IOException {
         FXMLLoader game = new FXMLLoader(FXStartMenuController.class.getResource("/fr/gameiuter/scrabble/application/Game.fxml"), null, null, (x) -> new FXGameController(player1TextField.getText()));
         startButton.getScene().setRoot(game.load());
+    }
+
+    @FXML
+    protected void quit() {
+        Platform.exit();
+        System.exit(0);
     }
 }
