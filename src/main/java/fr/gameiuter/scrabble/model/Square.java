@@ -17,14 +17,21 @@ public enum Square {
     }
 
     public String symbol() {
-        return switch (this) {
-            case NORMAL -> " ";
-            case START -> "*";
-            case DOUBLE_LETTER -> "2";
-            case TRIPLE_LETTER -> "3";
-            case DOUBLE_WORD -> "²";
-            case TRIPLE_WORD -> "³";
-        };
+        switch (this) {
+            case NORMAL:
+                return " ";
+            case START:
+                return "*";
+            case DOUBLE_LETTER:
+                return "2";
+            case TRIPLE_LETTER:
+                return "3";
+            case DOUBLE_WORD:
+                return "²";
+            case TRIPLE_WORD:
+                return "³";
+        }
+        return "Unreachable";
     }
 
     public int letterMultiplier() {

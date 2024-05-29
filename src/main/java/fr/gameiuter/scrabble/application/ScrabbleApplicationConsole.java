@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class ScrabbleApplicationConsole {
@@ -172,7 +173,7 @@ public class ScrabbleApplicationConsole {
         while (player.rack().numberOfTiles() > 0) {
             Console.message("Voici vos lettres:");
             if (!toExchange.isEmpty()) {
-                Console.message("Les lettres suivantes vont être échangées: " + String.join(", ", toExchange.stream().map(tile -> tile.letter().toString()).toList()));
+                Console.message("Les lettres suivantes vont être échangées: " + String.join(", ", toExchange.stream().map(tile -> tile.letter().toString()).collect(Collectors.joining(", "))));
             }
             Console.displayRack(player.rack());
             int index = Console.inputIntegerBetween("Entrez l'indice de la lettre que vous souhaitez échanger (0 pour s'arrêter): ", 0, 8);
