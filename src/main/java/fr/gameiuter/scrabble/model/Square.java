@@ -2,7 +2,7 @@ package fr.gameiuter.scrabble.model;
 
 public enum Square {
     NORMAL(1, 1),
-    START(1, 1),
+    START(1, 2),
     DOUBLE_LETTER(2, 1),
     TRIPLE_LETTER(3, 1),
     DOUBLE_WORD(1, 2),

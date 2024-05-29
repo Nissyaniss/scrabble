@@ -87,6 +87,8 @@ public class FXGameController {
                         label.setText("MT");
                         backgroundColor = Color.color(216. / 255., 1. / 255., 45. / 255.);
                         break;
+                    case NORMAL:
+                        break;
                 }
                 label.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
             }
