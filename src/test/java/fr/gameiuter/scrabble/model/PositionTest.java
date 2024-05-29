@@ -4,13 +4,40 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PositionTest {
-
+class PositionTest {
     @Test
     void testIsString() {
         Position pos = new Position(1, 1);
 
         assertEquals("Position{column=1, line=1}", pos.toString());
+    }
+
+    @Test
+    void testPreviousHorizontal() {
+        Position pos = new Position(1, 1);
+
+        assertEquals(new Position(0, 1), pos.next(Direction.HORIZONTAL));
+    }
+
+    @Test
+    void testNextHorizontal() {
+        Position pos = new Position(1, 1);
+
+        assertEquals(new Position(2, 1), pos.next(Direction.HORIZONTAL));
+    }
+
+    @Test
+    void testPreviousVertical() {
+        Position pos = new Position(1, 1);
+
+        assertEquals(new Position(1, 0), pos.next(Direction.VERTICAL));
+    }
+
+    @Test
+    void testNextVertical() {
+        Position pos = new Position(1, 1);
+
+        assertEquals(new Position(1, 2), pos.next(Direction.VERTICAL));
     }
 
     @Test
