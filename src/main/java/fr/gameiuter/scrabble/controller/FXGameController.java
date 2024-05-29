@@ -106,8 +106,8 @@ public class FXGameController {
             score.setText(String.valueOf(tile.score()));
             score.setAlignment(Pos.BOTTOM_RIGHT);
             score.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            tileFX.setMinWidth(50);
-            tileFX.setMaxHeight(50);
+            tileFX.setMinSize(TILE_SIZE, TILE_SIZE);
+            tileFX.setMaxSize(TILE_SIZE, TILE_SIZE);
             tileFX.getChildren().addAll(letter, score);
             tileFX.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid; -fx-border-radius: 5px");
             rack.getChildren().add(tileFX);
