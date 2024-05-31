@@ -1,6 +1,7 @@
 package fr.gameiuter.scrabble.gui;
 
 import fr.gameiuter.scrabble.model.Tile;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.ClipboardContent;
