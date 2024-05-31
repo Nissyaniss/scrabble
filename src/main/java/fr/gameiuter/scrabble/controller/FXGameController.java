@@ -40,7 +40,7 @@ public class FXGameController {
             }
         }
     }
-
+    
     private void generateRack() {
         List<Tile> rackTile = gameController.player().rack().tiles();
         rack.getChildren().clear();
@@ -48,6 +48,5 @@ public class FXGameController {
             TileFX tileFX = new TileFX(tile);
             rack.getChildren().add(tileFX);
         }
-
     }
 }

@@ -12,7 +12,13 @@ import javafx.scene.text.Font;
 import static fr.gameiuter.scrabble.gui.TileFX.TILE_SIZE;
 
 public class SquareFX extends Label {
+    private final Color baseColor;
+    private final int column;
+    private final int line;
+
     public SquareFX(Square square, int column, int line) {
+        this.column = column;
+        this.line = line;
         this.setMinSize(TILE_SIZE, TILE_SIZE);
         this.setMaxSize(TILE_SIZE, TILE_SIZE);
         this.setAlignment(Pos.CENTER);
@@ -63,6 +69,7 @@ public class SquareFX extends Label {
             case NORMAL:
                 break;
         }
+        this.baseColor = backgroundColor;
         this.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
     }
 }
