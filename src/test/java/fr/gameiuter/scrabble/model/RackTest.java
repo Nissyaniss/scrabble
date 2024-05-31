@@ -3,7 +3,7 @@ package fr.gameiuter.scrabble.model;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,7 +23,7 @@ class RackTest {
 
         assertTrue(wasAdded);
         assertEquals(1, rack.numberOfTiles());
-        assertEquals(List.of(new Tile(FrenchLetter.A)), rack.tiles());
+        assertEquals(Collections.singletonList(new Tile(FrenchLetter.A)), rack.tiles());
     }
 
     @Test

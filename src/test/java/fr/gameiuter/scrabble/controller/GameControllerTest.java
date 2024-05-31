@@ -37,8 +37,8 @@ class GameControllerTest {
         word.put(new Position(5, 7), new Tile(FrenchLetter.B));
         word.put(new Position(7, 7), new Tile(FrenchLetter.T));
 
-        // 3 + 1 + 1 = 5
-        assertEquals(5, controller.computeScore(word, Direction.HORIZONTAL));
+        // (3 + 1 + 1) * 2 = 10
+        assertEquals(10, controller.computeScore(word, Direction.HORIZONTAL));
     }
 
     @Test

@@ -16,7 +16,7 @@ class PositionTest {
     void testPreviousHorizontal() {
         Position pos = new Position(1, 1);
 
-        assertEquals(new Position(0, 1), pos.next(Direction.HORIZONTAL));
+        assertEquals(new Position(0, 1), pos.previous(Direction.HORIZONTAL));
     }
 
     @Test
@@ -30,7 +30,7 @@ class PositionTest {
     void testPreviousVertical() {
         Position pos = new Position(1, 1);
 
-        assertEquals(new Position(1, 0), pos.next(Direction.VERTICAL));
+        assertEquals(new Position(1, 0), pos.previous(Direction.VERTICAL));
     }
 
     @Test

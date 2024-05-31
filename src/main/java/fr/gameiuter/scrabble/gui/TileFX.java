@@ -16,6 +16,7 @@ public class TileFX extends StackPane {
         score.setText(String.valueOf(tile.score()));
         score.setAlignment(Pos.BOTTOM_RIGHT);
         score.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        score.setPadding(new Insets(0, 2, 0, 0));
 
         this.setMinSize(TILE_SIZE, TILE_SIZE);
         this.setMaxSize(TILE_SIZE, TILE_SIZE);
