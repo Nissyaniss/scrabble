@@ -7,8 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,6 +109,7 @@ public class FXGameController {
     private void generateRack() {
         List<Tile> rackTile = this.gameController.player().rack().tiles();
         this.rack.getChildren().clear();
+        this.rack.setBackground(new Background(new BackgroundFill(new Color(.37254901960784315, .00784313725490196, .12156862745098039, 1), new CornerRadii(6), null)));
         for (Tile tile : rackTile) {
             TileFX tileFX = new TileFX(tile);
             tileFX.setOnMarkChanged(this::tileMarkUpdated);

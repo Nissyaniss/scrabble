@@ -8,14 +8,20 @@ import javafx.scene.control.Label;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.transform.Shear;
 
 import java.util.function.Consumer;
 
 public class TileFX extends StackPane {
     public static final Integer TILE_SIZE = 50;
-    private static Color BASE_COLOR = Color.BEIGE;
+    private static Color BASE_COLOR = Color.color(.792156862745098, .403921568627451, .5568627450980392);
 
     private Tile tile;
     private Position position;
@@ -31,17 +37,24 @@ public class TileFX extends StackPane {
         Label letter = new Label();
         Label score = new Label();
 
+        Shear shear = new Shear();
+        shear.setX(-0.1763); // -10 degrees in radians
+
         letter.setText(tile.letter().toString().toUpperCase());
+        letter.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        letter.getTransforms().add(shear);
+
         score.setText(String.valueOf(tile.score()));
         score.setAlignment(Pos.BOTTOM_RIGHT);
         score.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         score.setPadding(new Insets(0, 2, 0, 0));
+        score.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        score.getTransforms().add(shear);
 
         this.setMinSize(TILE_SIZE, TILE_SIZE);
         this.setMaxSize(TILE_SIZE, TILE_SIZE);
         this.getChildren().addAll(letter, score);
-        this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(2))));
-        this.setBackground(new Background(new BackgroundFill(BASE_COLOR, null, null)));
+        this.setBackground(new Background(new BackgroundFill(BASE_COLOR, new CornerRadii(7), null)));
 
         this.setOnDragDetected(e -> {
             if (!this.frozen) {

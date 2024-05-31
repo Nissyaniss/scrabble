@@ -15,7 +15,7 @@ public class ScrabbleApplicationJavaFX extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader startMenu = new FXMLLoader(ScrabbleApplicationJavaFX.class.getResource("/fr/gameiuter/scrabble/application/StartMenu.fxml"));
-        Scene scene = new Scene(startMenu.load(), 320, 240);
+        Scene scene = new Scene(startMenu.load(), 1820, 980);
         stage.setTitle("Scrabble");
         stage.setScene(scene);
         stage.show();
