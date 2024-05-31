@@ -39,7 +39,7 @@ public class FXGameController {
         } else {
             Map<Position, Tile> placedTiles = new HashMap<>();
             for (TileFX tileFX : placedTilesFX) {
-                placedTiles.put(tileFX.getPosition(), tileFX.getTile());
+                placedTiles.put(tileFX.position(), tileFX.tile());
             }
             System.out.println(gameController.computeScore(placedTiles, Direction.HORIZONTAL));
         }
@@ -48,9 +48,9 @@ public class FXGameController {
 
     @FXML
     protected void initialize() {
-        this.labelPlayer1.setText("Joueur 1 : " + gameController.player().name());
+        this.labelPlayer1.setText("Joueur 1 : " + this.gameController.player().name());
         this.generateGridBase();
-        gameController.start();
+        this.gameController.start();
         this.generateRack();
     }
 

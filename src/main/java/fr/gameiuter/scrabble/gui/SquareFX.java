@@ -78,8 +78,7 @@ public class SquareFX extends Label {
 
     public void manageTargetDragAndDrop(FXGameController gameController) {
         this.setOnDragOver(event -> {
-            if (event.getGestureSource() != this &&
-                    event.getDragboard().hasString()) {
+            if (event.getGestureSource() != this && event.getDragboard().hasString()) {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
         });
@@ -93,12 +92,12 @@ public class SquareFX extends Label {
             boardFX.getChildren().remove(event.getGestureSource());
             boardFX.add((TileFX) event.getGestureSource(), this.position.column(), this.position.line());
             gameController.addToPlacedTilesFX((TileFX) event.getGestureSource());
-            ((TileFX) event.getGestureSource()).setPosition(this.getPosition());
+            ((TileFX) event.getGestureSource()).setPosition(this.position());
             event.setDropCompleted(true);
         });
     }
 
-    public Position getPosition() {
+    public Position position() {
         return this.position;
     }
 }

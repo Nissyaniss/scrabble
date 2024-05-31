@@ -16,8 +16,16 @@ public class TileFX extends StackPane {
     private Tile tile;
     private Position position;
 
+    private static Color BASE_COLOR = Color.BEIGE;
+
+    private boolean frozen;
+    private boolean markable;
+    private boolean marked;
+
     public TileFX(Tile tile) {
         this.tile = tile;
+        this.frozen = false;
+
         Label letter = new Label();
         Label score = new Label();
 
@@ -47,16 +55,27 @@ public class TileFX extends StackPane {
         });
     }
 
-    public Tile getTile() {
+    public Tile tile() {
         return this.tile;
+    }
+
+    public Position position() {
+        return this.position;
     }
 
     public void setPosition(Position position) {
         this.position = position;
     }
 
-    public Position getPosition() {
-        return this.position;
+    public void freeze() {
+        this.frozen = true;
     }
 
+    public void unfreeze() {
+        this.frozen = false;
+    }
+
+    public void setMarkable(boolean markable) {
+        this.markable = markable;
+    }
 }
