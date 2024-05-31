@@ -2,6 +2,7 @@ package fr.gameiuter.scrabble.gui;
 
 import fr.gameiuter.scrabble.controller.FXGameController;
 import fr.gameiuter.scrabble.model.Board;
+import fr.gameiuter.scrabble.model.Position;
 import fr.gameiuter.scrabble.model.Square;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,12 +16,10 @@ import static fr.gameiuter.scrabble.gui.TileFX.TILE_SIZE;
 
 public class SquareFX extends Label {
     private final Color baseColor;
-    private final int column;
-    private final int line;
+    private final Position position;
 
-    public SquareFX(Square square, int column, int line, FXGameController gameController) {
-        this.column = column;
-        this.line = line;
+    public SquareFX(Square square, Position position, FXGameController gameController) {
+        this.position = position;
         this.setMinSize(TILE_SIZE, TILE_SIZE);
         this.setMaxSize(TILE_SIZE, TILE_SIZE);
         this.setAlignment(Pos.CENTER);
@@ -31,16 +30,16 @@ public class SquareFX extends Label {
         int rightBorder = 1;
         int bottomBorder = 1;
         int leftBorder = 1;
-        if (line == 0) {
+        if (position.line() == 0) {
             topBorder = 2;
         }
-        if (column == Board.LAST_LINE_OR_COLUMN) {
+        if (position.column() == Board.LAST_LINE_OR_COLUMN) {
             rightBorder = 2;
         }
-        if (line == Board.LAST_LINE_OR_COLUMN) {
+        if (position.line() == Board.LAST_LINE_OR_COLUMN) {
             bottomBorder = 2;
         }
-        if (column == 0) {
+        if (position.column() == 0) {
             leftBorder = 2;
         }
         this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(topBorder, rightBorder, bottomBorder, leftBorder))));
@@ -81,18 +80,25 @@ public class SquareFX extends Label {
         this.setOnDragOver(event -> {
             if (event.getGestureSource() != this &&
                     event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                event.acceptTransferModes(TransferMode.MOVE);
             }
         });
         this.setOnDragEntered(event -> {
-            GridPane boardFX = (GridPane) this.getParent();
-            boardFX.getChildren().remove(event.getGestureSource());
-            boardFX.add((TileFX) event.getGestureSource(), this.column, this.line);
+            //GridPane boardFX = (GridPane) this.getParent();
+            //boardFX.getChildren().remove(event.getGestureSource());
+            //boardFX.add((TileFX) event.getGestureSource(), this.column, this.line);
         });
         this.setOnDragDropped(event -> {
-            gameController.addToPlacedTiles((TileFX) event.getGestureSource());
-
+            GridPane boardFX = (GridPane) this.getParent();
+            boardFX.getChildren().remove(event.getGestureSource());
+            boardFX.add((TileFX) event.getGestureSource(), this.position.column(), this.position.line());
+            gameController.addToPlacedTilesFX((TileFX) event.getGestureSource());
+            ((TileFX) event.getGestureSource()).setPosition(this.getPosition());
             event.setDropCompleted(true);
         });
+    }
+
+    public Position getPosition() {
+        return this.position;
     }
 }

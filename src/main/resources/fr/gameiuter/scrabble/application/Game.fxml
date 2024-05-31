@@ -3,9 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
-            fx:controller="fr.gameiuter.scrabble.controller.FXGameController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.gameiuter.scrabble.controller.FXGameController">
     <left>
         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>
@@ -54,7 +52,7 @@
                 <HBox fx:id="rack" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="160.0" spacing="5.0">
                       <children>
-                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Placer" />
+                          <Button fx:id="handleConfirm" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleConfirm" text="Valider" />
                           <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Passer son tour" />
                           <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Changer des lettres" />
                       </children>

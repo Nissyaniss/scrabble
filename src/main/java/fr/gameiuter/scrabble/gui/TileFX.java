@@ -1,5 +1,6 @@
 package fr.gameiuter.scrabble.gui;
 
+import fr.gameiuter.scrabble.model.Position;
 import fr.gameiuter.scrabble.model.Tile;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,8 +13,11 @@ import javafx.scene.paint.Color;
 
 public class TileFX extends StackPane {
     public static final Integer TILE_SIZE = 50;
+    private Tile tile;
+    private Position position;
 
     public TileFX(Tile tile) {
+        this.tile = tile;
         Label letter = new Label();
         Label score = new Label();
 
@@ -41,6 +45,18 @@ public class TileFX extends StackPane {
             content.putString("");
             db.setContent(content);
         });
+    }
+
+    public Tile getTile() {
+        return this.tile;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public Position getPosition() {
+        return this.position;
     }
 
 }
