@@ -1,10 +1,12 @@
 package fr.gameiuter.scrabble.gui;
 
+import fr.gameiuter.scrabble.controller.FXGameController;
 import fr.gameiuter.scrabble.model.Board;
 import fr.gameiuter.scrabble.model.Square;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -16,12 +18,14 @@ public class SquareFX extends Label {
     private final int column;
     private final int line;
 
-    public SquareFX(Square square, int column, int line) {
+    public SquareFX(Square square, int column, int line, FXGameController gameController) {
         this.column = column;
         this.line = line;
         this.setMinSize(TILE_SIZE, TILE_SIZE);
         this.setMaxSize(TILE_SIZE, TILE_SIZE);
         this.setAlignment(Pos.CENTER);
+
+        this.manageTargetDragAndDrop(gameController);
 
         int topBorder = 1;
         int rightBorder = 1;
@@ -71,5 +75,24 @@ public class SquareFX extends Label {
         }
         this.baseColor = backgroundColor;
         this.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
+    }
+
+    public void manageTargetDragAndDrop(FXGameController gameController) {
+        this.setOnDragOver(event -> {
+            if (event.getGestureSource() != this &&
+                    event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+        });
+        this.setOnDragEntered(event -> {
+            GridPane boardFX = (GridPane) this.getParent();
+            boardFX.getChildren().remove(event.getGestureSource());
+            boardFX.add((TileFX) event.getGestureSource(), this.column, this.line);
+        });
+        this.setOnDragDropped(event -> {
+            gameController.addToPlacedTiles((TileFX) event.getGestureSource());
+
+            event.setDropCompleted(true);
+        });
     }
 }

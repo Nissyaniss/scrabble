@@ -8,10 +8,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FXGameController {
     private final GameController gameController;
+    private List<TileFX> placedTiles = new ArrayList<>();
     @FXML
     protected Label labelPlayer1;
     @FXML
@@ -35,12 +37,12 @@ public class FXGameController {
         for (int line = 0; line < Board.SIZE; line++) {
             for (int column = 0; column < Board.SIZE; column++) {
                 Square square = gameController.board().getSquareAt(new Position(column, line));
-                SquareFX squareFX = new SquareFX(square, column, line);
+                SquareFX squareFX = new SquareFX(square, column, line, this);
                 this.board.add(squareFX, column, line);
             }
         }
     }
-    
+
     private void generateRack() {
         List<Tile> rackTile = gameController.player().rack().tiles();
         rack.getChildren().clear();
@@ -48,5 +50,9 @@ public class FXGameController {
             TileFX tileFX = new TileFX(tile);
             rack.getChildren().add(tileFX);
         }
+    }
+
+    public void addToPlacedTiles(TileFX tile) {
+        this.placedTiles.add(tile);
     }
 }

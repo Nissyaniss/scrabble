@@ -3,7 +3,11 @@ package fr.gameiuter.scrabble.gui;
 import fr.gameiuter.scrabble.model.Tile;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 public class TileFX extends StackPane {
     public static final Integer TILE_SIZE = 50;
@@ -18,9 +22,24 @@ public class TileFX extends StackPane {
         score.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         score.setPadding(new Insets(0, 2, 0, 0));
 
+        this.manageSourceDragAndDrop();
+
+
         this.setMinSize(TILE_SIZE, TILE_SIZE);
         this.setMaxSize(TILE_SIZE, TILE_SIZE);
         this.getChildren().addAll(letter, score);
-        this.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid; -fx-border-radius: 5px");
+        this.setBorder(new Border(new BorderStroke(Color.BLACK,
+                BorderStrokeStyle.SOLID, null, new BorderWidths(2))));
+        this.setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
     }
+
+    public void manageSourceDragAndDrop() {
+        this.setOnDragDetected(e -> {
+            Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putString("");
+            db.setContent(content);
+        });
+    }
+
 }
