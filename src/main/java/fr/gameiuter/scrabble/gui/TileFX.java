@@ -11,16 +11,18 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.util.function.Consumer;
+
 public class TileFX extends StackPane {
     public static final Integer TILE_SIZE = 50;
-    private Tile tile;
-    private Position position;
-
     private static Color BASE_COLOR = Color.BEIGE;
 
+    private Tile tile;
+    private Position position;
     private boolean frozen;
     private boolean markable;
     private boolean marked;
+    private Consumer<Boolean> onMarkChangedCallback;
 
     public TileFX(Tile tile) {
         this.tile = tile;
@@ -35,24 +37,21 @@ public class TileFX extends StackPane {
         score.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         score.setPadding(new Insets(0, 2, 0, 0));
 
-        this.manageSourceDragAndDrop();
-
-
         this.setMinSize(TILE_SIZE, TILE_SIZE);
         this.setMaxSize(TILE_SIZE, TILE_SIZE);
         this.getChildren().addAll(letter, score);
-        this.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, null, new BorderWidths(2))));
-        this.setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
-    }
+        this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(2))));
+        this.setBackground(new Background(new BackgroundFill(BASE_COLOR, null, null)));
 
-    public void manageSourceDragAndDrop() {
         this.setOnDragDetected(e -> {
-            Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            content.putString("");
-            db.setContent(content);
+            if (!this.frozen) {
+                Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
+                ClipboardContent content = new ClipboardContent();
+                content.putString("");
+                db.setContent(content);
+            }
         });
+        this.setOnMouseClicked(e -> this.toggleMark());
     }
 
     public Tile tile() {
@@ -77,5 +76,32 @@ public class TileFX extends StackPane {
 
     public void setMarkable(boolean markable) {
         this.markable = markable;
+    }
+
+    public boolean marked() {
+        return this.marked;
+    }
+
+    private void toggleMark() {
+        if (this.markable) {
+            if (this.marked) {
+                this.unmark();
+            } else {
+                this.setBackground(new Background(new BackgroundFill(Color.GOLD, null, null)));
+                this.marked = true;
+            }
+            if (this.onMarkChangedCallback != null) {
+                this.onMarkChangedCallback.accept(!this.marked);
+            }
+        }
+    }
+
+    public void unmark() {
+        this.setBackground(new Background(new BackgroundFill(BASE_COLOR, null, null)));
+        this.marked = false;
+    }
+
+    public void setOnMarkChanged(Consumer<Boolean> callback) {
+        this.onMarkChangedCallback = callback;
     }
 }

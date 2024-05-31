@@ -49,14 +49,17 @@
             <children>
                 <GridPane fx:id="board" alignment="CENTER">
                 </GridPane>
-                <HBox fx:id="rack" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
-                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="160.0" spacing="5.0">
-                      <children>
-                          <Button fx:id="handleConfirm" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleConfirm" text="Valider" />
-                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Passer son tour" />
-                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Changer des lettres" />
-                      </children>
-                  </VBox>
+                <HBox fx:id="rack" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="3.0"/>
+                <VBox alignment="CENTER" prefHeight="100.0" prefWidth="160.0" spacing="5.0">
+                    <children>
+                        <Button fx:id="confirm" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                onAction="#handleConfirm" text="Valider"/>
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Passer son tour"/>
+                        <Button fx:id="toggleModeButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                onAction="#toggleMode"
+                                text="Changer des lettres"/>
+                    </children>
+                </VBox>
             </children>
         </VBox>
     </center>
