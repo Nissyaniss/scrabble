@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -19,6 +21,12 @@ public class FXGameController {
     private final GameController gameController;
     private final List<TileFX> placedTilesFX;
     private FXControllerMode mode;
+
+    private final ImageView refreshImage = new ImageView(new Image(this.getClass().getResourceAsStream("/img/refresh.png")));
+    private final ImageView cancelImage = new ImageView(new Image(this.getClass().getResourceAsStream("/img/cancel.png")));
+    private final Color primaryColor = new Color(.37254901960784315, .00784313725490196, .12156862745098039, 1);
+    private final Color accentColor = new Color(.4980392156862745, .16470588235294117, .27058823529411763, 1);
+    private final CornerRadii defaultCornerRadii = new CornerRadii(6);
 
     @FXML
     private Button confirm;
@@ -34,24 +42,27 @@ public class FXGameController {
     public FXGameController(String player1) {
         this.gameController = new GameController(new Player(player1));
         this.placedTilesFX = new ArrayList<>();
+
     }
 
     @FXML
     protected void initialize() {
         this.labelPlayer1.setText("Joueur 1 : " + this.gameController.player().name());
+        refreshImage.setFitHeight(30);
+        refreshImage.setPreserveRatio(true);
+        cancelImage.setFitHeight(30);
+        cancelImage.setPreserveRatio(true);
         this.generateGridBase();
         this.gameController.start();
         this.generateRack();
-
         this.setMode(FXControllerMode.PlaceWord);
     }
 
     @FXML
     protected void handleConfirm() {
         if (this.mode.equals(FXControllerMode.PlaceWord)) {
-            if (placedTilesFX.size() == 0) {
+            if (placedTilesFX.isEmpty()) {
                 System.out.println("test");
-                return;
             } else {
                 Map<Position, Tile> placedTiles = new HashMap<>();
                 for (TileFX tileFX : placedTilesFX) {
@@ -109,7 +120,12 @@ public class FXGameController {
     private void generateRack() {
         List<Tile> rackTile = this.gameController.player().rack().tiles();
         this.rack.getChildren().clear();
-        this.rack.setBackground(new Background(new BackgroundFill(new Color(.37254901960784315, .00784313725490196, .12156862745098039, 1), new CornerRadii(6), null)));
+        this.rack.setBackground(new Background(new BackgroundFill(primaryColor, defaultCornerRadii, null)));
+
+        this.toggleModeButton.setBackground(new Background(new BackgroundFill(accentColor, new CornerRadii(20), null)));
+        this.toggleModeButton.setGraphic(refreshImage);
+        this.toggleModeButton.setTranslateX(-10);
+
         for (Tile tile : rackTile) {
             TileFX tileFX = new TileFX(tile);
             tileFX.setOnMarkChanged(this::tileMarkUpdated);
@@ -120,11 +136,11 @@ public class FXGameController {
     private void setMode(FXControllerMode mode) {
         if (mode.equals(FXControllerMode.PlaceWord)) {
             this.mode = FXControllerMode.PlaceWord;
-            this.toggleModeButton.setText("Changer des lettres");
+            this.toggleModeButton.setGraphic(refreshImage);
             this.confirm.setDisable(false);
         } else {
             this.mode = FXControllerMode.SwapLetters;
-            this.toggleModeButton.setText("Placer un mot");
+            this.toggleModeButton.setGraphic(cancelImage);
             this.confirm.setDisable(true);
         }
     }

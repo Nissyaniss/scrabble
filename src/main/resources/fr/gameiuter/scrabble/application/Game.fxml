@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="980.0"
             prefWidth="1880.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="fr.gameiuter.scrabble.controller.FXGameController">
@@ -52,22 +53,33 @@
             <children>
                 <GridPane fx:id="board" alignment="CENTER">
                 </GridPane>
-                <HBox fx:id="rack" alignment="CENTER" maxHeight="80.0" maxWidth="392.0" minHeight="80.0"
-                      minWidth="392.0" prefHeight="80.0" prefWidth="392.0" spacing="5.0">
-                    <effect>
-                        <DropShadow blurType="GAUSSIAN" height="0.0" radius="0" width="15.0"/>
-                    </effect>
-                    <VBox.margin>
-                        <Insets bottom="15.0" top="15.0"/>
-                    </VBox.margin>
-                </HBox>
+                <Pane maxHeight="140.0" maxWidth="400.0" minHeight="140.0" minWidth="400.0" prefHeight="140.0"
+                      prefWidth="400.0">
+                    <children>
+                        <HBox fx:id="rack" alignment="CENTER" layoutX="4.0" layoutY="13.0" maxHeight="100.0"
+                              maxWidth="392.0" minHeight="60.0" minWidth="392.0" prefHeight="100.0" prefWidth="392.0"
+                              spacing="5.0">
+                            <effect>
+                                <DropShadow blurType="GAUSSIAN" height="0.0" radius="0" width="15.0"/>
+                            </effect>
+                        </HBox>
+                        <Button fx:id="toggleModeButton" ellipsisString="" graphicTextGap="0.0" layoutX="188.0"
+                                layoutY="1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                onAction="#toggleMode" prefHeight="25.0" prefWidth="21.0" wrapText="true">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                            <effect>
+                                <DropShadow blurType="GAUSSIAN" height="35.0" radius="8.25" width="0.0"/>
+                            </effect>
+                        </Button>
+                    </children>
+                </Pane>
                 <VBox alignment="CENTER" prefHeight="100.0" prefWidth="160.0" spacing="5.0">
                     <children>
                         <Button fx:id="confirm" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
                                 onAction="#handleConfirm" text="Valider"/>
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Passer son tour"/>
-                        <Button fx:id="toggleModeButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                                onAction="#toggleMode" text="Changer des lettres"/>
                     </children>
                 </VBox>
             </children>

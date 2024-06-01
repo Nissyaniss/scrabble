@@ -100,7 +100,7 @@ public class TileFX extends StackPane {
             if (this.marked) {
                 this.unmark();
             } else {
-                this.setBackground(new Background(new BackgroundFill(Color.GOLD, null, null)));
+                this.setBackground(new Background(new BackgroundFill(Color.GOLD, new CornerRadii(7), null)));
                 this.marked = true;
             }
             if (this.onMarkChangedCallback != null) {
@@ -110,7 +110,7 @@ public class TileFX extends StackPane {
     }
 
     public void unmark() {
-        this.setBackground(new Background(new BackgroundFill(BASE_COLOR, null, null)));
+        this.setBackground(new Background(new BackgroundFill(BASE_COLOR, new CornerRadii(7), null)));
         this.marked = false;
     }
 
