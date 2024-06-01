@@ -22,6 +22,7 @@ import java.util.function.Consumer;
 public class TileFX extends StackPane {
     public static final Integer TILE_SIZE = 50;
     private static Color BASE_COLOR = Color.color(.792156862745098, .403921568627451, .5568627450980392);
+    public static TileFX NO = null;
 
     private Tile tile;
     private Position position;
@@ -85,6 +86,10 @@ public class TileFX extends StackPane {
 
     public void unfreeze() {
         this.frozen = false;
+    }
+
+    public boolean isFrozen() {
+        return this.frozen;
     }
 
     public void setMarkable(boolean markable) {

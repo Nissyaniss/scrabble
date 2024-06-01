@@ -89,10 +89,14 @@ public class SquareFX extends Label {
         });
         this.setOnDragDropped(event -> {
             GridPane boardFX = (GridPane) this.getParent();
-            boardFX.getChildren().remove(event.getGestureSource());
+            TileFX tile = (TileFX) event.getGestureSource();
+
+            boardFX.getChildren().remove(tile);
             boardFX.add((TileFX) event.getGestureSource(), this.position.column(), this.position.line());
-            gameController.addToPlacedTilesFX((TileFX) event.getGestureSource());
-            ((TileFX) event.getGestureSource()).setPosition(this.position());
+
+            gameController.removePlacedTilesFX(tile.position());
+            tile.setPosition(this.position());
+            gameController.addToPlacedTilesFX(tile);
             event.setDropCompleted(true);
         });
     }

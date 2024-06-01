@@ -15,15 +15,15 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class FXGameController {
     private final GameController gameController;
-    private final List<TileFX> placedTilesFX;
+    private final HashMap<Position, TileFX> placedTilesFX;
     private FXControllerMode mode;
 
-    private final ImageView refreshImage = new ImageView(new Image(this.getClass().getResourceAsStream("/img/refresh.png")));
-    private final ImageView cancelImage = new ImageView(new Image(this.getClass().getResourceAsStream("/img/cancel.png")));
+    private final ImageView refreshImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/refresh.png"))));
+    private final ImageView cancelImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/cancel.png"))));
     private final Color primaryColor = new Color(.37254901960784315, .00784313725490196, .12156862745098039, 1);
     private final Color accentColor = new Color(.4980392156862745, .16470588235294117, .27058823529411763, 1);
     private final CornerRadii defaultCornerRadii = new CornerRadii(6);
@@ -41,8 +41,7 @@ public class FXGameController {
 
     public FXGameController(String player1) {
         this.gameController = new GameController(new Player(player1));
-        this.placedTilesFX = new ArrayList<>();
-
+        this.placedTilesFX = new HashMap<>();
     }
 
     @FXML
@@ -61,14 +60,12 @@ public class FXGameController {
     @FXML
     protected void handleConfirm() {
         if (this.mode.equals(FXControllerMode.PlaceWord)) {
-            if (placedTilesFX.isEmpty()) {
-                System.out.println("test");
-            } else {
-                Map<Position, Tile> placedTiles = new HashMap<>();
-                for (TileFX tileFX : placedTilesFX) {
-                    placedTiles.put(tileFX.position(), tileFX.tile());
+            if (checkPlacement()) {
+                for (TileFX tileFX : placedTilesFX.values()) {
+                    tileFX.freeze();
                 }
-                System.out.println(gameController.computeScore(placedTiles, Direction.HORIZONTAL));
+            } else {
+                System.out.println(checkPlacement());
             }
         } else {
             List<Tile> tilesToSwap = new ArrayList<>();
@@ -117,6 +114,67 @@ public class FXGameController {
         }
     }
 
+    private boolean checkPlacement() {
+        int isFirstTile = 0;
+        Direction previousDirection = null;
+        Direction currentDirection;
+        if (this.placedTilesFX.get(new Position(Board.MIDDLE, Board.MIDDLE)) == null) {
+            return false;
+        } else {
+            for (TileFX tile : this.placedTilesFX.values()) {
+                currentDirection = getDirection(tile.position());
+                if (isFirstTile == 0) {
+                    previousDirection = currentDirection;
+                    isFirstTile++;
+                }
+                if (!tile.isFrozen()) {
+                    if (previousDirection == currentDirection && currentDirection != null) {
+                        previousDirection = currentDirection;
+                    } else {
+                        return false;
+                    }
+                    if (!tileHasNeighbors(tile.position())) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
+    private Direction getDirection(Position position) {
+        boolean isHorizontal = true;
+        for (TileFX tile : this.placedTilesFX.values()) {
+            if (!tile.isFrozen()) {
+                if (!tile.position().line().equals(position.line())) {
+                    isHorizontal = false;
+                    if (!tile.position().column().equals(position.column()))
+                        return null;
+                }
+            }
+        }
+
+        if (isHorizontal)
+            return Direction.HORIZONTAL;
+        else
+            return Direction.VERTICAL;
+    }
+
+    private boolean tileHasNeighbors(Position position) {
+        return (this.hasTileAt(position.next(Direction.HORIZONTAL)) || (this.hasTileAt(position.previous(Direction.HORIZONTAL)))
+                || (this.hasTileAt(position.next(Direction.VERTICAL))) || (this.hasTileAt(position.previous(Direction.VERTICAL))));
+    }
+
+    public boolean hasTileAt(Position position) {
+        if (!position.containedWithinBounds(0, Board.LAST_LINE_OR_COLUMN))
+            return false;
+        return this.getTileAt(position) != TileFX.NO;
+    }
+
+    public TileFX getTileAt(Position position) {
+        return this.placedTilesFX.get(position);
+    }
+
     private void generateRack() {
         List<Tile> rackTile = this.gameController.player().rack().tiles();
         this.rack.getChildren().clear();
@@ -146,13 +204,15 @@ public class FXGameController {
     }
 
     public void addToPlacedTilesFX(TileFX tile) {
-        if (!this.placedTilesFX.contains(tile)) {
-            this.placedTilesFX.add(tile);
-        }
+        this.placedTilesFX.put(tile.position(), tile);
+    }
+
+    public void removePlacedTilesFX(Position position) {
+        this.placedTilesFX.remove(position);
     }
 
     private void resetPlacedTiles() {
-        for (TileFX tile : this.placedTilesFX) {
+        for (TileFX tile : this.placedTilesFX.values()) {
             this.board.getChildren().remove(tile);
             this.rack.getChildren().add(tile);
         }
