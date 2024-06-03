@@ -12,10 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class FXGameController {
     private final GameController gameController;
@@ -26,7 +23,7 @@ public class FXGameController {
     private final Color accentColor = new Color(.4980392156862745, .16470588235294117, .27058823529411763, 1);
     private final CornerRadii defaultCornerRadii = new CornerRadii(6);
     private FXControllerMode mode;
-    
+
     @FXML
     private Button confirm;
     @FXML
@@ -211,13 +208,14 @@ public class FXGameController {
     }
 
     private void resetPlacedTiles() {
-        for (TileFX tile : this.placedTilesFX.values()) {
+        for (Map.Entry<Position, TileFX> entry : this.placedTilesFX.entrySet()) {
+            TileFX tile = entry.getValue();
             if (!tile.isFrozen()) { // frozen tiles are the ones that were already played
                 this.board.getChildren().remove(tile);
                 this.rack.getChildren().add(tile);
+                this.placedTilesFX.remove(entry.getKey());
             }
         }
-        this.placedTilesFX.clear();
     }
 
     private void tileMarkUpdated(Boolean checked) {
