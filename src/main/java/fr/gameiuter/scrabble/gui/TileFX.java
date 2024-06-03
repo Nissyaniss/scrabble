@@ -21,8 +21,8 @@ import java.util.function.Consumer;
 
 public class TileFX extends StackPane {
     public static final Integer TILE_SIZE = 50;
-    private static Color BASE_COLOR = Color.color(.792156862745098, .403921568627451, .5568627450980392);
     public static TileFX NO = null;
+    private static Color BASE_COLOR = Color.color(.792156862745098, .403921568627451, .5568627450980392);
 
     private Tile tile;
     private Position position;
@@ -48,7 +48,7 @@ public class TileFX extends StackPane {
         score.setText(String.valueOf(tile.score()));
         score.setAlignment(Pos.BOTTOM_RIGHT);
         score.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        score.setPadding(new Insets(0, 2, 0, 0));
+        score.setPadding(new Insets(0, -3, 0, 0));
         score.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         score.getTransforms().add(shear);
 

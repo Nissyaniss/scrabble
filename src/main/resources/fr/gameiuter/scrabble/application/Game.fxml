@@ -5,12 +5,11 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity"
-            prefHeight="10.0" prefWidth="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
             fx:controller="fr.gameiuter.scrabble.controller.FXGameController">
     <left>
-        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+        <VBox BorderPane.alignment="CENTER">
             <children>
                 <Label fx:id="labelPlayer1" text="Joueur 1 :">
                     <VBox.margin>
@@ -26,7 +25,7 @@
         </VBox>
     </left>
     <right>
-        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+        <VBox BorderPane.alignment="CENTER">
             <children>
                 <Label fx:id="labelPlayer2" text="Joueur 2 :">
                     <VBox.margin>
@@ -42,7 +41,7 @@
         </VBox>
     </right>
     <top>
-        <VBox alignment="CENTER" prefHeight="87.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Joueur actuel :"/>
                 <Label alignment="CENTER" text="Tours :"/>
@@ -50,7 +49,7 @@
         </VBox>
     </top>
     <center>
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
                 <GridPane fx:id="board" alignment="CENTER">
                 </GridPane>
