@@ -111,22 +111,24 @@ public class FXGameController {
     }
 
     private boolean checkPlacement() {
-        int isFirstTile = 0;
+        boolean isFirstTile = true;
         Direction previousDirection = null;
         Direction currentDirection;
         if (this.placedTilesFX.get(new Position(Board.MIDDLE, Board.MIDDLE)) == null) {
             return false;
         } else {
             for (TileFX tile : this.placedTilesFX.values()) {
-                currentDirection = getDirection(tile.position());
-                if (isFirstTile == 0) {
-                    previousDirection = currentDirection;
-                    isFirstTile++;
-                }
                 if (!tile.isFrozen()) {
+                    currentDirection = getDirection(tile.position());
+                    if (isFirstTile) {
+                        previousDirection = currentDirection;
+                        isFirstTile = false;
+                    }
                     if (previousDirection == currentDirection && currentDirection != null) {
+                        System.out.println("bien" + tile.position());
                         previousDirection = currentDirection;
                     } else {
+                        System.out.println("pas bien" + tile.position());
                         return false;
                     }
                     if (!tileHasNeighbors(tile.position())) {
