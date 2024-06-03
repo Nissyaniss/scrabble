@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 public class ScrabbleApplicationConsole {
     private final GameController controller;
+    private int turn = 0;
 
     private ScrabbleApplicationConsole(Player player) {
         this.controller = new GameController(player);
@@ -35,12 +36,16 @@ public class ScrabbleApplicationConsole {
         boolean stop = false;
 
         while (!stop) {
+            turn = turn + 1;
+            Console.message("Tour : " + turn);
+            Console.message("C'est à <name> de jouer !");
             Console.message("Votre score est de " + this.controller.player().score() + " points");
             Console.message("Que souhaitez-vous faire ?");
             Console.message("  1. Placer un mot");
             Console.message("  2. Échanger des lettres");
-            Console.message("  3. Quitter");
-            int action = Console.inputIntegerBetween("Action souhaitée (1,2,3): ", 1, 3);
+            Console.message("  3. Passer son tour");
+            Console.message("  4. Quitter");
+            int action = Console.inputIntegerBetween("Action souhaitée (1,2,3,4): ", 1, 4);
 
             switch (action) {
                 case 1:
@@ -50,6 +55,8 @@ public class ScrabbleApplicationConsole {
                     this.swapLetters();
                     break;
                 case 3:
+                    this.skipTurn();
+                case 4:
                     stop = true;
                     break;
             }
@@ -188,5 +195,9 @@ public class ScrabbleApplicationConsole {
         }
 
         controller.swap(player, toExchange);
+    }
+
+    public void skipTurn(){
+        turn = turn + 1;
     }
 }
