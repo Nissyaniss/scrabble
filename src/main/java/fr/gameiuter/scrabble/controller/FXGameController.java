@@ -31,6 +31,8 @@ public class FXGameController {
     @FXML
     private Label labelPlayer1;
     @FXML
+    private Label player1Score;
+    @FXML
     private HBox rack;
     @FXML
     private GridPane board;
@@ -50,20 +52,30 @@ public class FXGameController {
         this.generateGridBase();
         this.gameController.start();
         this.generateRack();
+        this.updateScores();
         this.setMode(FXControllerMode.PlaceWord);
     }
 
     @FXML
     protected void handleConfirm() {
         if (this.mode.equals(FXControllerMode.PlaceWord)) {
-            if (checkPlacement()) {
+            if (this.checkPlacement()) {
                 Player player = this.gameController.player();
+                HashMap<Position, Tile> newTiles = new HashMap<>();
+
                 for (TileFX tileFX : placedTilesFX.values()) {
-                    tileFX.freeze();
-                    player.rack().remove(tileFX.tile());
+                    if (!tileFX.isFrozen()) {
+                        newTiles.put(tileFX.position(), tileFX.tile());
+                        tileFX.freeze();
+                        player.rack().remove(tileFX.tile());
+                    }
                 }
+
+                int score = this.gameController.computeScore(newTiles, this.getDirection(newTiles.keySet().iterator().next()));
+                player.incrementScore(score);
                 this.gameController.draw(player);
                 this.generateRack();
+                this.updateScores();
             }
         } else {
             List<Tile> tilesToSwap = new ArrayList<>();
@@ -141,21 +153,21 @@ public class FXGameController {
     }
 
     private Direction getDirection(Position position) {
-        boolean isHorizontal = true;
+        boolean isVertical = true;
         for (TileFX tile : this.placedTilesFX.values()) {
             if (!tile.isFrozen()) {
                 if (!tile.position().line().equals(position.line())) {
-                    isHorizontal = false;
+                    isVertical = false;
                     if (!tile.position().column().equals(position.column()))
                         return null;
                 }
             }
         }
 
-        if (isHorizontal)
-            return Direction.HORIZONTAL;
-        else
+        if (isVertical)
             return Direction.VERTICAL;
+        else
+            return Direction.HORIZONTAL;
     }
 
     private boolean tileHasNeighbors(Position position) {
@@ -229,5 +241,9 @@ public class FXGameController {
             }
         }
         this.confirm.setDisable(true);
+    }
+
+    private void updateScores() {
+        this.player1Score.setText("Score: " + this.gameController.player().score());
     }
 }

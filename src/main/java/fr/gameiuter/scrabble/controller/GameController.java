@@ -41,7 +41,7 @@ public class GameController {
             this.pouch.putBack(tile);
         }
     }
-    
+
     public Player player() {
         return this.player;
     }

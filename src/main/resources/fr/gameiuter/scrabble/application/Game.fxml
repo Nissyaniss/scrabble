@@ -16,7 +16,7 @@
                         <Insets left="5.0" right="5.0"/>
                     </VBox.margin>
                 </Label>
-                <Label text="Points :">
+                <Label fx:id="player1Score" text="Points:">
                     <VBox.margin>
                         <Insets left="5.0" right="5.0"/>
                     </VBox.margin>
