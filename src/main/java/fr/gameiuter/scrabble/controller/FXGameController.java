@@ -1,5 +1,6 @@
 package fr.gameiuter.scrabble.controller;
 
+import fr.gameiuter.scrabble.application.ScrabbleApplicationConsole;
 import fr.gameiuter.scrabble.gui.SquareFX;
 import fr.gameiuter.scrabble.gui.TileFX;
 import fr.gameiuter.scrabble.model.*;
@@ -38,14 +39,14 @@ public class FXGameController {
     @FXML
     private GridPane board;
 
-    public FXGameController(String player1) {
-        this.gameController = new GameController(new Player(player1));
+    public FXGameController(String player1, String player2) {
+        this.gameController = new GameController(new Player(player1),new Player(player2));
         this.placedTilesFX = new HashMap<>();
     }
 
     @FXML
     protected void initialize() {
-        this.labelPlayer1.setText("Joueur 1 : " + this.gameController.player().name());
+        this.labelPlayer1.setText("Joueur 1 : " + this.gameController.player(1).name());
         refreshImage.setFitHeight(30);
         refreshImage.setPreserveRatio(true);
         cancelImage.setFitHeight(30);
@@ -61,7 +62,7 @@ public class FXGameController {
     protected void handleConfirm() {
         if (this.mode.equals(FXControllerMode.PlaceWord)) {
             if (this.checkPlacement() && this.isExistingWord()) {
-                Player player = this.gameController.player();
+                Player player = this.gameController.player(1);
                 HashMap<Position, Tile> newTiles = new HashMap<>();
 
                 for (TileFX tileFX : placedTilesFX.values()) {
@@ -89,7 +90,7 @@ public class FXGameController {
             }
             this.rack.getChildren().clear();
 
-            this.gameController.swap(this.gameController.player(), tilesToSwap);
+            this.gameController.swap(this.gameController.player(1), tilesToSwap);
             this.generateRack();
             this.setMode(FXControllerMode.PlaceWord);
         }
@@ -163,7 +164,6 @@ public class FXGameController {
                     }
                 }
             }
-
             return true;
         }
     }
@@ -202,7 +202,7 @@ public class FXGameController {
     }
 
     private void generateRack() {
-        List<Tile> rackTile = this.gameController.player().rack().tiles();
+        List<Tile> rackTile = this.gameController.player(1).rack().tiles();
         this.rack.getChildren().clear();
         this.rack.setBackground(new Background(new BackgroundFill(primaryColor, defaultCornerRadii, null)));
 
@@ -264,6 +264,6 @@ public class FXGameController {
     }
 
     private void updateScores() {
-        this.player1Score.setText("Score: " + this.gameController.player().score());
+        this.player1Score.setText("Score: " + this.gameController.player(1).score());
     }
 }

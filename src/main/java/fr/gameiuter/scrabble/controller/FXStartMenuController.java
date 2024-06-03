@@ -33,7 +33,7 @@ public class FXStartMenuController {
 
     @FXML
     protected void handleStart() throws IOException {
-        FXMLLoader game = new FXMLLoader(FXStartMenuController.class.getResource("/fr/gameiuter/scrabble/application/Game.fxml"), null, null, (x) -> new FXGameController(player1TextField.getText()));
+        FXMLLoader game = new FXMLLoader(FXStartMenuController.class.getResource("/fr/gameiuter/scrabble/application/Game.fxml"), null, null, (x) -> new FXGameController(player1TextField.getText(),player2TextField.getText()));
         startButton.getScene().setRoot(game.load());
     }
 

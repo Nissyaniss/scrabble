@@ -15,10 +15,10 @@ public class ScrabbleApplicationConsole {
     private final GameController controller;
     private int turn = 0;
 
-    private ScrabbleApplicationConsole(Player player) {
-        this.controller = new GameController(player);
-    }
+    private ScrabbleApplicationConsole(Player player1, Player player2) {
+        this.controller = new GameController(player1,player2);
 
+    }
     public static void main(String[] args) {
         Console.message(Console.SEPARATOR);
         Console.message("-- Bienvenue dans notre magnifique jeu de scrabble ! --");
@@ -27,8 +27,9 @@ public class ScrabbleApplicationConsole {
         Console.message("--     et mdeguil                                    --");
         Console.message(Console.SEPARATOR);
 
-        Player player = new Player(Console.input("Entrez votre pseudo: "));
-        new ScrabbleApplicationConsole(player).start();
+        Player player1 = new Player(Console.input("Entrez le pseudo du joueur1 : "));
+        Player player2 = new Player(Console.input("Entrez le pseudo du joueur2 : "));
+        new ScrabbleApplicationConsole(player1, player2).start();
     }
 
     private void start() {
@@ -38,8 +39,8 @@ public class ScrabbleApplicationConsole {
         while (!stop) {
             turn = turn + 1;
             Console.message("Tour : " + turn);
-            Console.message("C'est à <name> de jouer !");
-            Console.message("Votre score est de " + this.controller.player().score() + " points");
+            Console.message("C'est à " + controller.player(turn).name() +" de jouer !");
+            Console.message("Votre score est de " + this.controller.player(turn).score() + " points");
             Console.message("Que souhaitez-vous faire ?");
             Console.message("  1. Placer un mot");
             Console.message("  2. Échanger des lettres");
@@ -56,6 +57,7 @@ public class ScrabbleApplicationConsole {
                     break;
                 case 3:
                     this.skipTurn();
+                    break;
                 case 4:
                     stop = true;
                     break;
@@ -65,7 +67,7 @@ public class ScrabbleApplicationConsole {
 
     private void placeWord() {
         Board board = controller.board();
-        Rack rack = controller.player().rack();
+        Rack rack = controller.player(turn).rack();
         HashMap<Position, Tile> word = new HashMap<>();
         Direction direction;
         Tile tile;
@@ -155,7 +157,7 @@ public class ScrabbleApplicationConsole {
 
 
         int score = this.controller.computeScore(word, direction);
-        this.controller.player().incrementScore(score);
+        this.controller.player(turn).incrementScore(score);
 
         for (Map.Entry<Position, Tile> entry : word.entrySet()) {
             board.placeTile(entry.getValue(), entry.getKey().column(), entry.getKey().line());
@@ -164,7 +166,7 @@ public class ScrabbleApplicationConsole {
         Console.displayRack(rack);
         Console.message("Cette action vous rajoute " + score + " points");
 
-        this.controller.draw(controller.player());
+        this.controller.draw(controller.player(turn));
     }
 
     private void swapLetters() {
@@ -173,7 +175,7 @@ public class ScrabbleApplicationConsole {
             return;
         }
 
-        Player player = this.controller.player();
+        Player player = this.controller.player(turn);
         List<Integer> indexes = new ArrayList<>();
         List<Tile> toExchange = new ArrayList<>();
 
@@ -198,6 +200,6 @@ public class ScrabbleApplicationConsole {
     }
 
     public void skipTurn(){
-        turn = turn + 1;
+        Console.message("Vous avez passez votre tour !");
     }
 }

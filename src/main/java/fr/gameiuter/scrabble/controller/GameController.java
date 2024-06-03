@@ -13,13 +13,15 @@ import java.util.*;
 public class GameController {
     private final Board board;
     private final Pouch pouch;
-    private final Player player;
     private final HashSet<String> words;
+    private final Player player1;
+    private final Player player2;
 
-    public GameController(Player player) {
+    public GameController(Player player1, Player player2) {
         this.board = new Board();
         this.pouch = new Pouch();
-        this.player = player;
+        this.player1 = player1;
+        this.player2 = player2;
         this.words = new HashSet<>();
 
         try {
@@ -42,7 +44,8 @@ public class GameController {
     }
 
     public void start() {
-        this.draw(this.player);
+        this.draw(this.player1);
+        this.draw(this.player2);
     }
 
     public void draw(Player player) {
@@ -68,8 +71,13 @@ public class GameController {
         }
     }
 
-    public Player player() {
-        return this.player;
+    public Player player(int turn) {
+        if (turn % 2 == 0 ){
+            return this.player2;
+        }else{
+            return this.player1;
+        }
+
     }
 
     @Override

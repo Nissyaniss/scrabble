@@ -15,7 +15,7 @@ class GameControllerTest {
 
     @BeforeAll
     static void initAll() {
-        controller = new GameController(new Player("test"));
+        controller = new GameController(new Player("test1"), new Player("test2"));
         controller.board().placeTile(new Tile(FrenchLetter.C), 6, 6);
         controller.board().placeTile(new Tile(FrenchLetter.A), 6, 7);
         controller.board().placeTile(new Tile(FrenchLetter.T), 6, 8);
