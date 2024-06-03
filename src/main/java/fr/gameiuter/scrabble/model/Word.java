@@ -1,6 +1,7 @@
 package fr.gameiuter.scrabble.model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Word {
     private final Position position;
@@ -21,8 +22,16 @@ public class Word {
         return this.tiles;
     }
 
+    public Direction direction() {
+        return this.direction;
+    }
+
     public int letterCount() {
         return this.tiles.size();
+    }
+
+    public String asString() {
+        return tiles.stream().map(tile -> tile.letter().toString()).collect(Collectors.joining(""));
     }
 
     @Override

@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class FXGameController {
     private final GameController gameController;
@@ -59,7 +60,7 @@ public class FXGameController {
     @FXML
     protected void handleConfirm() {
         if (this.mode.equals(FXControllerMode.PlaceWord)) {
-            if (this.checkPlacement()) {
+            if (this.checkPlacement() && this.isExistingWord()) {
                 Player player = this.gameController.player();
                 HashMap<Position, Tile> newTiles = new HashMap<>();
 
@@ -68,6 +69,7 @@ public class FXGameController {
                         newTiles.put(tileFX.position(), tileFX.tile());
                         tileFX.freeze();
                         player.rack().remove(tileFX.tile());
+                        this.gameController.board().placeTile(tileFX.tile(), tileFX.position().column(), tileFX.position().line());
                     }
                 }
 
@@ -124,6 +126,19 @@ public class FXGameController {
         }
     }
 
+    private boolean isExistingWord() {
+        Map<Position, Tile> placedTiles = this.placedTilesFX
+                .entrySet()
+                .stream()
+                .filter(entry -> !entry.getValue().isFrozen())
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().tile()));
+
+        Map.Entry<Position, Tile> entry = placedTiles.entrySet().iterator().next();
+        Position pos = entry.getKey();
+        Word word = this.gameController.board().getWordAt(pos, this.getDirection(pos), placedTiles);
+        return this.gameController.isExistingWord(word);
+    }
+
     private boolean checkPlacement() {
         boolean isFirstTile = true;
         Direction previousDirection = null;
@@ -133,7 +148,7 @@ public class FXGameController {
         } else {
             for (TileFX tile : this.placedTilesFX.values()) {
                 if (!tile.isFrozen()) {
-                    currentDirection = getDirection(tile.position());
+                    currentDirection = this.getDirection(tile.position());
                     if (isFirstTile) {
                         previousDirection = currentDirection;
                         isFirstTile = false;
@@ -143,21 +158,22 @@ public class FXGameController {
                     } else {
                         return false;
                     }
-                    if (!tileHasNeighbors(tile.position())) {
+                    if (!this.tileHasNeighbors(tile.position())) {
                         return false;
                     }
                 }
             }
+
             return true;
         }
     }
 
     private Direction getDirection(Position position) {
-        boolean isVertical = true;
+        boolean isVertical = false;
         for (TileFX tile : this.placedTilesFX.values()) {
             if (!tile.isFrozen()) {
                 if (!tile.position().line().equals(position.line())) {
-                    isVertical = false;
+                    isVertical = true;
                     if (!tile.position().column().equals(position.column()))
                         return null;
                 }
@@ -222,13 +238,17 @@ public class FXGameController {
     }
 
     private void resetPlacedTiles() {
+        List<Position> positionsToRemove = new ArrayList<>();
         for (Map.Entry<Position, TileFX> entry : this.placedTilesFX.entrySet()) {
             TileFX tile = entry.getValue();
             if (!tile.isFrozen()) { // frozen tiles are the ones that were already played
                 this.board.getChildren().remove(tile);
                 this.rack.getChildren().add(tile);
-                this.placedTilesFX.remove(entry.getKey());
+                positionsToRemove.add(entry.getKey());
             }
+        }
+        for (Position position : positionsToRemove) {
+            this.placedTilesFX.remove(position);
         }
     }
 

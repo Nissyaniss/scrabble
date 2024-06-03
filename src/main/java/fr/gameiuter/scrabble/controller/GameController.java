@@ -1,18 +1,44 @@
 package fr.gameiuter.scrabble.controller;
 
+import fr.gameiuter.scrabble.application.ScrabbleApplicationJavaFX;
+import fr.gameiuter.scrabble.gui.Console;
 import fr.gameiuter.scrabble.model.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class GameController {
     private final Board board;
     private final Pouch pouch;
     private final Player player;
+    private final HashSet<String> words;
 
     public GameController(Player player) {
         this.board = new Board();
         this.pouch = new Pouch();
         this.player = player;
+        this.words = new HashSet<>();
+
+        try {
+            this.getWords();
+        } catch (IOException e) {
+            Console.message("Could not load word list");
+            Console.message(e.getMessage());
+        }
+    }
+
+    private void getWords() throws IOException {
+        try (InputStream is = ScrabbleApplicationJavaFX.class.getResourceAsStream("/fr/gameiuter/scrabble/model/FrenchWords.txt")) {
+            try (InputStreamReader isr = new InputStreamReader(is); BufferedReader reader = new BufferedReader(isr)) {
+                for (Iterator<String> it = reader.lines().iterator(); it.hasNext(); ) {
+                    String line = it.next();
+                    this.words.add(line);
+                }
+            }
+        }
     }
 
     public void start() {
@@ -55,6 +81,10 @@ public class GameController {
 
     public Board board() {
         return this.board;
+    }
+
+    public boolean isExistingWord(Word word) {
+        return this.words.contains(word.asString().toUpperCase());
     }
 
     public Integer computeScore(Map<Position, Tile> placedTiles, Direction direction) {
