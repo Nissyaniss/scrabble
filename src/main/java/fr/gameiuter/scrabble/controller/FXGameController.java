@@ -57,11 +57,13 @@ public class FXGameController {
     protected void handleConfirm() {
         if (this.mode.equals(FXControllerMode.PlaceWord)) {
             if (checkPlacement()) {
+                Player player = this.gameController.player();
                 for (TileFX tileFX : placedTilesFX.values()) {
                     tileFX.freeze();
+                    player.rack().remove(tileFX.tile());
                 }
-            } else {
-                System.out.println(checkPlacement());
+                this.gameController.draw(player);
+                this.generateRack();
             }
         } else {
             List<Tile> tilesToSwap = new ArrayList<>();
@@ -125,10 +127,8 @@ public class FXGameController {
                         isFirstTile = false;
                     }
                     if (previousDirection == currentDirection && currentDirection != null) {
-                        System.out.println("bien" + tile.position());
                         previousDirection = currentDirection;
                     } else {
-                        System.out.println("pas bien" + tile.position());
                         return false;
                     }
                     if (!tileHasNeighbors(tile.position())) {

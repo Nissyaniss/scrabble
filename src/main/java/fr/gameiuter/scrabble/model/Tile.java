@@ -1,7 +1,5 @@
 package fr.gameiuter.scrabble.model;
 
-import java.util.Objects;
-
 public class Tile {
     public static Tile NO = null;
 
@@ -33,18 +31,5 @@ public class Tile {
     @Override
     public String toString() {
         return "Tile(" + "letter=" + letter + ", score=" + score + ')';
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(score, letter);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Tile tile = (Tile) o;
-        return score == tile.score && Objects.equals(letter, tile.letter);
     }
 }
