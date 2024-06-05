@@ -43,6 +43,8 @@ public class FXGameController {
     private Label labelJoueur;
     @FXML
     private Button randomButton;
+    @FXML
+    private Label errorLabel;
 
     public FXGameController(String player1, String player2) {
         this.gameController = new GameController(new Player(player1), new Player(player2));
@@ -286,6 +288,12 @@ public class FXGameController {
     }
 
     public void gridUpdated() {
+        if (!this.checkPlacement())
+            this.errorLabel.setText("Le mot placé ne respecte pas les règles de placement !");
+        else if (!this.isExistingWord())
+            this.errorLabel.setText("Le mot placé n'est pas dans le dictionnaire !");
+        else
+            this.errorLabel.setText("");
         this.confirm.setDisable(!(this.checkPlacement() && this.isExistingWord()));
     }
 }
