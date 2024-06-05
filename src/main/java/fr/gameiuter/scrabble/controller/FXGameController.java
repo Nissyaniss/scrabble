@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
@@ -197,13 +198,28 @@ public class FXGameController {
         return this.placedTilesFX.get(position);
     }
 
-
-    public void addToPlacedTilesFX(TileFX tile) {
-        this.placedTilesFX.put(tile.position(), tile);
+    public void addToPlacedTilesFX(TileFX tileFX) {
+        if (tileFX.tile().isJoker() && tileFX.tile().letter() == '*') {
+            char letter;
+            while (true) {
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setHeaderText("Quelle lettre voulez-vous que ce soit ?");
+                Optional<String> text = dialog.showAndWait();
+                if (text.isPresent() && text.get().length() == 1) {
+                    letter = text.get().charAt(0);
+                    break;
+                }
+            }
+            tileFX.setLetter(letter);
+        }
+        this.placedTilesFX.put(tileFX.position(), tileFX);
     }
 
-    public void removePlacedTilesFX(Position position) {
-        this.placedTilesFX.remove(position);
+    public void removePlacedTilesFX(Position position, boolean resetJoker) {
+        TileFX tileFX = this.placedTilesFX.remove(position);
+        if (resetJoker && tileFX != null && tileFX.tile().isJoker()) {
+            tileFX.setLetter('*');
+        }
     }
 
     private void resetPlacedTiles() {
@@ -217,7 +233,10 @@ public class FXGameController {
             }
         }
         for (Position position : positionsToRemove) {
-            this.placedTilesFX.remove(position);
+            TileFX tileFX = this.placedTilesFX.remove(position);
+            if (tileFX.tile().isJoker()) {
+                tileFX.setLetter('*');
+            }
         }
     }
 
