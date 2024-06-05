@@ -19,7 +19,7 @@ public class RackFX {
     private final Color primaryColor = new Color(.37254901960784315, .00784313725490196, .12156862745098039, 1);
     private final Color accentColor = new Color(.4980392156862745, .16470588235294117, .27058823529411763, 1);
     private final CornerRadii defaultCornerRadii = new CornerRadii(6);
-    private final ImageView refreshImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/refresh.png"))));
+    private final ImageView refreshImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/exchange.png"))));
     private final ImageView cancelImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/cancel.png"))));
 
     private final HBox hBox;
