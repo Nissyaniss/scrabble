@@ -30,7 +30,7 @@ public class RackFX {
     private final Button randomButton;
     private FXControllerMode mode;
 
-    public RackFX(HBox hBox, GameController gameController, Button toggleModeButton, Button confirm, FXGameController fxGameController, Button shuffleButton) {
+    public RackFX(HBox hBox, GameController gameController, Button toggleModeButton, Button confirm, FXGameController fxGameController, Button shuffleButton, GridPane board) {
         this.hBox = hBox;
         this.confirm = confirm;
         this.toggleModeButton = toggleModeButton;
@@ -38,7 +38,7 @@ public class RackFX {
         this.randomButton = shuffleButton;
         this.mode = FXControllerMode.PlaceWord;
         this.refreshRack();
-        this.manageTargetDragAndDrop(fxGameController);
+        this.manageTargetDragAndDrop(fxGameController, board);
     }
 
     public void refreshRack() {
@@ -94,15 +94,16 @@ public class RackFX {
         }
     }
 
-    public void manageTargetDragAndDrop(FXGameController gameController) {
+    public void manageTargetDragAndDrop(FXGameController gameController, GridPane board) {
         this.hBox.setOnDragOver(event -> {
-            if (event.getGestureSource() != this && event.getDragboard().hasString()) {
+            TileFX source = (TileFX) event.getGestureSource();
+            if (source.getParent().equals(board)) {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
         });
         this.hBox.setOnDragDropped(event -> {
             TileFX tile = (TileFX) event.getGestureSource();
-            if (tile.position() != null) {
+            if (tile.getParent().equals(board) && tile.position() != null) {
                 GridPane boardFX = (GridPane) tile.getParent();
                 boardFX.getChildren().remove(tile);
                 this.hBox.getChildren().add(tile);

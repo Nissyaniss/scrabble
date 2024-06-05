@@ -59,7 +59,7 @@ public class FXGameController {
         this.generateGridBase();
         this.gameController.start();
         this.updateScores();
-        this.rackFX = new RackFX(rack, gameController, toggleModeButton, confirm, this, randomButton);
+        this.rackFX = new RackFX(rack, gameController, toggleModeButton, confirm, this, randomButton, board);
     }
 
     @FXML

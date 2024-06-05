@@ -69,22 +69,26 @@ public class TileFX extends StackPane {
         });
         this.setOnDragOver(event -> {
             Node source = (Node) event.getGestureSource();
-            if (source != this && source.getParent().equals(rack) && this.getParent().equals(rack)) {
+            if (source != this && this.getParent().equals(rack)) {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
         });
         this.setOnDragDropped(event -> {
-            TileFX sourceTile = (TileFX) event.getGestureSource();
-            rack.getChildren().remove(sourceTile);
-            int index = rack.getChildren().indexOf(this);
+            TileFX source = (TileFX) event.getGestureSource();
+            if (source != this && this.getParent().equals(rack)) {
+                ((Pane) source.getParent()).getChildren().remove(source);
+                int index = rack.getChildren().indexOf(this);
 
-            if (event.getX() < TILE_SIZE / 2.) {
-                rack.getChildren().add(index, sourceTile);
+                if (event.getX() < TILE_SIZE / 2.) {
+                    rack.getChildren().add(index, source);
+                } else {
+                    rack.getChildren().add(index + 1, source);
+                }
+
+                event.setDropCompleted(true);
             } else {
-                rack.getChildren().add(index + 1, sourceTile);
+                event.setDropCompleted(false);
             }
-
-            event.setDropCompleted(true);
         });
     }
 
