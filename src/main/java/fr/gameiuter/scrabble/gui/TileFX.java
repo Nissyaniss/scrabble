@@ -21,10 +21,10 @@ import java.util.function.Consumer;
 
 public class TileFX extends StackPane {
     public static final Integer TILE_SIZE = 50;
-    public static TileFX NO = null;
-    private static Color BASE_COLOR = Color.color(.792156862745098, .403921568627451, .5568627450980392);
+    public static final TileFX NO = null;
+    private static final Color BASE_COLOR = Color.WHEAT;
 
-    private Tile tile;
+    private final Tile tile;
     private Position position;
     private boolean frozen;
     private boolean markable;
