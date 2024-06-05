@@ -66,7 +66,17 @@ public class FXGameController {
             Player player = this.gameController.player(turn);
             HashMap<Position, Tile> newTiles = new HashMap<>();
 
-            for (TileFX tileFX : placedTilesFX.values()) {
+            Direction wordDirection = this.getDirection(
+                    this.placedTilesFX
+                            .values()
+                            .stream()
+                            .filter(tile -> !tile.isFrozen())
+                            .findFirst()
+                            .get()
+                            .position()
+            );
+
+            for (TileFX tileFX : this.placedTilesFX.values()) {
                 if (!tileFX.isFrozen()) {
                     newTiles.put(tileFX.position(), tileFX.tile());
                     tileFX.freeze();
@@ -75,7 +85,7 @@ public class FXGameController {
                 }
             }
 
-            int score = this.gameController.computeScore(newTiles, this.getDirection(newTiles.keySet().iterator().next()));
+            int score = this.gameController.computeScore(newTiles, wordDirection);
             player.incrementScore(score);
             this.gameController.draw(player);
             this.generateTurn();
