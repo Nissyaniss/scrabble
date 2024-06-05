@@ -85,7 +85,7 @@ public class SquareFX extends Label {
             TileFX tile = (TileFX) event.getGestureSource();
 
             boardFX.getChildren().remove(tile);
-            boardFX.add((TileFX) event.getGestureSource(), this.position.column(), this.position.line());
+            boardFX.add(tile, this.position.column(), this.position.line());
 
             gameController.removePlacedTilesFX(tile.position());
             tile.setPosition(this.position());

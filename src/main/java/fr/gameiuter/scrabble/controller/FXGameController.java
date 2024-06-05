@@ -1,5 +1,6 @@
 package fr.gameiuter.scrabble.controller;
 
+import fr.gameiuter.scrabble.gui.RackFX;
 import fr.gameiuter.scrabble.gui.SquareFX;
 import fr.gameiuter.scrabble.gui.TileFX;
 import fr.gameiuter.scrabble.model.*;
@@ -7,23 +8,19 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class FXGameController {
     private final GameController gameController;
     private final HashMap<Position, TileFX> placedTilesFX;
-    private final ImageView refreshImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/refresh.png"))));
-    private final ImageView cancelImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/cancel.png"))));
-    private final Color primaryColor = new Color(.37254901960784315, .00784313725490196, .12156862745098039, 1);
-    private final Color accentColor = new Color(.4980392156862745, .16470588235294117, .27058823529411763, 1);
-    private final CornerRadii defaultCornerRadii = new CornerRadii(6);
-    private FXControllerMode mode;
+    private RackFX rackFX;
 
     @FXML
     private Button confirm;
@@ -46,20 +43,15 @@ public class FXGameController {
     @FXML
     protected void initialize() {
         this.labelPlayer1.setText("Joueur 1 : " + this.gameController.player(1).name());
-        refreshImage.setFitHeight(30);
-        refreshImage.setPreserveRatio(true);
-        cancelImage.setFitHeight(30);
-        cancelImage.setPreserveRatio(true);
         this.generateGridBase();
         this.gameController.start();
-        this.generateRack();
         this.updateScores();
-        this.setMode(FXControllerMode.PlaceWord);
+        this.rackFX = new RackFX(rack, gameController, toggleModeButton, confirm, this);
     }
 
     @FXML
     protected void handleConfirm() {
-        if (this.mode.equals(FXControllerMode.PlaceWord)) {
+        if (this.rackFX.getMode().equals(FXControllerMode.PlaceWord)) {
             if (this.checkPlacement() && this.isExistingWord()) {
                 Player player = this.gameController.player(1);
                 HashMap<Position, Tile> newTiles = new HashMap<>();
@@ -76,7 +68,7 @@ public class FXGameController {
                 int score = this.gameController.computeScore(newTiles, this.getDirection(newTiles.keySet().iterator().next()));
                 player.incrementScore(score);
                 this.gameController.draw(player);
-                this.generateRack();
+                this.rackFX.refreshRack();
                 this.updateScores();
             }
         } else {
@@ -90,15 +82,15 @@ public class FXGameController {
             this.rack.getChildren().clear();
 
             this.gameController.swap(this.gameController.player(1), tilesToSwap);
-            this.generateRack();
-            this.setMode(FXControllerMode.PlaceWord);
+            this.rackFX.refreshRack();
+            this.rackFX.setMode(FXControllerMode.PlaceWord);
         }
     }
 
     @FXML
     protected void toggleMode() {
-        if (this.mode.equals(FXControllerMode.PlaceWord)) {
-            this.setMode(FXControllerMode.SwapLetters);
+        if (this.rackFX.getMode().equals(FXControllerMode.PlaceWord)) {
+            this.rackFX.setMode(FXControllerMode.SwapLetters);
             this.resetPlacedTiles();
             for (Node node : this.rack.getChildren()) {
                 TileFX tile = (TileFX) node;
@@ -106,7 +98,7 @@ public class FXGameController {
                 tile.setMarkable(true);
             }
         } else {
-            this.setMode(FXControllerMode.PlaceWord);
+            this.rackFX.setMode(FXControllerMode.PlaceWord);
             for (Node node : this.rack.getChildren()) {
                 TileFX tile = (TileFX) node;
                 tile.unfreeze();
@@ -200,32 +192,6 @@ public class FXGameController {
         return this.placedTilesFX.get(position);
     }
 
-    private void generateRack() {
-        List<Tile> rackTile = this.gameController.player(1).rack().tiles();
-        this.rack.getChildren().clear();
-        this.rack.setBackground(new Background(new BackgroundFill(primaryColor, defaultCornerRadii, null)));
-
-        this.toggleModeButton.setBackground(new Background(new BackgroundFill(accentColor, new CornerRadii(20), null)));
-        this.toggleModeButton.setGraphic(refreshImage);
-        this.toggleModeButton.setTranslateX(-10);
-
-        for (Tile tile : rackTile) {
-            TileFX tileFX = new TileFX(tile);
-            tileFX.setOnMarkChanged(this::tileMarkUpdated);
-            this.rack.getChildren().add(tileFX);
-        }
-    }
-
-    private void setMode(FXControllerMode mode) {
-        if (mode.equals(FXControllerMode.PlaceWord)) {
-            this.mode = FXControllerMode.PlaceWord;
-            this.toggleModeButton.setGraphic(refreshImage);
-        } else {
-            this.mode = FXControllerMode.SwapLetters;
-            this.toggleModeButton.setGraphic(cancelImage);
-        }
-        this.confirm.setDisable(true);
-    }
 
     public void addToPlacedTilesFX(TileFX tile) {
         this.placedTilesFX.put(tile.position(), tile);
@@ -248,17 +214,6 @@ public class FXGameController {
         for (Position position : positionsToRemove) {
             this.placedTilesFX.remove(position);
         }
-    }
-
-    private void tileMarkUpdated(Boolean checked) {
-        for (Node node : this.rack.getChildren()) {
-            TileFX tile = (TileFX) node;
-            if (tile.marked()) {
-                this.confirm.setDisable(false);
-                return;
-            }
-        }
-        this.confirm.setDisable(true);
     }
 
     private void updateScores() {
