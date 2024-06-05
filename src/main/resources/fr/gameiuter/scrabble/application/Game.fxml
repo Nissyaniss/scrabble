@@ -72,9 +72,11 @@
                 </Pane>
                 <VBox alignment="CENTER" prefHeight="100.0" prefWidth="160.0" spacing="5.0">
                     <children>
-                  <Label fx:id="errorLabel" textFill="RED" />
-                        <Button fx:id="confirm" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleConfirm" text="Valider" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#swapTurn" text="Passer son tour" />
+                        <Label fx:id="errorLabel" textFill="RED"/>
+                        <Button fx:id="confirm" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                onAction="#handleConfirm" text="Valider"/>
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#skipTurn"
+                                text="Passer son tour"/>
                     </children>
                 </VBox>
             </children>

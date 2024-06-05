@@ -65,30 +65,31 @@ public class FXGameController {
     protected void handleConfirm() {
         if (this.rackFX.getMode().equals(FXControllerMode.PLACE_WORD)) {
             Player player = this.gameController.player();
-            HashMap<Position, Tile> newTiles = new HashMap<>();
+            Map<Position, TileFX> newTilesFX = this.placedTilesFX
+                    .entrySet()
+                    .stream()
+                    .filter(entry -> !entry.getValue().isFrozen())
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            Direction wordDirection = this.getDirection(newTilesFX.keySet().iterator().next());
+            Map<Position, Tile> newTiles = new HashMap<>();
 
-            Direction wordDirection = this.getDirection(
-                    this.placedTilesFX
-                            .values()
-                            .stream()
-                            .filter(tile -> !tile.isFrozen())
-                            .findFirst()
-                            .get()
-                            .position()
-            );
-
-            for (TileFX tileFX : this.placedTilesFX.values()) {
-                if (!tileFX.isFrozen()) {
-                    newTiles.put(tileFX.position(), tileFX.tile());
-                    tileFX.freeze();
-                    player.rack().remove(tileFX.tile());
-                    this.gameController.board().placeTile(tileFX.tile(), tileFX.position().column(), tileFX.position().line());
-                }
+            for (Map.Entry<Position, TileFX> entry : newTilesFX.entrySet()) {
+                newTiles.put(entry.getKey(), entry.getValue().tile());
             }
 
             int score = this.gameController.computeScore(newTiles, wordDirection);
             player.incrementScore(score);
+
+            for (TileFX tileFX : newTilesFX.values()) {
+                tileFX.freeze();
+                player.rack().remove(tileFX.tile());
+                this.gameController.board().placeTile(tileFX.tile(), tileFX.position().column(), tileFX.position().line());
+            }
+
             this.gameController.draw(player);
+            if (player.rack().tiles().isEmpty()) {
+                this.endGame();
+            }
             this.generateTurn();
             this.rackFX.refreshRack();
             this.updateScores();
@@ -107,6 +108,8 @@ public class FXGameController {
             this.rackFX.refreshRack();
             this.rackFX.setMode(FXControllerMode.PLACE_WORD);
         }
+
+        this.gameController.player().normalPlay();
         this.swapTurn();
     }
 
@@ -278,6 +281,17 @@ public class FXGameController {
     }
 
     @FXML
+    private void skipTurn() {
+        this.resetPlacedTiles();
+
+        Player player = this.gameController.player();
+        player.skipTurn();
+        if (player.consecutiveSkippedTurns() >= 3) {
+            this.endGame();
+        }
+        this.swapTurn();
+    }
+
     private void swapTurn() {
         this.gameController.increaseTurn();
         this.updateScores();
@@ -293,5 +307,9 @@ public class FXGameController {
         else
             this.errorLabel.setText("");
         this.confirm.setDisable(!(this.checkPlacement() && this.isExistingWord()));
+    }
+
+    private void endGame() {
+        System.out.println("end");
     }
 }
