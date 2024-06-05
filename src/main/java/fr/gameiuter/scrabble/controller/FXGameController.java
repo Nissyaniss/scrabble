@@ -62,7 +62,7 @@ public class FXGameController {
 
     @FXML
     protected void handleConfirm() {
-        if (this.mode.equals(FXControllerMode.PlaceWord)) {
+        if (this.rackFX.getMode().equals(FXControllerMode.PlaceWord)) {
             Player player = this.gameController.player(turn);
             HashMap<Position, Tile> newTiles = new HashMap<>();
 
@@ -272,7 +272,7 @@ public class FXGameController {
         this.turn++;
         this.updateScores();
         this.generateTurn();
-        this.generateRack();
+        this.rackFX.refreshRack();
     }
 
     public void gridUpdated() {
