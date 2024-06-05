@@ -134,6 +134,11 @@ public class FXGameController {
         Map.Entry<Position, Tile> entry = placedTiles.entrySet().iterator().next();
         Position pos = entry.getKey();
         Word word = this.gameController.board().getWordAt(pos, this.getDirection(pos), placedTiles);
+        // when there is only one new tile on the board, this.getDirection will default to horizontal,
+        // so we use vertical if there is no other letters in the horizontal direction
+        if (placedTiles.size() == 1 && word.tiles().size() == 1) {
+            word = this.gameController.board().getWordAt(pos, Direction.VERTICAL, placedTiles);
+        }
         return this.gameController.isExistingWord(word);
     }
 
@@ -205,7 +210,7 @@ public class FXGameController {
                 TextInputDialog dialog = new TextInputDialog();
                 dialog.setHeaderText("Quelle lettre voulez-vous que ce soit ?");
                 Optional<String> text = dialog.showAndWait();
-                if (text.isPresent() && text.get().length() == 1) {
+                if (text.isPresent() && text.get().length() == 1 && Character.isAlphabetic(text.get().charAt(0))) {
                     letter = text.get().charAt(0);
                     break;
                 }
