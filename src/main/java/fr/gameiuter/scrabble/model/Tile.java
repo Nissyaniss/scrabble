@@ -2,9 +2,8 @@ package fr.gameiuter.scrabble.model;
 
 public class Tile {
     public static Tile NO = null;
-
-    private final char letter;
     private final int score;
+    private char letter;
 
     public Tile(char letter, Integer score) {
         this.letter = letter;
@@ -20,12 +19,16 @@ public class Tile {
         return this.letter;
     }
 
+    public void setLetter(Character letter) {
+        this.letter = letter;
+    }
+
     public int score() {
         return this.score;
     }
 
     public boolean isJoker() {
-        return this.letter == '*';
+        return this.score == 0;
     }
 
     @Override

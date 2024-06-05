@@ -21,10 +21,10 @@ import java.util.function.Consumer;
 
 public class TileFX extends StackPane {
     public static final Integer TILE_SIZE = 50;
+    private static final Color BASE_COLOR = Color.color(.792156862745098, .403921568627451, .5568627450980392);
     public static TileFX NO = null;
-    private static Color BASE_COLOR = Color.color(.792156862745098, .403921568627451, .5568627450980392);
-
-    private Tile tile;
+    private final Label letter;
+    private final Tile tile;
     private Position position;
     private boolean frozen;
     private boolean markable;
@@ -35,15 +35,17 @@ public class TileFX extends StackPane {
         this.tile = tile;
         this.frozen = false;
 
-        Label letter = new Label();
+        this.letter = new Label();
         Label score = new Label();
 
         Shear shear = new Shear();
         shear.setX(-0.1763); // -10 degrees in radians
 
-        letter.setText(tile.letter().toString().toUpperCase());
-        letter.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        letter.getTransforms().add(shear);
+        if (tile.letter() != '*') {
+            this.letter.setText(tile.letter().toString().toUpperCase());
+        }
+        this.letter.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        this.letter.getTransforms().add(shear);
 
         score.setText(String.valueOf(tile.score()));
         score.setAlignment(Pos.BOTTOM_RIGHT);
@@ -70,6 +72,15 @@ public class TileFX extends StackPane {
 
     public Tile tile() {
         return this.tile;
+    }
+
+    public void setLetter(char letter) {
+        this.tile.setLetter(letter);
+        if (letter == '*') {
+            this.letter.setText("");
+        } else {
+            this.letter.setText(String.valueOf(letter).toUpperCase());
+        }
     }
 
     public Position position() {

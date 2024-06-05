@@ -26,9 +26,9 @@ public class RackFX {
     private final HBox hBox;
     private final Button toggleModeButton;
     private final GameController gameController;
-    private FXControllerMode mode;
     private final Button confirm;
     private final Button randomButton;
+    private FXControllerMode mode;
 
     public RackFX(HBox hBox, GameController gameController, Button toggleModeButton, Button confirm, FXGameController fxGameController, Button shuffleButton) {
         this.hBox = hBox;
@@ -39,18 +39,6 @@ public class RackFX {
         this.mode = FXControllerMode.PlaceWord;
         this.refreshRack();
         this.manageTargetDragAndDrop(fxGameController);
-    }
-
-    public void setMode(FXControllerMode mode) {
-        if (mode.equals(FXControllerMode.PlaceWord)) {
-            this.mode = FXControllerMode.PlaceWord;
-            this.toggleModeButton.setGraphic(exchangeImage);
-            this.confirm.setDisable(false);
-        } else {
-            this.mode = FXControllerMode.SwapLetters;
-            this.toggleModeButton.setGraphic(cancelImage);
-            this.confirm.setDisable(true);
-        }
     }
 
     public void refreshRack() {
@@ -94,6 +82,18 @@ public class RackFX {
         return this.mode;
     }
 
+    public void setMode(FXControllerMode mode) {
+        if (mode.equals(FXControllerMode.PlaceWord)) {
+            this.mode = FXControllerMode.PlaceWord;
+            this.toggleModeButton.setGraphic(exchangeImage);
+            this.confirm.setDisable(false);
+        } else {
+            this.mode = FXControllerMode.SwapLetters;
+            this.toggleModeButton.setGraphic(cancelImage);
+            this.confirm.setDisable(true);
+        }
+    }
+
     public void manageTargetDragAndDrop(FXGameController gameController) {
         this.hBox.setOnDragOver(event -> {
             if (event.getGestureSource() != this && event.getDragboard().hasString()) {
@@ -106,7 +106,7 @@ public class RackFX {
                 GridPane boardFX = (GridPane) tile.getParent();
                 boardFX.getChildren().remove(tile);
                 this.hBox.getChildren().add(tile);
-                gameController.removePlacedTilesFX(tile.position());
+                gameController.removePlacedTilesFX(tile.position(), true);
                 tile.setPosition(null);
                 event.setDropCompleted(true);
             }
