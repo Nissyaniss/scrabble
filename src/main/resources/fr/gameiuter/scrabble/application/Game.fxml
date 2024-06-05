@@ -5,20 +5,18 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
-            fx:controller="fr.gameiuter.scrabble.controller.FXGameController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.gameiuter.scrabble.controller.FXGameController">
     <left>
         <VBox BorderPane.alignment="CENTER">
             <children>
                 <Label fx:id="labelPlayer1" text="Joueur 1 :">
                     <VBox.margin>
-                        <Insets left="5.0" right="5.0"/>
+                        <Insets left="5.0" right="5.0" />
                     </VBox.margin>
                 </Label>
                 <Label fx:id="player1Score" text="Points:">
                     <VBox.margin>
-                        <Insets left="5.0" right="5.0"/>
+                        <Insets left="5.0" right="5.0" />
                     </VBox.margin>
                 </Label>
             </children>
@@ -29,12 +27,12 @@
             <children>
                 <Label fx:id="labelPlayer2" text="Joueur 2 :">
                     <VBox.margin>
-                        <Insets left="5.0" right="5.0"/>
+                        <Insets left="5.0" right="5.0" />
                     </VBox.margin>
                 </Label>
                 <Label text="Points :">
                     <VBox.margin>
-                        <Insets left="5.0" right="5.0"/>
+                        <Insets left="5.0" right="5.0" />
                     </VBox.margin>
                 </Label>
             </children>
@@ -43,8 +41,8 @@
     <top>
         <VBox alignment="CENTER" BorderPane.alignment="CENTER">
             <children>
-                <Label text="Joueur actuel :"/>
-                <Label alignment="CENTER" text="Tours :"/>
+                <Label text="Joueur actuel :" />
+                <Label alignment="CENTER" text="Tours :" />
             </children>
         </VBox>
     </top>
@@ -53,33 +51,32 @@
             <children>
                 <GridPane fx:id="board" alignment="CENTER">
                 </GridPane>
-                <Pane maxHeight="140.0" maxWidth="400.0" minHeight="140.0" minWidth="400.0" prefHeight="140.0"
-                      prefWidth="400.0">
+                <Pane maxHeight="140.0" maxWidth="400.0" minHeight="140.0" minWidth="400.0" prefHeight="140.0" prefWidth="400.0">
                     <children>
-                        <HBox fx:id="rack" alignment="CENTER" layoutX="4.0" layoutY="13.0" maxHeight="100.0"
-                              maxWidth="392.0" minHeight="60.0" minWidth="392.0" prefHeight="100.0" prefWidth="392.0"
-                              spacing="5.0">
+                        <HBox fx:id="rack" alignment="CENTER" layoutX="4.0" layoutY="13.0" maxHeight="100.0" maxWidth="392.0" minHeight="60.0" minWidth="392.0" prefHeight="100.0" prefWidth="392.0" spacing="5.0">
                             <effect>
-                                <DropShadow blurType="GAUSSIAN" height="0.0" radius="0" width="15.0"/>
+                                <DropShadow blurType="GAUSSIAN" height="0.0" radius="0" width="15.0" />
                             </effect>
                         </HBox>
-                        <Button fx:id="toggleModeButton" ellipsisString="" graphicTextGap="0.0" layoutX="188.0"
-                                layoutY="1.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                                onAction="#toggleMode" prefHeight="25.0" prefWidth="21.0" wrapText="true">
+                        <Button fx:id="toggleModeButton" ellipsisString="" graphicTextGap="0.0" layoutX="190.0" layoutY="2.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#toggleMode" prefHeight="25.0" prefWidth="21.0" wrapText="true">
                             <font>
-                                <Font name="System Bold" size="12.0"/>
+                                <Font name="System Bold" size="12.0" />
                             </font>
                             <effect>
-                                <DropShadow blurType="GAUSSIAN" height="35.0" radius="8.25" width="0.0"/>
+                                <DropShadow blurType="GAUSSIAN" height="35.0" radius="8.25" width="0.0" />
                             </effect>
                         </Button>
+                  <Button fx:id="randomButton" layoutX="191.0" layoutY="100.0" mnemonicParsing="false" onAction="#randomizeRack">
+                        <effect>
+                            <DropShadow blurType="GAUSSIAN" height="35.0" radius="8.25" width="0.0" />
+                        </effect>
+                  </Button>
                     </children>
                 </Pane>
                 <VBox alignment="CENTER" prefHeight="100.0" prefWidth="160.0" spacing="5.0">
                     <children>
-                        <Button fx:id="confirm" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                                onAction="#handleConfirm" text="Valider"/>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Passer son tour"/>
+                        <Button fx:id="confirm" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleConfirm" text="Valider" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Passer son tour" />
                     </children>
                 </VBox>
             </children>

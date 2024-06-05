@@ -19,20 +19,23 @@ public class RackFX {
     private final Color primaryColor = new Color(.37254901960784315, .00784313725490196, .12156862745098039, 1);
     private final Color accentColor = new Color(.4980392156862745, .16470588235294117, .27058823529411763, 1);
     private final CornerRadii defaultCornerRadii = new CornerRadii(6);
-    private final ImageView refreshImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/exchange.png"))));
+    private final ImageView exchangeImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/exchange.png"))));
     private final ImageView cancelImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/cancel.png"))));
+    private final ImageView shuffleImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/shuffle.png"))));
 
     private final HBox hBox;
     private final Button toggleModeButton;
     private final GameController gameController;
     private FXControllerMode mode;
     private final Button confirm;
+    private final Button randomButton;
 
-    public RackFX(HBox hBox, GameController gameController, Button toggleModeButton, Button confirm, FXGameController fxGameController) {
+    public RackFX(HBox hBox, GameController gameController, Button toggleModeButton, Button confirm, FXGameController fxGameController, Button shuffleButton) {
         this.hBox = hBox;
         this.confirm = confirm;
         this.toggleModeButton = toggleModeButton;
         this.gameController = gameController;
+        this.randomButton = shuffleButton;
         this.mode = FXControllerMode.PlaceWord;
         this.refreshRack();
         this.manageTargetDragAndDrop(fxGameController);
@@ -41,7 +44,7 @@ public class RackFX {
     public void setMode(FXControllerMode mode) {
         if (mode.equals(FXControllerMode.PlaceWord)) {
             this.mode = FXControllerMode.PlaceWord;
-            this.toggleModeButton.setGraphic(refreshImage);
+            this.toggleModeButton.setGraphic(exchangeImage);
             this.confirm.setDisable(false);
         } else {
             this.mode = FXControllerMode.SwapLetters;
@@ -51,17 +54,23 @@ public class RackFX {
     }
 
     public void refreshRack() {
-        refreshImage.setFitHeight(30);
-        refreshImage.setPreserveRatio(true);
+        exchangeImage.setFitHeight(30);
+        exchangeImage.setPreserveRatio(true);
         cancelImage.setFitHeight(30);
         cancelImage.setPreserveRatio(true);
+        shuffleImage.setFitHeight(30);
+        shuffleImage.setPreserveRatio(true);
         List<Tile> rackTile = this.gameController.player(1).rack().tiles();
         this.hBox.getChildren().clear();
         this.hBox.setBackground(new Background(new BackgroundFill(primaryColor, defaultCornerRadii, null)));
 
         this.toggleModeButton.setBackground(new Background(new BackgroundFill(accentColor, new CornerRadii(20), null)));
-        this.toggleModeButton.setGraphic(refreshImage);
+        this.toggleModeButton.setGraphic(exchangeImage);
         this.toggleModeButton.setTranslateX(-10);
+
+        this.randomButton.setBackground(new Background(new BackgroundFill(accentColor, new CornerRadii(20), null)));
+        this.randomButton.setGraphic(shuffleImage);
+        this.randomButton.setTranslateX(-10);
 
         for (Tile tile : rackTile) {
             TileFX tileFX = new TileFX(tile);

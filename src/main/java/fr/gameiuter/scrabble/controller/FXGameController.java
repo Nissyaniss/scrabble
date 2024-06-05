@@ -11,10 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FXGameController {
@@ -34,6 +31,8 @@ public class FXGameController {
     private HBox rack;
     @FXML
     private GridPane board;
+    @FXML
+    private Button randomButton;
 
     public FXGameController(String player1, String player2) {
         this.gameController = new GameController(new Player(player1), new Player(player2));
@@ -46,7 +45,7 @@ public class FXGameController {
         this.generateGridBase();
         this.gameController.start();
         this.updateScores();
-        this.rackFX = new RackFX(rack, gameController, toggleModeButton, confirm, this);
+        this.rackFX = new RackFX(rack, gameController, toggleModeButton, confirm, this, randomButton);
     }
 
     @FXML
@@ -106,6 +105,12 @@ public class FXGameController {
                 tile.setMarkable(false);
             }
         }
+    }
+
+    @FXML
+    protected void randomizeRack() {
+        Collections.shuffle(this.gameController.player(1).rack().tiles());
+        this.rackFX.refreshRack();
     }
 
     private void generateGridBase() {
