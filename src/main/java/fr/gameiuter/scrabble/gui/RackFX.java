@@ -61,7 +61,7 @@ public class RackFX {
         this.randomButton.setTranslateX(-10);
 
         for (Tile tile : rackTile) {
-            TileFX tileFX = new TileFX(tile);
+            TileFX tileFX = new TileFX(tile, this.hBox);
             tileFX.setOnMarkChanged(this::tileMarkUpdated);
             this.hBox.getChildren().add(tileFX);
         }

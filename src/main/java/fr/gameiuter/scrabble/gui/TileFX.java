@@ -4,14 +4,12 @@ import fr.gameiuter.scrabble.model.Position;
 import fr.gameiuter.scrabble.model.Tile;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -24,7 +22,6 @@ public class TileFX extends StackPane {
     public static final TileFX NO = null;
     private static final Color BASE_COLOR = Color.WHEAT;
 
-    public static TileFX NO = null;
     private final Label letter;
     private final Tile tile;
     private Position position;
@@ -33,7 +30,7 @@ public class TileFX extends StackPane {
     private boolean marked;
     private Consumer<Boolean> onMarkChangedCallback;
 
-    public TileFX(Tile tile) {
+    public TileFX(Tile tile, HBox rack) {
         this.tile = tile;
         this.frozen = false;
 
@@ -61,6 +58,7 @@ public class TileFX extends StackPane {
         this.getChildren().addAll(letter, score);
         this.setBackground(new Background(new BackgroundFill(BASE_COLOR, new CornerRadii(7), null)));
 
+        this.setOnMouseClicked(e -> this.toggleMark());
         this.setOnDragDetected(e -> {
             if (!this.frozen) {
                 Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
@@ -69,7 +67,25 @@ public class TileFX extends StackPane {
                 db.setContent(content);
             }
         });
-        this.setOnMouseClicked(e -> this.toggleMark());
+        this.setOnDragOver(event -> {
+            Node source = (Node) event.getGestureSource();
+            if (source != this && source.getParent().equals(rack) && this.getParent().equals(rack)) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+        });
+        this.setOnDragDropped(event -> {
+            TileFX sourceTile = (TileFX) event.getGestureSource();
+            rack.getChildren().remove(sourceTile);
+            int index = rack.getChildren().indexOf(this);
+
+            if (event.getX() < TILE_SIZE / 2.) {
+                rack.getChildren().add(index, sourceTile);
+            } else {
+                rack.getChildren().add(index + 1, sourceTile);
+            }
+
+            event.setDropCompleted(true);
+        });
     }
 
     public Tile tile() {
