@@ -15,7 +15,6 @@ import javafx.scene.text.Font;
 import static fr.gameiuter.scrabble.gui.TileFX.TILE_SIZE;
 
 public class SquareFX extends Label {
-    private final Color baseColor;
     private final Position position;
 
     public SquareFX(Square square, Position position, FXGameController gameController) {
@@ -72,7 +71,6 @@ public class SquareFX extends Label {
             case NORMAL:
                 break;
         }
-        this.baseColor = backgroundColor;
         this.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
     }
 
@@ -81,11 +79,6 @@ public class SquareFX extends Label {
             if (event.getGestureSource() != this && event.getDragboard().hasString()) {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
-        });
-        this.setOnDragEntered(event -> {
-            //GridPane boardFX = (GridPane) this.getParent();
-            //boardFX.getChildren().remove(event.getGestureSource());
-            //boardFX.add((TileFX) event.getGestureSource(), this.column, this.line);
         });
         this.setOnDragDropped(event -> {
             GridPane boardFX = (GridPane) this.getParent();
@@ -97,6 +90,7 @@ public class SquareFX extends Label {
             gameController.removePlacedTilesFX(tile.position());
             tile.setPosition(this.position());
             gameController.addToPlacedTilesFX(tile);
+            gameController.gridUpdated();
             event.setDropCompleted(true);
         });
     }

@@ -1,6 +1,5 @@
 package fr.gameiuter.scrabble.controller;
 
-import fr.gameiuter.scrabble.application.ScrabbleApplicationConsole;
 import fr.gameiuter.scrabble.gui.SquareFX;
 import fr.gameiuter.scrabble.gui.TileFX;
 import fr.gameiuter.scrabble.model.*;
@@ -40,7 +39,7 @@ public class FXGameController {
     private GridPane board;
 
     public FXGameController(String player1, String player2) {
-        this.gameController = new GameController(new Player(player1),new Player(player2));
+        this.gameController = new GameController(new Player(player1), new Player(player2));
         this.placedTilesFX = new HashMap<>();
     }
 
@@ -221,12 +220,11 @@ public class FXGameController {
         if (mode.equals(FXControllerMode.PlaceWord)) {
             this.mode = FXControllerMode.PlaceWord;
             this.toggleModeButton.setGraphic(refreshImage);
-            this.confirm.setDisable(false);
         } else {
             this.mode = FXControllerMode.SwapLetters;
             this.toggleModeButton.setGraphic(cancelImage);
-            this.confirm.setDisable(true);
         }
+        this.confirm.setDisable(true);
     }
 
     public void addToPlacedTilesFX(TileFX tile) {
@@ -265,5 +263,9 @@ public class FXGameController {
 
     private void updateScores() {
         this.player1Score.setText("Score: " + this.gameController.player(1).score());
+    }
+
+    public void gridUpdated() {
+        this.confirm.setDisable(!(this.checkPlacement() && this.isExistingWord()));
     }
 }
