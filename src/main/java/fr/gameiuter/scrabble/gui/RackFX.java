@@ -48,7 +48,7 @@ public class RackFX {
         cancelImage.setPreserveRatio(true);
         shuffleImage.setFitHeight(30);
         shuffleImage.setPreserveRatio(true);
-        List<Tile> rackTile = this.gameController.player(1).rack().tiles();
+        List<Tile> rackTile = this.gameController.player(this.gameController.getTurn()).rack().tiles();
         this.hBox.getChildren().clear();
         this.hBox.setBackground(new Background(new BackgroundFill(primaryColor, defaultCornerRadii, null)));
 

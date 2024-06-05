@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 public class FXGameController {
     private final GameController gameController;
     private final HashMap<Position, TileFX> placedTilesFX;
-    private int turn = 1;
     private RackFX rackFX;
 
     @FXML
@@ -65,7 +64,7 @@ public class FXGameController {
     @FXML
     protected void handleConfirm() {
         if (this.rackFX.getMode().equals(FXControllerMode.PlaceWord)) {
-            Player player = this.gameController.player(turn);
+            Player player = this.gameController.player(this.gameController.getTurn());
             HashMap<Position, Tile> newTiles = new HashMap<>();
 
             Direction wordDirection = this.getDirection(
@@ -103,7 +102,7 @@ public class FXGameController {
             }
             this.rack.getChildren().clear();
 
-            this.gameController.swap(this.gameController.player(turn), tilesToSwap);
+            this.gameController.swap(this.gameController.player(this.gameController.getTurn()), tilesToSwap);
             this.generateTurn();
             this.rackFX.refreshRack();
             this.rackFX.setMode(FXControllerMode.PlaceWord);
@@ -275,13 +274,13 @@ public class FXGameController {
     }
 
     private void generateTurn() {
-        this.labelTours.setText("Tours : " + turn);
-        this.labelJoueur.setText("Joueur actuel : " + gameController.player(turn).name());
+        this.labelTours.setText("Tours : " + this.gameController.getTurn());
+        this.labelJoueur.setText("Joueur actuel : " + gameController.player(this.gameController.getTurn()).name());
     }
 
     @FXML
     private void swapTurn() {
-        this.turn++;
+        this.gameController.increaseTurn();
         this.updateScores();
         this.generateTurn();
         this.rackFX.refreshRack();

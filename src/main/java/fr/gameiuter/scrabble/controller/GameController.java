@@ -16,6 +16,7 @@ public class GameController {
     private final HashSet<String> words;
     private final Player player1;
     private final Player player2;
+    private int turn = 0;
 
     public GameController(Player player1, Player player2) {
         this.board = new Board();
@@ -72,9 +73,9 @@ public class GameController {
     }
 
     public Player player(int turn) {
-        if (turn % 2 == 0 ){
+        if (turn % 2 == 0) {
             return this.player2;
-        }else{
+        } else {
             return this.player1;
         }
 
@@ -130,5 +131,13 @@ public class GameController {
         }
 
         return score * wordMultiplier;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public void increaseTurn() {
+        this.turn++;
     }
 }

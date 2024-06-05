@@ -16,6 +16,7 @@ import static fr.gameiuter.scrabble.gui.TileFX.TILE_SIZE;
 
 public class SquareFX extends Label {
     private final Position position;
+    private final Color baseColor;
 
     public SquareFX(Square square, Position position, FXGameController gameController) {
         this.position = position;
@@ -71,6 +72,7 @@ public class SquareFX extends Label {
             case NORMAL:
                 break;
         }
+        baseColor = backgroundColor;
         this.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
     }
 
@@ -80,6 +82,8 @@ public class SquareFX extends Label {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
         });
+        this.setOnDragEntered(event -> this.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null))));
+        this.setOnDragExited(event -> this.setBackground(new Background(new BackgroundFill(baseColor, null, null))));
         this.setOnDragDropped(event -> {
             GridPane boardFX = (GridPane) this.getParent();
             TileFX tileFX = (TileFX) event.getGestureSource();
