@@ -33,10 +33,10 @@ public class SquareFX extends Label {
         if (position.line() == 0) {
             topBorder = 2;
         }
-        if (position.column() == Board.LAST_LINE_OR_COLUMN) {
+        if (position.column().equals(Board.LAST_LINE_OR_COLUMN)) {
             rightBorder = 2;
         }
-        if (position.line() == Board.LAST_LINE_OR_COLUMN) {
+        if (position.line().equals(Board.LAST_LINE_OR_COLUMN)) {
             bottomBorder = 2;
         }
         if (position.column() == 0) {

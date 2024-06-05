@@ -16,7 +16,7 @@ public class GameController {
     private final HashSet<String> words;
     private final Player player1;
     private final Player player2;
-    private int turn = 0;
+    private int turn = 1;
 
     public GameController(Player player1, Player player2) {
         this.board = new Board();
@@ -72,8 +72,8 @@ public class GameController {
         }
     }
 
-    public Player player(int turn) {
-        if (turn % 2 == 0) {
+    public Player player() {
+        if (this.turn % 2 == 0) {
             return this.player2;
         } else {
             return this.player1;
@@ -139,5 +139,13 @@ public class GameController {
 
     public void increaseTurn() {
         this.turn++;
+    }
+
+    public Player player1() {
+        return this.player1;
+    }
+
+    public Player player2() {
+        return this.player2;
     }
 }

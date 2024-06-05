@@ -52,8 +52,8 @@ public class FXGameController {
 
     @FXML
     protected void initialize() {
-        this.labelPlayer1.setText("Joueur 1 : " + this.gameController.player(1).name());
-        this.labelPlayer2.setText("Joueur 2 : " + this.gameController.player(2).name());
+        this.labelPlayer1.setText("Joueur 1 : " + this.gameController.player1().name());
+        this.labelPlayer2.setText("Joueur 2 : " + this.gameController.player2().name());
         this.generateTurn();
         this.generateGridBase();
         this.gameController.start();
@@ -63,8 +63,8 @@ public class FXGameController {
 
     @FXML
     protected void handleConfirm() {
-        if (this.rackFX.getMode().equals(FXControllerMode.PlaceWord)) {
-            Player player = this.gameController.player(this.gameController.getTurn());
+        if (this.rackFX.getMode().equals(FXControllerMode.PLACE_WORD)) {
+            Player player = this.gameController.player();
             HashMap<Position, Tile> newTiles = new HashMap<>();
 
             Direction wordDirection = this.getDirection(
@@ -102,18 +102,18 @@ public class FXGameController {
             }
             this.rack.getChildren().clear();
 
-            this.gameController.swap(this.gameController.player(this.gameController.getTurn()), tilesToSwap);
+            this.gameController.swap(this.gameController.player(), tilesToSwap);
             this.generateTurn();
             this.rackFX.refreshRack();
-            this.rackFX.setMode(FXControllerMode.PlaceWord);
+            this.rackFX.setMode(FXControllerMode.PLACE_WORD);
         }
         this.swapTurn();
     }
 
     @FXML
     protected void toggleMode() {
-        if (this.rackFX.getMode().equals(FXControllerMode.PlaceWord)) {
-            this.rackFX.setMode(FXControllerMode.SwapLetters);
+        if (this.rackFX.getMode().equals(FXControllerMode.PLACE_WORD)) {
+            this.rackFX.setMode(FXControllerMode.SWAP_LETTERS);
             this.resetPlacedTiles();
             for (Node node : this.rack.getChildren()) {
                 TileFX tile = (TileFX) node;
@@ -121,7 +121,7 @@ public class FXGameController {
                 tile.setMarkable(true);
             }
         } else {
-            this.rackFX.setMode(FXControllerMode.PlaceWord);
+            this.rackFX.setMode(FXControllerMode.PLACE_WORD);
             for (Node node : this.rack.getChildren()) {
                 TileFX tile = (TileFX) node;
                 tile.unfreeze();
@@ -133,7 +133,7 @@ public class FXGameController {
 
     @FXML
     protected void randomizeRack() {
-        Collections.shuffle(this.gameController.player(1).rack().tiles());
+        Collections.shuffle(this.gameController.player().rack().tiles());
         this.rackFX.refreshRack();
     }
 
@@ -196,13 +196,12 @@ public class FXGameController {
     private Direction getDirection(Position position) {
         boolean isVertical = false;
         for (TileFX tile : this.placedTilesFX.values()) {
-            if (!tile.isFrozen()) {
-                if (!tile.position().line().equals(position.line())) {
-                    isVertical = true;
-                    if (!tile.position().column().equals(position.column()))
-                        return null;
-                }
+            if (!tile.isFrozen() && !tile.position().line().equals(position.line())) {
+                isVertical = true;
+                if (!tile.position().column().equals(position.column()))
+                    return null;
             }
+
         }
 
         if (isVertical)
@@ -269,13 +268,13 @@ public class FXGameController {
     }
 
     private void updateScores() {
-        this.player1Score.setText("Score: " + this.gameController.player(1).score());
-        this.player2Score.setText("Score: " + this.gameController.player(2).score());
+        this.player1Score.setText("Score: " + this.gameController.player1().score());
+        this.player2Score.setText("Score: " + this.gameController.player2().score());
     }
 
     private void generateTurn() {
         this.labelTours.setText("Tours : " + this.gameController.getTurn());
-        this.labelJoueur.setText("Joueur actuel : " + gameController.player(this.gameController.getTurn()).name());
+        this.labelJoueur.setText("Joueur actuel : " + gameController.player().name());
     }
 
     @FXML

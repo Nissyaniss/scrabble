@@ -12,12 +12,6 @@ public class Console {
         System.out.println(text);
     }
 
-    public static void title(String text) {
-        message(SEPARATOR);
-        message(text);
-        message(SEPARATOR);
-    }
-
     public static String input(String message) {
         System.out.print(message);
         return new Scanner(System.in).nextLine();

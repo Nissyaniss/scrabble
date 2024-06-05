@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class RackFX {
-    private final Color primaryColor = Color.LIGHTGRAY;
-    private final Color accentColor = Color.GRAY;
+    private static final Color primaryColor = Color.LIGHTGRAY;
+    private static final Color accentColor = Color.GRAY;
     private final CornerRadii defaultCornerRadii = new CornerRadii(6);
     private final ImageView exchangeImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/exchange.png"))));
     private final ImageView cancelImage = new ImageView(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/img/cancel.png"))));
@@ -36,7 +36,7 @@ public class RackFX {
         this.toggleModeButton = toggleModeButton;
         this.gameController = gameController;
         this.randomButton = shuffleButton;
-        this.mode = FXControllerMode.PlaceWord;
+        this.mode = FXControllerMode.PLACE_WORD;
         this.refreshRack();
         this.manageTargetDragAndDrop(fxGameController, board);
     }
@@ -48,7 +48,7 @@ public class RackFX {
         cancelImage.setPreserveRatio(true);
         shuffleImage.setFitHeight(30);
         shuffleImage.setPreserveRatio(true);
-        List<Tile> rackTile = this.gameController.player(this.gameController.getTurn()).rack().tiles();
+        List<Tile> rackTile = this.gameController.player().rack().tiles();
         this.hBox.getChildren().clear();
         this.hBox.setBackground(new Background(new BackgroundFill(primaryColor, defaultCornerRadii, null)));
 
@@ -83,12 +83,12 @@ public class RackFX {
     }
 
     public void setMode(FXControllerMode mode) {
-        if (mode.equals(FXControllerMode.PlaceWord)) {
-            this.mode = FXControllerMode.PlaceWord;
+        if (mode.equals(FXControllerMode.PLACE_WORD)) {
+            this.mode = FXControllerMode.PLACE_WORD;
             this.toggleModeButton.setGraphic(exchangeImage);
             this.confirm.setDisable(false);
         } else {
-            this.mode = FXControllerMode.SwapLetters;
+            this.mode = FXControllerMode.SWAP_LETTERS;
             this.toggleModeButton.setGraphic(cancelImage);
             this.confirm.setDisable(true);
         }

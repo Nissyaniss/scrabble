@@ -1,6 +1,6 @@
 package fr.gameiuter.scrabble.controller;
 
 public enum FXControllerMode {
-    PlaceWord,
-    SwapLetters
+    PLACE_WORD,
+    SWAP_LETTERS
 }

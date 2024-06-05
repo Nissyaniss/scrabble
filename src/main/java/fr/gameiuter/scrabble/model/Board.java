@@ -113,13 +113,13 @@ public class Board {
 
         Position startPosition = position;
 
-        List<Tile> tiles = new ArrayList<>();
+        List<Tile> wordTiles = new ArrayList<>();
         while (this.getTileAtWithAdditional(position, additionalTiles).isPresent()) {
-            tiles.add(this.getTileAtWithAdditional(position, additionalTiles).get());
+            wordTiles.add(this.getTileAtWithAdditional(position, additionalTiles).get());
             position = position.next(direction);
         }
 
-        return new Word(startPosition, direction, tiles);
+        return new Word(startPosition, direction, wordTiles);
     }
 
     public Optional<Tile> getTileAtWithAdditional(Position position, Map<Position, Tile> additionalTiles) {

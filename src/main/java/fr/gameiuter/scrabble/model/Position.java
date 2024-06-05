@@ -3,8 +3,8 @@ package fr.gameiuter.scrabble.model;
 import java.util.Objects;
 
 public class Position {
-    private Integer column;
-    private Integer line;
+    private final Integer column;
+    private final Integer line;
 
     public Position(Integer column, Integer line) {
         this.column = column;
