@@ -86,6 +86,8 @@ public class TileFX extends StackPane {
                     rack.getChildren().add(index + 1, source);
                 }
 
+                gameController.removePlacedTilesFX(source.position(), true);
+                source.setPosition(null);
                 gameController.gridUpdated();
                 event.setDropCompleted(true);
             } else {

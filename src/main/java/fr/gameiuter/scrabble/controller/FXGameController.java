@@ -4,14 +4,15 @@ import fr.gameiuter.scrabble.gui.RackFX;
 import fr.gameiuter.scrabble.gui.SquareFX;
 import fr.gameiuter.scrabble.gui.TileFX;
 import fr.gameiuter.scrabble.model.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -169,35 +170,39 @@ public class FXGameController {
     }
 
     private boolean checkPlacement() {
-        boolean isFirstTile = true;
-        Direction firstDirection = null;
-        Direction currentDirection;
-        Position middle = new Position(Board.MIDDLE, Board.MIDDLE);
         if (this.placedTilesFX.get(new Position(Board.MIDDLE, Board.MIDDLE)) == null) {
             return false;
-        } else {
-            for (TileFX tile : this.placedTilesFX.values()) {
-                if (!tile.isFrozen()) {
-                    currentDirection = this.getDirection(tile.position());
-                    if (isFirstTile) {
-                        if (!this.tileHasNeighbors(tile.position())) {
-                            return false;
-                        }
-                        firstDirection = currentDirection;
-                        isFirstTile = false;
-                    }
-                    if (!(firstDirection == currentDirection && currentDirection != null)) {
-                        return false;
-                    }
-                    if (firstDirection.equals(Direction.VERTICAL) && !this.tileHasVerticalNeighbor(tile.position()) && !tile.position().equals(middle)) {
-                        return false;
-                    } else if (firstDirection.equals(Direction.HORIZONTAL) && !this.tileHasHorizontalNeighbor(tile.position()) && !tile.position().equals(middle)) {
-                        return false;
-                    }
-                }
-            }
-            return true;
         }
+
+        Map<Position, TileFX> newTilesFX = this.placedTilesFX
+                .entrySet()
+                .stream()
+                .filter(entry -> !entry.getValue().isFrozen())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        if (newTilesFX.isEmpty()) {
+            return false;
+        }
+
+        Map<Position, Tile> newTiles = new HashMap<>();
+        for (Map.Entry<Position, TileFX> entry : newTilesFX.entrySet()) {
+            newTiles.put(entry.getKey(), entry.getValue().tile());
+        }
+
+        Position somePosition = newTilesFX.keySet().iterator().next();
+        Direction direction = this.getDirection(somePosition);
+        if (direction == null) {
+            return false;
+        }
+
+        Word someWord = this.gameController.board().getWordAt(somePosition, direction, newTiles);
+        if (newTilesFX.size() == 1 && someWord.tiles().size() == 1) {
+            someWord = this.gameController.board().getWordAt(somePosition, Direction.VERTICAL, newTiles);
+        }
+
+        if (someWord.tiles().size() == 1) {
+            return false;
+        }
+        return someWord.tiles().containsAll(newTiles.values());
     }
 
     private Direction getDirection(Position position) {
@@ -312,17 +317,54 @@ public class FXGameController {
 
     public void gridUpdated() {
         boolean checkPlacement = this.checkPlacement();
-        boolean isExistingWord = this.isExistingWord();
         if (!checkPlacement)
             this.errorLabel.setText("Le mot placé ne respecte pas les règles de placement !");
-        else if (!isExistingWord)
+        else if (!this.isExistingWord())
             this.errorLabel.setText("Le mot placé n'est pas dans le dictionnaire !");
         else
             this.errorLabel.setText("");
-        this.confirm.setDisable(!(checkPlacement && isExistingWord));
+        this.confirm.setDisable(!(checkPlacement && this.isExistingWord()));
     }
 
     private void endGame() {
-        System.out.println("end");
+        Player player;
+        if (this.gameController.player1().score() > this.gameController.player2().score()) {
+            player = this.gameController.player1();
+        } else if (this.gameController.player1().score() < this.gameController.player2().score()) {
+            player = this.gameController.player2();
+        } else {
+            player = null;
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Fin de la partie");
+
+        if (player == null) {
+            alert.setContentText("C'est une égalité !");
+        } else {
+            alert.setContentText(player.name() + " a gagné la partie !");
+        }
+
+        ButtonType buttonNew = new ButtonType("Nouvelle partie");
+        ButtonType buttonQuit = new ButtonType("Quitter");
+        alert.getButtonTypes().setAll(buttonNew, buttonQuit);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == buttonNew) {
+            String p1Name = this.gameController.player1().name();
+            String p2Name = this.gameController.player2().name();
+            FXMLLoader game = new FXMLLoader(
+                    FXStartMenuController.class.getResource("/fr/gameiuter/scrabble/application/Game.fxml"),
+                    null,
+                    null,
+                    (x) -> new FXGameController(p1Name, p2Name)
+            );
+            try {
+                confirm.getScene().setRoot(game.load());
+            } catch (IOException e) {
+                System.out.println("Cannot load new game: " + e.getMessage());
+            }
+        } else {
+            Platform.exit();
+        }
     }
 }
