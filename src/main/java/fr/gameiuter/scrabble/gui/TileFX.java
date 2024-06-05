@@ -1,5 +1,6 @@
 package fr.gameiuter.scrabble.gui;
 
+import fr.gameiuter.scrabble.controller.FXGameController;
 import fr.gameiuter.scrabble.model.Position;
 import fr.gameiuter.scrabble.model.Tile;
 import javafx.geometry.Insets;
@@ -30,7 +31,7 @@ public class TileFX extends StackPane {
     private boolean marked;
     private Consumer<Boolean> onMarkChangedCallback;
 
-    public TileFX(Tile tile, HBox rack) {
+    public TileFX(Tile tile, HBox rack, FXGameController gameController) {
         this.tile = tile;
         this.frozen = false;
 
@@ -85,6 +86,7 @@ public class TileFX extends StackPane {
                     rack.getChildren().add(index + 1, source);
                 }
 
+                gameController.gridUpdated();
                 event.setDropCompleted(true);
             } else {
                 event.setDropCompleted(false);

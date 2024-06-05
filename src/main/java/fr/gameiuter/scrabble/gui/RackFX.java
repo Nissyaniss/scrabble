@@ -26,6 +26,7 @@ public class RackFX {
     private final HBox hBox;
     private final Button toggleModeButton;
     private final GameController gameController;
+    private final FXGameController gameControllerFX;
     private final Button confirm;
     private final Button randomButton;
     private FXControllerMode mode;
@@ -35,6 +36,7 @@ public class RackFX {
         this.confirm = confirm;
         this.toggleModeButton = toggleModeButton;
         this.gameController = gameController;
+        this.gameControllerFX = fxGameController;
         this.randomButton = shuffleButton;
         this.mode = FXControllerMode.PLACE_WORD;
         this.refreshRack();
@@ -61,7 +63,7 @@ public class RackFX {
         this.randomButton.setTranslateX(-10);
 
         for (Tile tile : rackTile) {
-            TileFX tileFX = new TileFX(tile, this.hBox);
+            TileFX tileFX = new TileFX(tile, this.hBox, this.gameControllerFX);
             tileFX.setOnMarkChanged(this::tileMarkUpdated);
             this.hBox.getChildren().add(tileFX);
         }
@@ -109,6 +111,7 @@ public class RackFX {
                 this.hBox.getChildren().add(tile);
                 gameController.removePlacedTilesFX(tile.position(), true);
                 tile.setPosition(null);
+                this.gameControllerFX.gridUpdated();
                 event.setDropCompleted(true);
             }
         });
