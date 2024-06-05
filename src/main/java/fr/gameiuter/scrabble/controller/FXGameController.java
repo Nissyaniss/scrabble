@@ -170,8 +170,9 @@ public class FXGameController {
 
     private boolean checkPlacement() {
         boolean isFirstTile = true;
-        Direction previousDirection = null;
+        Direction firstDirection = null;
         Direction currentDirection;
+        Position middle = new Position(Board.MIDDLE, Board.MIDDLE);
         if (this.placedTilesFX.get(new Position(Board.MIDDLE, Board.MIDDLE)) == null) {
             return false;
         } else {
@@ -179,15 +180,18 @@ public class FXGameController {
                 if (!tile.isFrozen()) {
                     currentDirection = this.getDirection(tile.position());
                     if (isFirstTile) {
-                        previousDirection = currentDirection;
+                        if (!this.tileHasNeighbors(tile.position())) {
+                            return false;
+                        }
+                        firstDirection = currentDirection;
                         isFirstTile = false;
                     }
-                    if (previousDirection == currentDirection && currentDirection != null) {
-                        previousDirection = currentDirection;
-                    } else {
+                    if (!(firstDirection == currentDirection && currentDirection != null)) {
                         return false;
                     }
-                    if (!this.tileHasNeighbors(tile.position())) {
+                    if (firstDirection.equals(Direction.VERTICAL) && !this.tileHasVerticalNeighbor(tile.position()) && !tile.position().equals(middle)) {
+                        return false;
+                    } else if (firstDirection.equals(Direction.HORIZONTAL) && !this.tileHasHorizontalNeighbor(tile.position()) && !tile.position().equals(middle)) {
                         return false;
                     }
                 }
@@ -204,7 +208,6 @@ public class FXGameController {
                 if (!tile.position().column().equals(position.column()))
                     return null;
             }
-
         }
 
         if (isVertical)
@@ -216,6 +219,14 @@ public class FXGameController {
     private boolean tileHasNeighbors(Position position) {
         return (this.hasTileAt(position.next(Direction.HORIZONTAL)) || (this.hasTileAt(position.previous(Direction.HORIZONTAL)))
                 || (this.hasTileAt(position.next(Direction.VERTICAL))) || (this.hasTileAt(position.previous(Direction.VERTICAL))));
+    }
+
+    private boolean tileHasVerticalNeighbor(Position position) {
+        return (this.hasTileAt(position.previous(Direction.VERTICAL)));
+    }
+
+    private boolean tileHasHorizontalNeighbor(Position position) {
+        return (this.hasTileAt(position.previous(Direction.HORIZONTAL)));
     }
 
     public boolean hasTileAt(Position position) {
@@ -300,13 +311,15 @@ public class FXGameController {
     }
 
     public void gridUpdated() {
-        if (!this.checkPlacement())
+        boolean checkPlacement = this.checkPlacement();
+        boolean isExistingWord = this.isExistingWord();
+        if (!checkPlacement)
             this.errorLabel.setText("Le mot placé ne respecte pas les règles de placement !");
-        else if (!this.isExistingWord())
+        else if (!isExistingWord)
             this.errorLabel.setText("Le mot placé n'est pas dans le dictionnaire !");
         else
             this.errorLabel.setText("");
-        this.confirm.setDisable(!(this.checkPlacement() && this.isExistingWord()));
+        this.confirm.setDisable(!(checkPlacement && isExistingWord));
     }
 
     private void endGame() {
