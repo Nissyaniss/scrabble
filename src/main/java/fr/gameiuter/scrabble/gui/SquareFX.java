@@ -7,6 +7,7 @@ import fr.gameiuter.scrabble.model.Square;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -44,30 +45,31 @@ public class SquareFX extends Label {
         }
         this.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(topBorder, rightBorder, bottomBorder, leftBorder))));
 
-        Color backgroundColor = Color.color(1. / 255., 106. / 255., 33. / 255.);
+        Color backgroundColor = Color.rgb(1, 106, 33);
 
         switch (square) {
             case START:
                 this.setText("✹");
                 this.setFont(Font.font(50));
                 this.setPadding(new Insets(-11, 0, 0, 0));
-                backgroundColor = Color.color(228. / 255., 181. / 255., 99. / 255.);
+                this.setTextOverrun(OverrunStyle.CLIP);
+                backgroundColor = Color.rgb(228, 181, 99);
                 break;
             case DOUBLE_LETTER:
                 this.setText("LD");
-                backgroundColor = Color.color(150. / 255., 196. / 255., 229. / 255.);
+                backgroundColor = Color.color(150, 196, 229);
                 break;
             case TRIPLE_LETTER:
                 this.setText("LT");
-                backgroundColor = Color.color(1. / 255., 142. / 255., 204. / 255.);
+                backgroundColor = Color.color(1, 142, 204);
                 break;
             case DOUBLE_WORD:
                 this.setText("MD");
-                backgroundColor = Color.color(228. / 255., 181. / 255., 99. / 255.);
+                backgroundColor = Color.color(228, 181, 99);
                 break;
             case TRIPLE_WORD:
                 this.setText("MT");
-                backgroundColor = Color.color(216. / 255., 1. / 255., 45. / 255.);
+                backgroundColor = Color.color(216, 1, 45);
                 break;
             case NORMAL:
                 break;
