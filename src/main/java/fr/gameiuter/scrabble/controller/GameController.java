@@ -108,6 +108,9 @@ public class GameController {
         for (Position position : placedTiles.keySet())
             score += this.computeWordScore(placedTiles, position, perpendicular);
 
+        if (placedTiles.size() == 7)
+            score += 50;
+
         return score;
     }
 
