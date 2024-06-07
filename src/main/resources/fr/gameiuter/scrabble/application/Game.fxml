@@ -46,6 +46,12 @@
                 <Label fx:id="labelJoueur" text="Joueur actuel :"/>
                 <Label fx:id="labelTours" alignment="CENTER" text="Tours :"/>
             </children>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <BorderPane.margin>
+                <Insets bottom="10.0"/>
+            </BorderPane.margin>
         </VBox>
     </top>
     <center>
