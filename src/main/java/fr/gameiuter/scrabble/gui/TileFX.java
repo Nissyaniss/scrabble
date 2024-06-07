@@ -67,12 +67,14 @@ public class TileFX extends StackPane {
                 content.putString("");
                 db.setContent(content);
             }
+            e.consume();
         });
         this.setOnDragOver(event -> {
             Node source = (Node) event.getGestureSource();
             if (source != this && this.getParent().equals(rack)) {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
+            event.consume();
         });
         this.setOnDragDropped(event -> {
             TileFX source = (TileFX) event.getGestureSource();
@@ -93,6 +95,7 @@ public class TileFX extends StackPane {
             } else {
                 event.setDropCompleted(false);
             }
+            event.consume();
         });
     }
 

@@ -81,6 +81,7 @@ public class SquareFX extends Label {
             if (event.getGestureSource() != this && event.getDragboard().hasString()) {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
+            event.consume();
         });
         this.setOnDragEntered(event -> this.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null))));
         this.setOnDragExited(event -> this.setBackground(new Background(new BackgroundFill(baseColor, null, null))));
@@ -96,6 +97,7 @@ public class SquareFX extends Label {
             gameController.addToPlacedTilesFX(tileFX);
             gameController.gridUpdated();
             event.setDropCompleted(true);
+            event.consume();
         });
     }
 

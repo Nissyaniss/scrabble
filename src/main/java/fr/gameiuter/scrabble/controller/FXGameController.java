@@ -92,6 +92,7 @@ public class FXGameController {
                 this.endGame();
             }
             this.generateTurn();
+            this.confirm.setDisable(true);
             this.rackFX.refreshRack();
             this.updateScores();
         } else {
@@ -219,29 +220,6 @@ public class FXGameController {
             return Direction.VERTICAL;
         else
             return Direction.HORIZONTAL;
-    }
-
-    private boolean tileHasNeighbors(Position position) {
-        return (this.hasTileAt(position.next(Direction.HORIZONTAL)) || (this.hasTileAt(position.previous(Direction.HORIZONTAL)))
-                || (this.hasTileAt(position.next(Direction.VERTICAL))) || (this.hasTileAt(position.previous(Direction.VERTICAL))));
-    }
-
-    private boolean tileHasVerticalNeighbor(Position position) {
-        return (this.hasTileAt(position.previous(Direction.VERTICAL)));
-    }
-
-    private boolean tileHasHorizontalNeighbor(Position position) {
-        return (this.hasTileAt(position.previous(Direction.HORIZONTAL)));
-    }
-
-    public boolean hasTileAt(Position position) {
-        if (!position.containedWithinBounds(0, Board.LAST_LINE_OR_COLUMN))
-            return false;
-        return this.getTileAt(position) != TileFX.NO;
-    }
-
-    public TileFX getTileAt(Position position) {
-        return this.placedTilesFX.get(position);
     }
 
     public void addToPlacedTilesFX(TileFX tileFX) {
