@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TileTest {
+class TileTest {
     @Test
     void blankTileAttributesAreCorrect() {
         Tile joker = new Tile(FrenchLetter.BLANK);

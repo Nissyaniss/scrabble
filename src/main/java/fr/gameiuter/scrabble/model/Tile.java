@@ -1,7 +1,7 @@
 package fr.gameiuter.scrabble.model;
 
 public class Tile {
-    public static Tile NO = null;
+    public static final Tile NO = null;
     private final int score;
     private char letter;
 

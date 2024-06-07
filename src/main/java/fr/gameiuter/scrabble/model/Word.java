@@ -22,10 +22,6 @@ public class Word {
         return this.tiles;
     }
 
-    public Direction direction() {
-        return this.direction;
-    }
-
     public int letterCount() {
         return this.tiles.size();
     }

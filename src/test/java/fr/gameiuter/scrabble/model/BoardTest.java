@@ -3,8 +3,7 @@ package fr.gameiuter.scrabble.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
     private Board board;
@@ -96,11 +95,11 @@ class BoardTest {
 
     @Test
     void testTilesGetter() {
-        assertTrue(board.tiles() != null);
+        assertNotNull(board.tiles());
     }
 
     @Test
     void testSquaresGetter() {
-        assertTrue(board.squares() != null);
+        assertNotNull(board.squares());
     }
 }

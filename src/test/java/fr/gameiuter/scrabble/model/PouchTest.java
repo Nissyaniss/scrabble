@@ -22,9 +22,7 @@ class PouchTest {
     void testDraw() {
         Optional<Tile> result = pouch.draw();
 
-        if (result.isPresent()) {
-            pouch.putBack(result.get());
-        }
+        result.ifPresent(tile -> pouch.putBack(tile));
 
         assertTrue(result.isPresent());
     }

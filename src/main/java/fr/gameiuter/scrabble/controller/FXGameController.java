@@ -1,5 +1,6 @@
 package fr.gameiuter.scrabble.controller;
 
+import fr.gameiuter.scrabble.gui.Console;
 import fr.gameiuter.scrabble.gui.RackFX;
 import fr.gameiuter.scrabble.gui.SquareFX;
 import fr.gameiuter.scrabble.gui.TileFX;
@@ -334,12 +335,12 @@ public class FXGameController {
                     FXStartMenuController.class.getResource("/fr/gameiuter/scrabble/application/Game.fxml"),
                     null,
                     null,
-                    (x) -> new FXGameController(p1Name, p2Name)
+                    x -> new FXGameController(p1Name, p2Name)
             );
             try {
                 confirm.getScene().setRoot(game.load());
             } catch (IOException e) {
-                System.out.println("Cannot load new game: " + e.getMessage());
+                Console.message("Cannot load new game: " + e.getMessage());
             }
         } else {
             Platform.exit();

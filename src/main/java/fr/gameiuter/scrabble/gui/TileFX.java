@@ -20,7 +20,6 @@ import java.util.function.Consumer;
 
 public class TileFX extends StackPane {
     public static final Integer TILE_SIZE = 50;
-    public static final TileFX NO = null;
     private static final Color BASE_COLOR = Color.WHEAT;
 
     private final Label letter;
