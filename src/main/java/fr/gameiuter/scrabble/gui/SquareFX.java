@@ -57,19 +57,19 @@ public class SquareFX extends Label {
                 break;
             case DOUBLE_LETTER:
                 this.setText("LD");
-                backgroundColor = Color.color(150, 196, 229);
+                backgroundColor = Color.rgb(150, 196, 229);
                 break;
             case TRIPLE_LETTER:
                 this.setText("LT");
-                backgroundColor = Color.color(1, 142, 204);
+                backgroundColor = Color.rgb(1, 142, 204);
                 break;
             case DOUBLE_WORD:
                 this.setText("MD");
-                backgroundColor = Color.color(228, 181, 99);
+                backgroundColor = Color.rgb(228, 181, 99);
                 break;
             case TRIPLE_WORD:
                 this.setText("MT");
-                backgroundColor = Color.color(216, 1, 45);
+                backgroundColor = Color.rgb(216, 1, 45);
                 break;
             case NORMAL:
                 break;
