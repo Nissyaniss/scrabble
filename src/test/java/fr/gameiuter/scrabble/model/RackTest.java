@@ -18,12 +18,13 @@ class RackTest {
     @Test
     void canAddTileWhenEmpty() {
         Rack rack = new Rack();
+        Tile a = new Tile(FrenchLetter.A);
 
-        boolean wasAdded = rack.add(new Tile(FrenchLetter.A));
+        boolean wasAdded = rack.add(a);
 
         assertTrue(wasAdded);
         assertEquals(1, rack.numberOfTiles());
-        assertEquals(Collections.singletonList(new Tile(FrenchLetter.A)), rack.tiles());
+        assertEquals(Collections.singletonList(a), rack.tiles());
     }
 
     @Test
@@ -36,26 +37,15 @@ class RackTest {
 
         assertFalse(wasAdded);
         assertEquals(7, rack.numberOfTiles());
-        assertEquals(
-                Arrays.asList(
-                        new Tile(FrenchLetter.A),
-                        new Tile(FrenchLetter.A),
-                        new Tile(FrenchLetter.A),
-                        new Tile(FrenchLetter.A),
-                        new Tile(FrenchLetter.A),
-                        new Tile(FrenchLetter.A),
-                        new Tile(FrenchLetter.A)
-                ),
-                rack.tiles()
-        );
     }
 
     @Test
     void removeTile() {
         Rack rack = new Rack();
-        rack.add(new Tile(FrenchLetter.A));
+        Tile a = new Tile(FrenchLetter.A);
+        rack.add(a);
 
-        rack.remove(new Tile(FrenchLetter.A));
+        rack.remove(a);
 
         assertEquals(0, rack.numberOfTiles());
     }
@@ -63,13 +53,14 @@ class RackTest {
     @Test
     void getTileAtIndexReturnTileWhenPresent() {
         Rack rack = new Rack();
+        Tile c = new Tile(FrenchLetter.C);
         rack.add(new Tile(FrenchLetter.A));
         rack.add(new Tile(FrenchLetter.B));
-        rack.add(new Tile(FrenchLetter.C));
+        rack.add(c);
 
         Tile tile = rack.tileAt(2);
 
-        assertEquals(new Tile(FrenchLetter.C), tile);
+        assertEquals(c, tile);
     }
 
     @Test

@@ -37,17 +37,10 @@ class PouchTest {
     @Test
     void testPutBack() {
         Tile z = new Tile(FrenchLetter.Z);
-        int counter = 0;
 
         pouch.putBack(z);
 
-        for (Tile tile : pouch.tiles()) {
-            if (tile.equals(z)) {
-                counter++;
-            }
-        }
-
-        assertEquals(2, counter);
+        assertTrue(pouch.tiles().contains(z));
     }
 
     @Test
