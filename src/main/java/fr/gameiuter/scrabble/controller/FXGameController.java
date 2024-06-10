@@ -153,6 +153,7 @@ public class FXGameController {
         }
     }
 
+    // cannot be called if checkPlacement() returns false
     private boolean isExistingWord() {
         Map<Position, Tile> placedTiles = this.placedTilesFX
                 .entrySet()
@@ -162,13 +163,14 @@ public class FXGameController {
 
         Map.Entry<Position, Tile> entry = placedTiles.entrySet().iterator().next();
         Position pos = entry.getKey();
+        Direction direction = this.getDirection(pos);
         Word word = this.gameController.board().getWordAt(pos, this.getDirection(pos), placedTiles);
         // when there is only one new tile on the board, this.getDirection will default to horizontal,
         // so we use vertical if there is no other letters in the horizontal direction
         if (placedTiles.size() == 1 && word.tiles().size() == 1) {
-            word = this.gameController.board().getWordAt(pos, Direction.VERTICAL, placedTiles);
+            direction = Direction.VERTICAL;
         }
-        return this.gameController.isExistingWord(word);
+        return this.gameController.areAllExistingWord(placedTiles, pos, direction);
     }
 
     private boolean checkPlacement() {
@@ -299,7 +301,7 @@ public class FXGameController {
         if (!checkPlacement)
             this.errorLabel.setText("Le mot placé ne respecte pas les règles de placement !");
         else if (!this.isExistingWord())
-            this.errorLabel.setText("Le mot placé n'est pas dans le dictionnaire !");
+            this.errorLabel.setText("Un mot placé n'est pas dans le dictionnaire !");
         else
             this.errorLabel.setText("");
         this.confirm.setDisable(!(checkPlacement && this.isExistingWord()));

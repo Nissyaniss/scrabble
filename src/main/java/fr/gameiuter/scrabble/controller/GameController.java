@@ -92,8 +92,28 @@ public class GameController {
         return this.board;
     }
 
-    public boolean isExistingWord(Word word) {
+    public boolean isExistingWord(Map<Position, Tile> placedTiles, Position position, Direction direction) {
+        Word word = this.board.getWordAt(position, direction, placedTiles);
+        if (word.tiles().size() == 1) {
+            // words of size 1 are not checked, so are considered "valid"
+            return true;
+        }
         return this.words.contains(word.asString().toUpperCase());
+    }
+
+    public boolean areAllExistingWord(Map<Position, Tile> placedTiles, Position position, Direction direction) {
+        if (!this.isExistingWord(placedTiles, position, direction)) {
+            return false;
+        }
+
+        Direction perpendicular = direction.rotate();
+        for (Position tilePosition : placedTiles.keySet()) {
+            if (!this.isExistingWord(placedTiles, tilePosition, perpendicular)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public Integer computeScore(Map<Position, Tile> placedTiles, Direction direction) {
